@@ -1,16 +1,14 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Star, Settings, Play, Plus, Trophy } from "lucide-react";
+import { Play, MoreHorizontal, Home, Search, Menu, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VideoUploadModal } from "@/components/video-upload-modal";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { CompletionModal } from "@/components/completion-modal";
-import { ExerciseCard } from "@/components/exercise-card";
-import { PlaylistBuilder } from "@/components/playlist-builder";
-import { ExerciseLibrary } from "@/components/exercise-library";
 import { Exercise, Playlist } from "@shared/schema";
+import { Link } from "wouter";
 
-export default function Home() {
+export default function HomePage() {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
@@ -25,11 +23,11 @@ export default function Home() {
     queryKey: ["/api/playlists/active"],
   });
 
-  const { data: todayProgress = [] } = useQuery({
+  const { data: todayProgress = [] } = useQuery<any[]>({
     queryKey: ["/api/progress/today"],
   });
 
-  const { data: streakData } = useQuery({
+  const { data: streakData } = useQuery<{ streak: number }>({
     queryKey: ["/api/progress/streak"],
   });
 
@@ -53,137 +51,81 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b-4 border-coral">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-coral rounded-full flex items-center justify-center">
-                <Play className="text-white text-xl" />
+      <div className="bg-white border-b border-border px-4 py-3">
+        <h1 className="text-xl font-semibold text-center text-dark-gray">Balance</h1>
+      </div>
+
+      {/* Content */}
+      <div className="px-6 py-6 max-w-sm mx-auto">
+        {/* Exercise List */}
+        <div className="space-y-4">
+          {playlistExercises.map((exercise, index) => (
+            <div
+              key={exercise.id}
+              className="bg-white rounded-lg border border-border p-4 flex items-center justify-between"
+            >
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-light-gray rounded-lg flex items-center justify-center">
+                  <Play className="w-5 h-5 text-pink" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-dark-gray text-sm">{exercise.name}</h3>
+                  <p className="text-xs text-medium-gray">{exercise.description}</p>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <span className="text-xs text-medium-gray">{exercise.duration}</span>
+                    <span className="text-xs text-medium-gray">•</span>
+                    <span className="text-xs text-medium-gray">Ages {exercise.ageGroups.join(", ")}</span>
+                  </div>
+                </div>
               </div>
-              <h1 className="text-3xl font-fredoka text-navy">FitKids</h1>
+              <div className="flex items-center space-x-2">
+                <Button
+                  onClick={() => handlePlayVideo(exercise)}
+                  variant="ghost"
+                  size="sm"
+                  className="p-2"
+                >
+                  <Play className="w-4 h-4 text-pink" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="p-2"
+                >
+                  <MoreHorizontal className="w-4 h-4 text-medium-gray" />
+                </Button>
+              </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <Button
-                onClick={() => setAccessibilityMode(!accessibilityMode)}
-                className="p-3 bg-turquoise text-white rounded-full hover:bg-opacity-80 transition-all"
-                size="icon"
-              >
-                <Settings className="text-lg" />
-              </Button>
-              <Button
-                className="p-3 bg-sunny text-navy rounded-full hover:bg-opacity-80 transition-all"
-                size="icon"
-              >
-                <Settings className="text-lg" />
-              </Button>
-            </div>
-          </div>
+          ))}
         </div>
-      </header>
+      </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
-        <section className="mb-12">
-          <div className="bg-gradient-to-r from-coral to-turquoise rounded-3xl p-8 text-white relative overflow-hidden">
-            <div className="relative z-10">
-              <h2 className="text-4xl font-fredoka mb-4">Let's Get Moving!</h2>
-              <p className="text-xl mb-6 opacity-90">Ready for some family fitness fun? Complete exercises together!</p>
-              <div className="flex flex-wrap gap-4">
-                <div className="bg-white bg-opacity-20 rounded-2xl px-6 py-3">
-                  <div className="text-2xl font-bold">{completedToday}</div>
-                  <div className="text-sm opacity-80">Exercises Today</div>
-                </div>
-                <div className="bg-white bg-opacity-20 rounded-2xl px-6 py-3">
-                  <div className="text-2xl font-bold">{streak}</div>
-                  <div className="text-sm opacity-80">Day Streak</div>
-                </div>
-              </div>
-            </div>
-            <div className="absolute top-4 right-4 text-6xl opacity-20">
-              <Star className="animate-bounce-gentle" />
-            </div>
-          </div>
-        </section>
-
-        {/* Quick Actions */}
-        <section className="mb-12">
-          <h3 className="text-2xl font-fredoka text-navy mb-6">Quick Actions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Button
-              onClick={() => setShowUploadModal(true)}
-              className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all border-4 border-transparent hover:border-coral group h-auto"
-              variant="ghost"
-            >
-              <div className="text-center">
-                <div className="w-16 h-16 bg-coral rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-wiggle">
-                  <Play className="text-white text-2xl" />
-                </div>
-                <h4 className="text-xl font-bold text-navy mb-2">Upload Exercise Video</h4>
-                <p className="text-gray-600">Add new exercise videos to your library</p>
-              </div>
+      {/* Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border">
+        <div className="flex justify-around py-3 max-w-sm mx-auto">
+          <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
+            <Home className="w-5 h-5 text-pink" />
+          </Button>
+          <Link href="/search">
+            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
+              <Search className="w-5 h-5 text-medium-gray" />
             </Button>
-            <Button
-              className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all border-4 border-transparent hover:border-turquoise group h-auto"
-              variant="ghost"
-            >
-              <div className="text-center">
-                <div className="w-16 h-16 bg-turquoise rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-wiggle">
-                  <Plus className="text-white text-2xl" />
-                </div>
-                <h4 className="text-xl font-bold text-navy mb-2">Create Playlist</h4>
-                <p className="text-gray-600">Build custom exercise routines</p>
-              </div>
-            </Button>
-          </div>
-        </section>
-
-        {/* Current Playlist */}
-        <section className="mb-12">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-fredoka text-navy">Today's Workout</h3>
-            <div className="flex items-center space-x-2 bg-mint rounded-full px-4 py-2">
-              <Trophy className="text-turquoise" />
-              <span className="font-bold text-navy">
-                {completedToday}/{totalExercises} Complete
-              </span>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="mb-8">
-            <div className="bg-gray-200 rounded-full h-4 overflow-hidden">
-              <div 
-                className="bg-gradient-to-r from-coral to-turquoise h-full rounded-full transition-all duration-500"
-                style={{ width: `${progressPercentage}%` }}
-              ></div>
-            </div>
-            <p className="text-center mt-2 text-gray-600">Keep going! You're doing great!</p>
-          </div>
-
-          {/* Exercise Cards */}
-          <div className="space-y-6">
-            {playlistExercises.map((exercise, index) => (
-              <ExerciseCard
-                key={exercise.id}
-                exercise={exercise}
-                isCompleted={todayProgress.some(p => p.exerciseId === exercise.id)}
-                isCurrent={index === completedToday && completedToday < totalExercises}
-                isLocked={index > completedToday}
-                onPlay={() => handlePlayVideo(exercise)}
-                onComplete={() => handleCompleteExercise(exercise)}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Exercise Library */}
-        <ExerciseLibrary />
-
-        {/* Playlist Builder */}
-        <PlaylistBuilder />
-      </main>
+          </Link>
+          <Button 
+            onClick={() => setShowUploadModal(true)}
+            variant="ghost" 
+            size="sm" 
+            className="flex flex-col items-center gap-1 p-2"
+          >
+            <Menu className="w-5 h-5 text-medium-gray" />
+          </Button>
+          <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
+            <User className="w-5 h-5 text-medium-gray" />
+          </Button>
+        </div>
+      </div>
 
       {/* Modals */}
       <VideoUploadModal 

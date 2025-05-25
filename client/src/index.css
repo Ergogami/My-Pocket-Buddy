@@ -5,33 +5,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@400;600;700&display=swap');
 
 :root {
-  --background: 210 40% 98%; /* #F8FAFC */
-  --foreground: 222 84% 5%; /* #0F172A */
-  --muted: 210 40% 96%; /* #F1F5F9 */
-  --muted-foreground: 215 16% 47%; /* #64748B */
+  --background: 0 0% 98%; /* #FAFAFA */
+  --foreground: 0 0% 20%; /* #333333 */
+  --muted: 0 0% 96%; /* #F5F5F5 */
+  --muted-foreground: 0 0% 45%; /* #737373 */
   --popover: 0 0% 100%; /* #FFFFFF */
-  --popover-foreground: 222 84% 5%; /* #0F172A */
+  --popover-foreground: 0 0% 20%; /* #333333 */
   --card: 0 0% 100%; /* #FFFFFF */
-  --card-foreground: 222 84% 5%; /* #0F172A */
-  --border: 214 32% 91%; /* #E2E8F0 */
-  --input: 214 32% 91%; /* #E2E8F0 */
-  --primary: 351 83% 69%; /* #FF6B6B - coral */
+  --card-foreground: 0 0% 20%; /* #333333 */
+  --border: 0 0% 90%; /* #E5E5E5 */
+  --input: 0 0% 90%; /* #E5E5E5 */
+  --primary: 330 81% 60%; /* #E91E63 - pink */
   --primary-foreground: 0 0% 100%; /* #FFFFFF */
-  --secondary: 174 72% 56%; /* #4ECDC4 - turquoise */
-  --secondary-foreground: 0 0% 100%; /* #FFFFFF */
-  --accent: 48 100% 71%; /* #FFE66D - sunny */
-  --accent-foreground: 210 40% 2%; /* #020817 */
+  --secondary: 0 0% 96%; /* #F5F5F5 */
+  --secondary-foreground: 0 0% 20%; /* #333333 */
+  --accent: 330 81% 60%; /* #E91E63 - pink */
+  --accent-foreground: 0 0% 100%; /* #FFFFFF */
   --destructive: 0 84% 60%; /* #EF4444 */
   --destructive-foreground: 0 0% 98%; /* #FAFAFA */
-  --ring: 215 16% 47%; /* #64748B */
-  --radius: 1rem;
+  --ring: 330 81% 60%; /* #E91E63 */
+  --radius: 0.5rem;
   
   /* Custom colors for the app */
-  --coral: 351 83% 69%; /* #FF6B6B */
-  --turquoise: 174 72% 56%; /* #4ECDC4 */
-  --sunny: 48 100% 71%; /* #FFE66D */
-  --mint: 162 67% 75%; /* #95E1D3 */
-  --navy: 210 29% 24%; /* #2C3E50 */
+  --pink: 330 81% 60%; /* #E91E63 */
+  --light-gray: 0 0% 96%; /* #F5F5F5 */
+  --dark-gray: 0 0% 20%; /* #333333 */
+  --medium-gray: 0 0% 60%; /* #999999 */
 }
 
 .dark {
@@ -72,60 +71,48 @@
 }
 
 @layer utilities {
-  .bg-coral {
-    background-color: hsl(var(--coral));
+  .bg-pink {
+    background-color: hsl(var(--pink));
   }
   
-  .bg-turquoise {
-    background-color: hsl(var(--turquoise));
+  .bg-light-gray {
+    background-color: hsl(var(--light-gray));
   }
   
-  .bg-sunny {
-    background-color: hsl(var(--sunny));
+  .bg-dark-gray {
+    background-color: hsl(var(--dark-gray));
   }
   
-  .bg-mint {
-    background-color: hsl(var(--mint));
+  .bg-medium-gray {
+    background-color: hsl(var(--medium-gray));
   }
   
-  .bg-navy {
-    background-color: hsl(var(--navy));
+  .text-pink {
+    color: hsl(var(--pink));
   }
   
-  .text-coral {
-    color: hsl(var(--coral));
+  .text-light-gray {
+    color: hsl(var(--light-gray));
   }
   
-  .text-turquoise {
-    color: hsl(var(--turquoise));
+  .text-dark-gray {
+    color: hsl(var(--dark-gray));
   }
   
-  .text-sunny {
-    color: hsl(var(--sunny));
+  .text-medium-gray {
+    color: hsl(var(--medium-gray));
   }
   
-  .text-mint {
-    color: hsl(var(--mint));
+  .border-pink {
+    border-color: hsl(var(--pink));
   }
   
-  .text-navy {
-    color: hsl(var(--navy));
+  .border-light-gray {
+    border-color: hsl(var(--light-gray));
   }
   
-  .border-coral {
-    border-color: hsl(var(--coral));
-  }
-  
-  .border-turquoise {
-    border-color: hsl(var(--turquoise));
-  }
-  
-  .border-sunny {
-    border-color: hsl(var(--sunny));
-  }
-  
-  .border-mint {
-    border-color: hsl(var(--mint));
+  .border-medium-gray {
+    border-color: hsl(var(--medium-gray));
   }
   
   .animate-wiggle {
