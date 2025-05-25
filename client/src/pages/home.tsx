@@ -105,8 +105,95 @@ export default function HomePage() {
       </div>
 
       {/* Content */}
-      <div className="px-4 py-6 max-w-md mx-auto">
-        {/* Empty home page - ready for next command */}
+      <div className="px-4 py-6 max-w-md mx-auto space-y-6">
+        {/* Hero Section with MY POCKET BUDDY */}
+        <div className="bg-gradient-to-b from-blue-100 to-blue-200 rounded-lg p-6 text-center">
+          <div className="flex justify-center items-center mb-4">
+            <div className="flex space-x-2">
+              {/* Cute cartoon characters */}
+              <div className="w-12 h-12 bg-yellow-300 rounded-full flex items-center justify-center">
+                <span className="text-2xl">👶</span>
+              </div>
+              <div className="w-12 h-12 bg-pink-300 rounded-full flex items-center justify-center">
+                <span className="text-2xl">👧</span>
+              </div>
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-brown-800 mb-2">MY</h1>
+          <h1 className="text-3xl font-bold text-brown-800 mb-2">POCKET</h1>
+          <h1 className="text-3xl font-bold text-brown-800">BUDDY</h1>
+        </div>
+
+        {/* Main Hero Card */}
+        <div className="relative rounded-lg overflow-hidden">
+          <div className="bg-gradient-to-br from-gray-600 to-gray-800 p-8 text-white relative">
+            <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+            <div className="relative z-10">
+              <h2 className="text-4xl font-bold mb-4 leading-tight">ALL YOUR</h2>
+              <h2 className="text-4xl font-bold mb-4 leading-tight">FUN</h2>
+              <h2 className="text-4xl font-bold mb-4 leading-tight">EXERCISES</h2>
+              <h2 className="text-4xl font-bold mb-4 leading-tight">IN YOUR</h2>
+              <h2 className="text-4xl font-bold leading-tight">FINGERTIPS</h2>
+            </div>
+          </div>
+        </div>
+
+        {/* Text Input Area */}
+        <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <input 
+            type="text" 
+            placeholder="Write Something..."
+            className="w-full text-gray-500 bg-transparent border-none outline-none"
+          />
+        </div>
+
+        {/* Introduction Card */}
+        <div className="relative rounded-lg overflow-hidden">
+          <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-6 text-white relative">
+            <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+            <div className="relative z-10">
+              <h3 className="text-2xl font-bold mb-2">HELLO! <em>I'm Ed!</em></h3>
+              <p className="text-sm mb-4 opacity-90">I am a physio and your Pocket Buddy!</p>
+              <div className="flex space-x-3">
+                <button className="bg-white text-gray-800 px-4 py-2 rounded-full text-sm font-medium">
+                  Discover More
+                </button>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-1">
+                  <Plus className="w-4 h-4" />
+                  Block
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Latest Exercises Section */}
+        <div>
+          <h3 className="text-xl font-bold text-gray-800 mb-4">LATEST EXERCISES</h3>
+          <div className="flex space-x-4 overflow-x-auto pb-4">
+            {exercises.slice(0, 3).map((exercise, index) => (
+              <div key={exercise.id} className="flex-shrink-0 w-64">
+                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                  <div className="bg-gradient-to-br from-gray-600 to-gray-800 h-40 relative">
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                      <Play className="w-12 h-12 text-white" />
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h4 className="font-bold text-gray-800 mb-1">{exercise.name}</h4>
+                    <p className="text-sm text-blue-600 uppercase tracking-wide">WORKOUT</p>
+                    <div className="flex justify-between items-center mt-3">
+                      <span className="text-xs text-gray-500">{exercise.duration}</span>
+                      <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                        <Play className="w-4 h-4 text-gray-600" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Bottom Navigation */}
