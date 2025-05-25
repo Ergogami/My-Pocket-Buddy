@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Play, MoreHorizontal, Home, Search, Menu, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { VideoUploadModal } from "@/components/video-upload-modal";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { CompletionModal } from "@/components/completion-modal";
@@ -13,7 +14,8 @@ export default function HomePage() {
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
-  const [accessibilityMode, setAccessibilityMode] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const { data: exercises = [] } = useQuery<Exercise[]>({
     queryKey: ["/api/exercises"],
@@ -29,6 +31,24 @@ export default function HomePage() {
 
   const { data: streakData } = useQuery<{ streak: number }>({
     queryKey: ["/api/progress/streak"],
+  });
+
+  const categories = [
+    "All",
+    "Balance", 
+    "Strength",
+    "Coordination",
+    "Flexibility",
+    "Cardio",
+    "Ball Skills"
+  ];
+
+  // Filter exercises based on search and category
+  const filteredExercises = exercises.filter(exercise => {
+    const matchesSearch = exercise.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         exercise.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "All" || exercise.category === selectedCategory;
+    return matchesSearch && matchesCategory;
   });
 
   const playlistExercises = activePlaylist 
@@ -59,9 +79,43 @@ export default function HomePage() {
 
       {/* Content */}
       <div className="px-6 py-6 max-w-sm mx-auto">
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-medium-gray w-4 h-4" />
+            <Input
+              type="text"
+              placeholder="Search exercises..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 py-3 text-base border-2 border-border rounded-lg focus:border-pink"
+            />
+          </div>
+        </div>
+
+        {/* Categories */}
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <Button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedCategory === category
+                    ? "bg-pink text-white"
+                    : "bg-light-gray text-dark-gray hover:bg-pink hover:text-white"
+                }`}
+                variant="ghost"
+              >
+                {category}
+              </Button>
+            ))}
+          </div>
+        </div>
+
         {/* Exercise List */}
         <div className="space-y-4">
-          {playlistExercises.map((exercise, index) => (
+          {filteredExercises.map((exercise, index) => (
             <div
               key={exercise.id}
               className="bg-white rounded-lg border border-border p-4 flex items-center justify-between"
