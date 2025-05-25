@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Play, MoreHorizontal } from "lucide-react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { ArrowLeft, Play, MoreHorizontal, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Exercise } from "@shared/schema";
+import { Exercise, Playlist } from "@shared/schema";
 import { useLocation } from "wouter";
 import { VideoPlayerModal } from "@/components/video-player-modal";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 interface CategoryPageProps {
   category: string;
@@ -14,16 +16,66 @@ export default function CategoryPage({ category }: CategoryPageProps) {
   const [, setLocation] = useLocation();
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+  const { toast } = useToast();
 
   const { data: exercises = [] } = useQuery<Exercise[]>({
     queryKey: ["/api/exercises"],
   });
 
+  const { data: activePlaylist } = useQuery<Playlist>({
+    queryKey: ["/api/playlists/active"],
+  });
+
   const categoryExercises = exercises.filter(exercise => exercise.category === category);
+
+  const addToPlaylistMutation = useMutation({
+    mutationFn: async (exerciseId: number) => {
+      if (!activePlaylist) {
+        throw new Error("No active playlist found");
+      }
+      const currentExercises = activePlaylist.exerciseIds || [];
+      if (currentExercises.includes(exerciseId)) {
+        throw new Error("Exercise already in playlist");
+      }
+      const updatedExercises = [...currentExercises, exerciseId];
+      
+      const response = await fetch(`/api/playlists/${activePlaylist.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ exerciseIds: updatedExercises }),
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to update playlist");
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/playlists/active"] });
+      toast({
+        title: "Added to playlist!",
+        description: "Exercise added to your workout playlist.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to add exercise to playlist",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handlePlayVideo = (exercise: Exercise) => {
     setSelectedExercise(exercise);
     setShowVideoModal(true);
+  };
+
+  const handleAddToPlaylist = (exerciseId: number) => {
+    addToPlaylistMutation.mutate(exerciseId);
   };
 
   const getCategoryColor = (category: string) => {
@@ -88,7 +140,7 @@ export default function CategoryPage({ category }: CategoryPageProps) {
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2 ml-4">
+                  <div className="flex flex-col space-y-2 ml-4">
                     <Button
                       onClick={() => handlePlayVideo(exercise)}
                       size="sm"
@@ -98,11 +150,14 @@ export default function CategoryPage({ category }: CategoryPageProps) {
                       Play
                     </Button>
                     <Button
-                      variant="ghost"
+                      onClick={() => handleAddToPlaylist(exercise.id)}
+                      disabled={addToPlaylistMutation.isPending}
                       size="sm"
-                      className="p-2"
+                      variant="outline"
+                      className="border-blue-600 text-blue-600 hover:bg-blue-50 px-3 py-2"
                     >
-                      <MoreHorizontal className="w-4 h-4 text-gray-500" />
+                      <Plus className="w-4 h-4 mr-1" />
+                      Add to Playlist
                     </Button>
                   </div>
                 </div>
