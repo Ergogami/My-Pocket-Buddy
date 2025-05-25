@@ -113,15 +113,17 @@ export default function HomePage() {
               <Search className="w-5 h-5 text-medium-gray" />
             </Button>
           </Link>
+          <Link href="/playlist">
+            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
+              <Menu className="w-5 h-5 text-medium-gray" />
+            </Button>
+          </Link>
           <Button 
             onClick={() => setShowUploadModal(true)}
             variant="ghost" 
             size="sm" 
             className="flex flex-col items-center gap-1 p-2"
           >
-            <Menu className="w-5 h-5 text-medium-gray" />
-          </Button>
-          <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
             <User className="w-5 h-5 text-medium-gray" />
           </Button>
         </div>
