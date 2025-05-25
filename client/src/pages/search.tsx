@@ -4,7 +4,7 @@ import { Search, Home, Menu, User, ArrowLeft, Plus, Play, MoreHorizontal } from 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Exercise } from "@shared/schema";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { VideoUploadModal } from "@/components/video-upload-modal";
 
@@ -14,6 +14,7 @@ export default function SearchPage() {
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+  const [, setLocation] = useLocation();
 
   const { data: exercises = [] } = useQuery<Exercise[]>({
     queryKey: ["/api/exercises"],
@@ -112,7 +113,7 @@ export default function SearchPage() {
           {categoryData.map((category) => (
             <div
               key={category.name}
-              onClick={() => setSelectedCategory(category.name)}
+              onClick={() => setLocation(`/category/${category.name}`)}
               className="relative rounded-lg overflow-hidden cursor-pointer transform transition-transform hover:scale-105"
             >
               <img 
@@ -138,12 +139,10 @@ export default function SearchPage() {
           ))}
         </div>
 
-        {/* Show filtered exercises if search is active or category is selected */}
-        {(searchTerm || selectedCategory !== "All") && (
+        {/* Show search results if search is active */}
+        {searchTerm && (
           <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-4 text-gray-800">
-              {searchTerm ? "Search Results" : `${selectedCategory} Exercises`}
-            </h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">Search Results</h3>
             <div className="space-y-3">
               {filteredExercises.map((exercise) => (
                 <div
@@ -186,7 +185,7 @@ export default function SearchPage() {
             </div>
             {filteredExercises.length === 0 && (
               <div className="text-center py-8 text-gray-500">
-                <p>No exercises found for {selectedCategory}</p>
+                <p>No exercises found matching "{searchTerm}"</p>
               </div>
             )}
           </div>

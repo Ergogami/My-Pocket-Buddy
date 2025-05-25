@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import HomePage from "@/pages/home";
 import SearchPage from "@/pages/search";
 import PlaylistPage from "@/pages/playlist";
+import CategoryPage from "@/pages/category";
 
 function Router() {
   return (
@@ -13,6 +14,7 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/search" component={SearchPage} />
       <Route path="/playlist" component={PlaylistPage} />
+      <Route path="/category/:category" component={({ params }) => <CategoryPage category={params.category} />} />
       <Route component={() => <div>404 - Page Not Found</div>} />
     </Switch>
   );
