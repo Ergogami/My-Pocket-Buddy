@@ -138,10 +138,12 @@ export default function SearchPage() {
           ))}
         </div>
 
-        {/* Show filtered exercises if search is active */}
-        {searchTerm && (
+        {/* Show filtered exercises if search is active or category is selected */}
+        {(searchTerm || selectedCategory !== "All") && (
           <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-4 text-gray-800">Search Results</h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">
+              {searchTerm ? "Search Results" : `${selectedCategory} Exercises`}
+            </h3>
             <div className="space-y-3">
               {filteredExercises.map((exercise) => (
                 <div
@@ -182,6 +184,11 @@ export default function SearchPage() {
                 </div>
               ))}
             </div>
+            {filteredExercises.length === 0 && (
+              <div className="text-center py-8 text-gray-500">
+                <p>No exercises found for {selectedCategory}</p>
+              </div>
+            )}
           </div>
         )}
       </div>
