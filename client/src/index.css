@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@400;600;700&display=swap');
+
+:root {
+  --background: 210 40% 98%; /* #F8FAFC */
+  --foreground: 222 84% 5%; /* #0F172A */
+  --muted: 210 40% 96%; /* #F1F5F9 */
+  --muted-foreground: 215 16% 47%; /* #64748B */
+  --popover: 0 0% 100%; /* #FFFFFF */
+  --popover-foreground: 222 84% 5%; /* #0F172A */
+  --card: 0 0% 100%; /* #FFFFFF */
+  --card-foreground: 222 84% 5%; /* #0F172A */
+  --border: 214 32% 91%; /* #E2E8F0 */
+  --input: 214 32% 91%; /* #E2E8F0 */
+  --primary: 351 83% 69%; /* #FF6B6B - coral */
+  --primary-foreground: 0 0% 100%; /* #FFFFFF */
+  --secondary: 174 72% 56%; /* #4ECDC4 - turquoise */
+  --secondary-foreground: 0 0% 100%; /* #FFFFFF */
+  --accent: 48 100% 71%; /* #FFE66D - sunny */
+  --accent-foreground: 210 40% 2%; /* #020817 */
+  --destructive: 0 84% 60%; /* #EF4444 */
+  --destructive-foreground: 0 0% 98%; /* #FAFAFA */
+  --ring: 215 16% 47%; /* #64748B */
+  --radius: 1rem;
+  
+  /* Custom colors for the app */
+  --coral: 351 83% 69%; /* #FF6B6B */
+  --turquoise: 174 72% 56%; /* #4ECDC4 */
+  --sunny: 48 100% 71%; /* #FFE66D */
+  --mint: 162 67% 75%; /* #95E1D3 */
+  --navy: 210 29% 24%; /* #2C3E50 */
+}
+
+.dark {
+  --background: 222 84% 5%; /* #0F172A */
+  --foreground: 210 40% 98%; /* #F8FAFC */
+  --muted: 217 33% 17%; /* #1E293B */
+  --muted-foreground: 215 20% 65%; /* #94A3B8 */
+  --popover: 222 84% 5%; /* #0F172A */
+  --popover-foreground: 210 40% 98%; /* #F8FAFC */
+  --card: 222 84% 5%; /* #0F172A */
+  --card-foreground: 210 40% 98%; /* #F8FAFC */
+  --border: 217 33% 17%; /* #1E293B */
+  --input: 217 33% 17%; /* #1E293B */
+  --primary: 351 83% 69%; /* #FF6B6B - coral */
+  --primary-foreground: 0 0% 100%; /* #FFFFFF */
+  --secondary: 174 72% 56%; /* #4ECDC4 - turquoise */
+  --secondary-foreground: 0 0% 100%; /* #FFFFFF */
+  --accent: 48 100% 71%; /* #FFE66D - sunny */
+  --accent-foreground: 210 40% 2%; /* #020817 */
+  --destructive: 0 62% 30%; /* #991B1B */
+  --destructive-foreground: 0 0% 98%; /* #FAFAFA */
+  --ring: 212 12% 35%; /* #475569 */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .font-fredoka {
+    font-family: 'Fredoka One', cursive;
+  }
+}
+
+@layer utilities {
+  .bg-coral {
+    background-color: hsl(var(--coral));
+  }
+  
+  .bg-turquoise {
+    background-color: hsl(var(--turquoise));
+  }
+  
+  .bg-sunny {
+    background-color: hsl(var(--sunny));
+  }
+  
+  .bg-mint {
+    background-color: hsl(var(--mint));
+  }
+  
+  .bg-navy {
+    background-color: hsl(var(--navy));
+  }
+  
+  .text-coral {
+    color: hsl(var(--coral));
+  }
+  
+  .text-turquoise {
+    color: hsl(var(--turquoise));
+  }
+  
+  .text-sunny {
+    color: hsl(var(--sunny));
+  }
+  
+  .text-mint {
+    color: hsl(var(--mint));
+  }
+  
+  .text-navy {
+    color: hsl(var(--navy));
+  }
+  
+  .border-coral {
+    border-color: hsl(var(--coral));
+  }
+  
+  .border-turquoise {
+    border-color: hsl(var(--turquoise));
+  }
+  
+  .border-sunny {
+    border-color: hsl(var(--sunny));
+  }
+  
+  .border-mint {
+    border-color: hsl(var(--mint));
+  }
+  
+  .animate-wiggle {
+    animation: wiggle 1s ease-in-out infinite;
+  }
+  
+  .animate-bounce-gentle {
+    animation: bounce 2s infinite;
+  }
+  
+  .animate-confetti {
+    animation: confetti 3s ease-out;
+  }
+  
+  .swipe-hint {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: swipe-hint 2s ease-in-out infinite;
+  }
+}
+
+@keyframes wiggle {
+  0%, 7% { transform: rotateZ(0deg); }
+  15% { transform: rotateZ(-15deg); }
+  20% { transform: rotateZ(10deg); }
+  25% { transform: rotateZ(-10deg); }
+  30% { transform: rotateZ(6deg); }
+  35% { transform: rotateZ(-4deg); }
+  40%, 100% { transform: rotateZ(0deg); }
+}
+
+@keyframes confetti {
+  0% { transform: translateY(0) rotateZ(0deg); opacity: 1; }
+  100% { transform: translateY(-100vh) rotateZ(360deg); opacity: 0; }
+}
+
+@keyframes swipe-hint {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
