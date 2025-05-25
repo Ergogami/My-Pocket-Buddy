@@ -108,6 +108,10 @@ export default function SearchPage() {
     setShowVideoModal(true);
   };
 
+  const handleAddToPlaylist = (exerciseId: number) => {
+    addToPlaylistMutation.mutate(exerciseId);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -211,21 +215,24 @@ export default function SearchPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex flex-col space-y-2">
                     <Button
                       onClick={() => handlePlayVideo(exercise)}
-                      variant="ghost"
                       size="sm"
-                      className="p-2"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1"
                     >
-                      <Play className="w-4 h-4 text-blue-600" />
+                      <Play className="w-3 h-3 mr-1" />
+                      Play
                     </Button>
                     <Button
-                      variant="ghost"
+                      onClick={() => handleAddToPlaylist(exercise.id)}
+                      disabled={addToPlaylistMutation.isPending}
                       size="sm"
-                      className="p-2"
+                      variant="outline"
+                      className="border-blue-600 text-blue-600 hover:bg-blue-50 px-3 py-1"
                     >
-                      <MoreHorizontal className="w-4 h-4 text-gray-500" />
+                      <Plus className="w-3 h-3 mr-1" />
+                      Add
                     </Button>
                   </div>
                 </div>
