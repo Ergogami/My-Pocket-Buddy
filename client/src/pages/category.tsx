@@ -82,7 +82,16 @@ export default function CategoryPage({ category }: CategoryPageProps) {
         const errorText = await response.text();
         throw new Error(errorText || "Failed to pin exercise");
       }
-      return response.json();
+      const responseText = await response.text();
+      if (!responseText) {
+        throw new Error("Empty response from server");
+      }
+      try {
+        return JSON.parse(responseText);
+      } catch (e) {
+        console.error("Failed to parse response:", responseText);
+        throw new Error("Invalid response format");
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/exercises"] });
@@ -113,7 +122,16 @@ export default function CategoryPage({ category }: CategoryPageProps) {
         const errorText = await response.text();
         throw new Error(errorText || "Failed to unpin exercise");
       }
-      return response.json();
+      const responseText = await response.text();
+      if (!responseText) {
+        throw new Error("Empty response from server");
+      }
+      try {
+        return JSON.parse(responseText);
+      } catch (e) {
+        console.error("Failed to parse response:", responseText);
+        throw new Error("Invalid response format");
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/exercises"] });
