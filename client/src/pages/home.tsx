@@ -57,7 +57,7 @@ export default function HomePage() {
     },
     {
       name: "Flexibility",
-      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23DDA0DD;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23DA70D6;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='200' fill='url(%23bg)'/%3E%3Ctext x='200' y='100' font-family='Arial, sans-serif' font-size='30' font-weight='bold' text-anchor='middle' fill='white'%3EFLEXIBILITY%3C/text%3E%3C/svg%3E"
+      image: new URL('../../../attached_assets/side-bends-sportive-latin-family-working-out-in-t-2023-11-27-05-01-40-utc.jpg', import.meta.url).href
     },
     {
       name: "Cardio",
