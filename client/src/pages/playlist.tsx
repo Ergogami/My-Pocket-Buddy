@@ -7,6 +7,7 @@ import { CompletionModal } from "@/components/completion-modal";
 import { Exercise, Playlist } from "@shared/schema";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
+import { useSwipe } from "@/hooks/use-swipe";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -139,11 +140,19 @@ export default function PlaylistPage() {
   };
 
   const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }) => {
-    const [isDragging, setIsDragging] = useState(false);
-    const [isOverDropZone, setIsOverDropZone] = useState(false);
-    const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-    const [cardRect, setCardRect] = useState<DOMRect | null>(null);
+    const [isSwipping, setIsSwipping] = useState(false);
+    
+    const swipeHandlers = useSwipe({
+      onSwipeRight: () => {
+        if (!isCompleted(exercise.id)) {
+          setIsSwipping(true);
+          setTimeout(() => {
+            handleCompleteExercise(exercise);
+            setIsSwipping(false);
+          }, 300);
+        }
+      },
+    });
 
     const completed = isCompleted(exercise.id);
 
@@ -152,170 +161,14 @@ export default function PlaylistPage() {
       return null;
     }
 
-    useEffect(() => {
-      const handleGlobalMouseMove = (e: MouseEvent) => {
-        if (isDragging && cardRect) {
-          const newOffset = {
-            x: e.clientX - startPos.x,
-            y: e.clientY - startPos.y
-          };
-          setDragOffset(newOffset);
-
-          // Check if over drop zone
-          const dropZone = document.querySelector('.trophy-zone');
-          if (dropZone) {
-            const rect = dropZone.getBoundingClientRect();
-            const draggedX = cardRect.left + newOffset.x + cardRect.width / 2;
-            const draggedY = cardRect.top + newOffset.y + cardRect.height / 2;
-            
-            const isOver = draggedX >= rect.left && draggedX <= rect.right && 
-                          draggedY >= rect.top && draggedY <= rect.bottom;
-            setIsOverDropZone(isOver);
-          }
-        }
-      };
-
-      const handleGlobalMouseUp = (e: MouseEvent) => {
-        if (isDragging) {
-          if (isOverDropZone) {
-            // Animate to center of drop zone before completing
-            const dropZone = document.querySelector('.trophy-zone');
-            if (dropZone && cardRect) {
-              const rect = dropZone.getBoundingClientRect();
-              const centerX = rect.left + rect.width / 2 - cardRect.width / 2;
-              const centerY = rect.top + rect.height / 2 - cardRect.height / 2;
-              
-              setDragOffset({
-                x: centerX - cardRect.left,
-                y: centerY - cardRect.top
-              });
-              
-              setTimeout(() => {
-                handleCompleteExercise(exercise);
-                setIsDragging(false);
-                setDragOffset({ x: 0, y: 0 });
-                setIsOverDropZone(false);
-              }, 300);
-            }
-          } else {
-            // Animate back to original position
-            setDragOffset({ x: 0, y: 0 });
-            setTimeout(() => {
-              setIsDragging(false);
-              setIsOverDropZone(false);
-            }, 300);
-          }
-        }
-      };
-
-      const handleGlobalTouchMove = (e: TouchEvent) => {
-        if (isDragging && e.touches.length > 0 && cardRect) {
-          const touch = e.touches[0];
-          const newOffset = {
-            x: touch.clientX - startPos.x,
-            y: touch.clientY - startPos.y
-          };
-          setDragOffset(newOffset);
-
-          // Check if over drop zone
-          const dropZone = document.querySelector('.trophy-zone');
-          if (dropZone) {
-            const rect = dropZone.getBoundingClientRect();
-            const draggedX = cardRect.left + newOffset.x + cardRect.width / 2;
-            const draggedY = cardRect.top + newOffset.y + cardRect.height / 2;
-            
-            const isOver = draggedX >= rect.left && draggedX <= rect.right && 
-                          draggedY >= rect.top && draggedY <= rect.bottom;
-            setIsOverDropZone(isOver);
-          }
-          e.preventDefault();
-        }
-      };
-
-      const handleGlobalTouchEnd = (e: TouchEvent) => {
-        if (isDragging) {
-          if (isOverDropZone) {
-            // Animate to center of drop zone before completing
-            const dropZone = document.querySelector('.trophy-zone');
-            if (dropZone && cardRect) {
-              const rect = dropZone.getBoundingClientRect();
-              const centerX = rect.left + rect.width / 2 - cardRect.width / 2;
-              const centerY = rect.top + rect.height / 2 - cardRect.height / 2;
-              
-              setDragOffset({
-                x: centerX - cardRect.left,
-                y: centerY - cardRect.top
-              });
-              
-              setTimeout(() => {
-                handleCompleteExercise(exercise);
-                setIsDragging(false);
-                setDragOffset({ x: 0, y: 0 });
-                setIsOverDropZone(false);
-              }, 300);
-            }
-          } else {
-            // Animate back to original position
-            setDragOffset({ x: 0, y: 0 });
-            setTimeout(() => {
-              setIsDragging(false);
-              setIsOverDropZone(false);
-            }, 300);
-          }
-        }
-      };
-
-      if (isDragging) {
-        document.addEventListener('mousemove', handleGlobalMouseMove);
-        document.addEventListener('mouseup', handleGlobalMouseUp);
-        document.addEventListener('touchmove', handleGlobalTouchMove, { passive: false });
-        document.addEventListener('touchend', handleGlobalTouchEnd);
-      }
-
-      return () => {
-        document.removeEventListener('mousemove', handleGlobalMouseMove);
-        document.removeEventListener('mouseup', handleGlobalMouseUp);
-        document.removeEventListener('touchmove', handleGlobalTouchMove);
-        document.removeEventListener('touchend', handleGlobalTouchEnd);
-      };
-    }, [isDragging, startPos, exercise, cardRect, isOverDropZone]);
-
-    const handleMouseDown = (e: React.MouseEvent) => {
-      const card = e.currentTarget as HTMLElement;
-      const rect = card.getBoundingClientRect();
-      setCardRect(rect);
-      setIsDragging(true);
-      setStartPos({ x: e.clientX, y: e.clientY });
-      e.preventDefault();
-    };
-
-    const handleTouchStart = (e: React.TouchEvent) => {
-      const touch = e.touches[0];
-      const card = e.currentTarget as HTMLElement;
-      const rect = card.getBoundingClientRect();
-      setCardRect(rect);
-      setIsDragging(true);
-      setStartPos({ x: touch.clientX, y: touch.clientY });
-      e.preventDefault();
-    };
-
     return (
       <div className="relative mb-4">
         {/* Exercise Card */}
         <div
-          className={`relative rounded-2xl overflow-hidden transition-all duration-300 cursor-grab select-none ${
-            isDragging ? 'cursor-grabbing scale-110 shadow-2xl z-50' : ''
-          } ${
-            isOverDropZone ? 'ring-4 ring-green-400 ring-opacity-75' : ''
+          className={`relative rounded-2xl overflow-hidden transition-all duration-300 ${
+            isSwipping ? 'transform translate-x-4 opacity-75' : ''
           }`}
-          style={{
-            transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`,
-            position: isDragging ? 'fixed' : 'static',
-            zIndex: isDragging ? 1000 : 1,
-            transition: isDragging ? 'none' : 'all 0.3s ease-out'
-          }}
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleTouchStart}
+          {...swipeHandlers}
         >
           {/* Background with exercise theme */}
           <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 shadow-lg p-4 h-24 flex items-center justify-between">
