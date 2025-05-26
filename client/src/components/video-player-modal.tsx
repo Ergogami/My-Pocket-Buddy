@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { X, Play, Pause, SkipBack, SkipForward } from "lucide-react";
 import { Exercise } from "@shared/schema";
 import { useState, useRef } from "react";
+import { DuckTimer } from "./duck-timer";
 
 interface VideoPlayerModalProps {
   isOpen: boolean;
@@ -16,7 +17,16 @@ interface VideoPlayerModalProps {
 
 export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious, hasNext, hasPrevious }: VideoPlayerModalProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
+  const [timerActive, setTimerActive] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Parse duration from exercise (e.g., "5 minutes" -> 300 seconds)
+  const parseDuration = (durationStr: string): number => {
+    const match = durationStr.match(/(\d+)/);
+    const minutes = match ? parseInt(match[1]) : 5;
+    return minutes * 60;
+  };
 
   const handlePlayPause = () => {
     if (videoRef.current) {
@@ -80,14 +90,47 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
           </div>
 
           <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-navy mb-2">{exercise.name}</h3>
+            <h3 className="text-2xl font-bold text-gray-700 mb-2">{exercise.name}</h3>
             <p className="text-gray-600 mb-4">{exercise.description}</p>
-            <div className="flex justify-center items-center space-x-4">
-              <span className="bg-sunny text-navy px-3 py-1 rounded-full text-sm font-bold">
+            <div className="flex justify-center items-center space-x-4 mb-6">
+              <span className="bg-dreamy-yellow text-gray-700 px-3 py-1 rounded-full text-sm font-bold">
                 Ages {exercise.ageGroups.join(", ")}
               </span>
               <span className="text-gray-500">{exercise.duration}</span>
             </div>
+
+            {/* Timer Toggle */}
+            <div className="mb-4">
+              <Button
+                onClick={() => {
+                  setShowTimer(!showTimer);
+                  if (!showTimer) {
+                    setTimerActive(true);
+                  } else {
+                    setTimerActive(false);
+                  }
+                }}
+                className="bg-dreamy-mint hover:bg-dreamy-blue text-gray-700 px-6 py-2 rounded-full font-medium"
+              >
+                {showTimer ? '🦆 Hide Timer' : '🦆 Start Timer'}
+              </Button>
+            </div>
+
+            {/* Duck Timer */}
+            {showTimer && (
+              <div className="mb-6">
+                <DuckTimer
+                  duration={parseDuration(exercise.duration)}
+                  isActive={timerActive}
+                  onComplete={() => {
+                    setTimerActive(false);
+                    // Could trigger completion modal or next exercise
+                  }}
+                  onPause={() => setTimerActive(false)}
+                  onResume={() => setTimerActive(true)}
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex justify-center space-x-6">
