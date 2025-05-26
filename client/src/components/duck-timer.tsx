@@ -47,6 +47,14 @@ export function DuckTimer({ duration, isActive, onComplete, onPause, onResume }:
     }
   };
 
+  const addTime = (seconds: number) => {
+    setTimeLeft(prev => Math.max(0, prev + seconds));
+  };
+
+  const subtractTime = (seconds: number) => {
+    setTimeLeft(prev => Math.max(0, prev - seconds));
+  };
+
   return (
     <div className="flex flex-col items-center space-y-4">
       {/* Duck Timer */}
@@ -94,7 +102,35 @@ export function DuckTimer({ duration, isActive, onComplete, onPause, onResume }:
         </div>
       </div>
 
-      {/* Controls */}
+      {/* Time Adjustment Controls */}
+      <div className="flex items-center justify-center space-x-2 mb-2">
+        <button
+          onClick={() => subtractTime(60)}
+          className="bg-dreamy-coral hover:bg-dreamy-pink text-gray-700 px-3 py-1 rounded-full text-sm font-medium transition-colors shadow-md"
+        >
+          -1min
+        </button>
+        <button
+          onClick={() => subtractTime(10)}
+          className="bg-dreamy-coral hover:bg-dreamy-pink text-gray-700 px-3 py-1 rounded-full text-sm font-medium transition-colors shadow-md"
+        >
+          -10s
+        </button>
+        <button
+          onClick={() => addTime(10)}
+          className="bg-dreamy-mint hover:bg-dreamy-blue text-gray-700 px-3 py-1 rounded-full text-sm font-medium transition-colors shadow-md"
+        >
+          +10s
+        </button>
+        <button
+          onClick={() => addTime(60)}
+          className="bg-dreamy-mint hover:bg-dreamy-blue text-gray-700 px-3 py-1 rounded-full text-sm font-medium transition-colors shadow-md"
+        >
+          +1min
+        </button>
+      </div>
+
+      {/* Main Controls */}
       <div className="flex items-center space-x-3">
         <button
           onClick={handleTogglePause}
@@ -108,7 +144,7 @@ export function DuckTimer({ duration, isActive, onComplete, onPause, onResume }:
             setTimeLeft(duration);
             setIsPaused(false);
           }}
-          className="bg-dreamy-mint hover:bg-dreamy-blue text-gray-700 px-4 py-2 rounded-full font-medium transition-colors shadow-md"
+          className="bg-dreamy-yellow hover:bg-dreamy-peach text-gray-700 px-4 py-2 rounded-full font-medium transition-colors shadow-md"
         >
           🔄 Reset
         </button>
