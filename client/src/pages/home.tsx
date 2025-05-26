@@ -194,8 +194,17 @@ export default function HomePage() {
 
         {/* Adventure Guide Card */}
         <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-          <div className="bg-gradient-to-br from-green-400 via-cyan-500 to-blue-600 p-8 text-white relative">
-            <div className="absolute inset-0 bg-gradient-to-t from-purple-500/20 via-transparent to-yellow-400/10"></div>
+          <div className="relative p-8 text-white min-h-[300px]">
+            {/* Background Image */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url('${new URL('../../../attached_assets/280322349_2945104402302751_3363760066192124213_n.jpg', import.meta.url).href}')`
+              }}
+            ></div>
+            {/* Overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-black/50"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-blue-600/30 via-transparent to-yellow-400/10"></div>
             <div className="relative z-10">
               <div className="flex items-center space-x-4 mb-4">
                 <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl">
