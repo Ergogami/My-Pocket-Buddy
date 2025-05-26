@@ -155,6 +155,47 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Adventure Guide Card - Moved here after Welcome */}
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+          <div className="relative p-8 text-white min-h-[300px]">
+            {/* Background Image */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url('${new URL('../../../attached_assets/280322349_2945104402302751_3363760066192124213_n.jpg', import.meta.url).href}')`
+              }}
+            ></div>
+            {/* Overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-black/50"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-blue-600/30 via-transparent to-yellow-400/10"></div>
+            <div className="relative z-10">
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl">
+                  <span className="text-3xl">🧗‍♂️</span>
+                </div>
+                <div>
+                  <h3 className="text-3xl font-bubble mb-1 drop-shadow-lg">{texts.guideGreeting}</h3>
+                  <h3 className="text-2xl font-bubble text-yellow-300 drop-shadow-lg"><em>{texts.guideIntro}</em></h3>
+                </div>
+              </div>
+              <p className="text-lg mb-6 opacity-95 font-rounded font-bold drop-shadow-md">{texts.guideDescription}</p>
+              <div className="flex space-x-4">
+                <Link href="/search">
+                  <button className="bg-white/90 text-cyan-700 px-6 py-3 rounded-2xl text-sm font-bubble shadow-lg hover:bg-white transform hover:scale-105 transition-all">
+                    {texts.startButton}
+                  </button>
+                </Link>
+                <Link href="/playlist">
+                  <button className="bg-yellow-400 text-cyan-800 px-6 py-3 rounded-2xl text-sm font-bubble shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition-all flex items-center gap-2">
+                    <Plus className="w-4 h-4" />
+                    {texts.programButton}
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Main Adventure Card */}
         <div className="relative rounded-3xl overflow-hidden shadow-2xl">
           <div className="relative p-8 text-white min-h-[400px]">
@@ -210,47 +251,6 @@ export default function HomePage() {
             placeholder={texts.searchPlaceholder}
             className="w-full text-purple-700 bg-purple-50 border-2 border-purple-200 rounded-2xl px-4 py-3 outline-none focus:border-purple-400 font-rounded font-bold placeholder:text-purple-400"
           />
-        </div>
-
-        {/* Adventure Guide Card */}
-        <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-          <div className="relative p-8 text-white min-h-[300px]">
-            {/* Background Image */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url('${new URL('../../../attached_assets/280322349_2945104402302751_3363760066192124213_n.jpg', import.meta.url).href}')`
-              }}
-            ></div>
-            {/* Overlay for better text readability */}
-            <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-black/50"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-blue-600/30 via-transparent to-yellow-400/10"></div>
-            <div className="relative z-10">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl">
-                  <span className="text-3xl">🧗‍♂️</span>
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bubble mb-1 drop-shadow-lg">{texts.guideGreeting}</h3>
-                  <h3 className="text-2xl font-bubble text-yellow-300 drop-shadow-lg"><em>{texts.guideIntro}</em></h3>
-                </div>
-              </div>
-              <p className="text-lg mb-6 opacity-95 font-rounded font-bold drop-shadow-md">{texts.guideDescription}</p>
-              <div className="flex space-x-4">
-                <Link href="/search">
-                  <button className="bg-white/90 text-cyan-700 px-6 py-3 rounded-2xl text-sm font-bubble shadow-lg hover:bg-white transform hover:scale-105 transition-all">
-                    {texts.startButton}
-                  </button>
-                </Link>
-                <Link href="/playlist">
-                  <button className="bg-yellow-400 text-cyan-800 px-6 py-3 rounded-2xl text-sm font-bubble shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition-all flex items-center gap-2">
-                    <Plus className="w-4 h-4" />
-                    {texts.programButton}
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Adventure Exercises Section */}
