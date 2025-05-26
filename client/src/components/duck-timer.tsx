@@ -33,6 +33,7 @@ export function DuckTimer({ duration, isActive, onComplete, onPause, onResume }:
   }, [isActive, isPaused, onComplete]);
 
   const progress = ((duration - timeLeft) / duration) * 100;
+  const coverProgress = 100 - progress; // How much of the duck is still covered
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -51,49 +52,35 @@ export function DuckTimer({ duration, isActive, onComplete, onPause, onResume }:
       {/* Duck Timer */}
       <div className="relative w-32 h-32">
         {/* Outer Ring */}
-        <div className="absolute inset-0 w-32 h-32 rounded-full bg-white border-4 border-gray-300 shadow-lg">
-          {/* Progress Ring */}
-          <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="#fee2e2"
-              strokeWidth="6"
-            />
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="#ef4444"
-              strokeWidth="6"
-              strokeDasharray={`${2 * Math.PI * 45}`}
-              strokeDashoffset={`${2 * Math.PI * 45 * (1 - progress / 100)}`}
-              className="transition-all duration-1000 ease-linear"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-
-        {/* Duck */}
-        <div className="absolute inset-2 bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-full flex items-center justify-center shadow-inner">
-          {/* Duck Face */}
-          <div className="relative">
-            {/* Eyes */}
-            <div className="absolute -top-2 left-1">
-              <div className="w-2 h-2 bg-black rounded-full"></div>
+        <div className="absolute inset-0 w-32 h-32 rounded-full bg-white border-4 border-gray-300 shadow-lg overflow-hidden">
+          
+          {/* Duck - Always visible underneath */}
+          <div className="absolute inset-2 bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-full flex items-center justify-center shadow-inner">
+            {/* Duck Face */}
+            <div className="relative">
+              {/* Eyes */}
+              <div className="absolute -top-2 left-1">
+                <div className="w-2 h-2 bg-black rounded-full"></div>
+              </div>
+              
+              {/* Beak */}
+              <div className="absolute top-0 right-0 w-3 h-2 bg-orange-400 rounded-full transform rotate-12"></div>
+              
+              {/* Body highlight */}
+              <div className="w-16 h-12 bg-gradient-to-br from-yellow-200 to-yellow-300 rounded-full opacity-60"></div>
+              
+              {/* Wing detail */}
+              <div className="absolute top-2 left-2 w-4 h-3 bg-yellow-500 rounded-full opacity-50"></div>
             </div>
-            
-            {/* Beak */}
-            <div className="absolute top-0 right-0 w-3 h-2 bg-orange-400 rounded-full transform rotate-12"></div>
-            
-            {/* Body highlight */}
-            <div className="w-16 h-12 bg-gradient-to-br from-yellow-200 to-yellow-300 rounded-full opacity-60"></div>
-            
-            {/* Wing detail */}
-            <div className="absolute top-2 left-2 w-4 h-3 bg-yellow-500 rounded-full opacity-50"></div>
+          </div>
+
+          {/* Red Cover that reveals the duck as time progresses */}
+          <div 
+            className="absolute inset-2 bg-gradient-to-br from-red-500 to-red-600 rounded-full transition-all duration-1000 ease-linear"
+            style={{
+              clipPath: `polygon(0 0, 100% 0, 100% ${coverProgress}%, 0 ${coverProgress}%)`
+            }}
+          >
           </div>
         </div>
 
