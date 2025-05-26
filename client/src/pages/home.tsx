@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Play, MoreHorizontal, Home, Search, Menu, User, ArrowLeft, Plus, Edit } from "lucide-react";
+import { Play, MoreHorizontal, Home, Search, Menu, User, ArrowLeft, Plus, Edit, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VideoUploadModal } from "@/components/video-upload-modal";
@@ -226,30 +226,36 @@ export default function HomePage() {
 
       {/* Adventure Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 shadow-2xl">
-        <div className="flex justify-around py-4 max-w-sm mx-auto">
-          <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-3 bg-white/20 backdrop-blur-sm rounded-2xl">
-            <Home className="w-6 h-6 text-white" />
+        <div className="flex justify-around py-4 max-w-lg mx-auto">
+          <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2 bg-white/20 backdrop-blur-sm rounded-2xl">
+            <Home className="w-5 h-5 text-white" />
             <span className="text-xs text-white font-bold">Home</span>
           </Button>
           <Link href="/search">
-            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-3 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all">
-              <Search className="w-6 h-6 text-white/80" />
+            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all">
+              <Search className="w-5 h-5 text-white/80" />
               <span className="text-xs text-white/80 font-bold">Search</span>
             </Button>
           </Link>
+          <Link href="/programs">
+            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all">
+              <Star className="w-5 h-5 text-white/80" />
+              <span className="text-xs text-white/80 font-bold">Programs</span>
+            </Button>
+          </Link>
           <Link href="/playlist">
-            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-3 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all">
-              <Menu className="w-6 h-6 text-white/80" />
-              <span className="text-xs text-white/80 font-bold">Program</span>
+            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all">
+              <Menu className="w-5 h-5 text-white/80" />
+              <span className="text-xs text-white/80 font-bold">Playlist</span>
             </Button>
           </Link>
           <Button 
             onClick={() => setShowUploadModal(true)}
             variant="ghost" 
             size="sm" 
-            className="flex flex-col items-center gap-1 p-3 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all"
+            className="flex flex-col items-center gap-1 p-2 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all"
           >
-            <User className="w-6 h-6 text-white/80" />
+            <User className="w-5 h-5 text-white/80" />
             <span className="text-xs text-white/80 font-bold">Upload</span>
           </Button>
         </div>

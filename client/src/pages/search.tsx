@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Search, Home, Menu, User, ArrowLeft, Plus, Play, MoreHorizontal } from "lucide-react";
+import { Search, Home, Menu, User, ArrowLeft, Plus, Play, MoreHorizontal, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Exercise, Playlist } from "@shared/schema";
@@ -482,18 +482,27 @@ export default function SearchPage() {
 
       {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border">
-        <div className="flex justify-around py-3 max-w-sm mx-auto">
+        <div className="flex justify-around py-3 max-w-lg mx-auto">
           <Link href="/">
             <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
               <Home className="w-5 h-5 text-medium-gray" />
+              <span className="text-xs text-medium-gray font-bold">Home</span>
             </Button>
           </Link>
           <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
             <Search className="w-5 h-5 text-pink" />
+            <span className="text-xs text-pink font-bold">Search</span>
           </Button>
+          <Link href="/programs">
+            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
+              <Star className="w-5 h-5 text-medium-gray" />
+              <span className="text-xs text-medium-gray font-bold">Programs</span>
+            </Button>
+          </Link>
           <Link href="/playlist">
             <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
               <Menu className="w-5 h-5 text-medium-gray" />
+              <span className="text-xs text-medium-gray font-bold">Playlist</span>
             </Button>
           </Link>
           <Button 
@@ -503,6 +512,7 @@ export default function SearchPage() {
             className="flex flex-col items-center gap-1 p-2"
           >
             <User className="w-5 h-5 text-medium-gray" />
+            <span className="text-xs text-medium-gray font-bold">Upload</span>
           </Button>
         </div>
       </div>
