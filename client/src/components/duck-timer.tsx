@@ -82,13 +82,15 @@ export function DuckTimer({ duration, isActive, onComplete, onPause, onResume }:
             </div>
           </div>
 
-          {/* Red Cover that reveals the duck as time progresses */}
-          <div 
-            className="absolute inset-2 bg-gradient-to-br from-red-500 to-red-600 rounded-full transition-all duration-1000 ease-linear"
-            style={{
-              clipPath: `polygon(0 0, 100% 0, 100% ${coverProgress}%, 0 ${coverProgress}%)`
-            }}
-          >
+          {/* Red Cover that reveals the duck clockwise as time progresses */}
+          <div className="absolute inset-2 rounded-full overflow-hidden">
+            <div 
+              className="absolute inset-0 bg-gradient-to-br from-red-500 to-red-600 rounded-full transition-all duration-1000 ease-linear"
+              style={{
+                background: `conic-gradient(from 0deg, transparent ${progress * 3.6}deg, #ef4444 ${progress * 3.6}deg)`
+              }}
+            >
+            </div>
           </div>
         </div>
 
