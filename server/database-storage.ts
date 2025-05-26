@@ -1,6 +1,6 @@
 import { Exercise, Playlist, Progress, InsertExercise, InsertPlaylist, InsertProgress, exercises, playlists, progress } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, asc } from "drizzle-orm";
 import { IStorage } from "./storage";
 
 export class DatabaseStorage implements IStorage {
@@ -10,11 +10,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAllExercises(): Promise<Exercise[]> {
-    return await db.select().from(exercises).orderBy(exercises.isPinned.desc(), exercises.name);
+    return await db.select().from(exercises).orderBy(desc(exercises.isPinned), exercises.name);
   }
 
   async getExercisesByCategory(category: string): Promise<Exercise[]> {
-    return await db.select().from(exercises).where(eq(exercises.category, category)).orderBy(exercises.isPinned.desc(), exercises.name);
+    return await db.select().from(exercises).where(eq(exercises.category, category)).orderBy(desc(exercises.isPinned), exercises.name);
   }
 
   async createExercise(insertExercise: InsertExercise): Promise<Exercise> {

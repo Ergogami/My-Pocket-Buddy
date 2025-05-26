@@ -74,8 +74,14 @@ export default function CategoryPage({ category }: CategoryPageProps) {
     mutationFn: async (exerciseId: number) => {
       const response = await fetch(`/api/exercises/${exerciseId}/pin`, {
         method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-      if (!response.ok) throw new Error("Failed to pin exercise");
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to pin exercise");
+      }
       return response.json();
     },
     onSuccess: () => {
@@ -86,9 +92,10 @@ export default function CategoryPage({ category }: CategoryPageProps) {
       });
     },
     onError: (error: any) => {
+      console.error("Pin error:", error);
       toast({
         title: "Error",
-        description: "Failed to pin exercise",
+        description: error.message || "Failed to pin exercise",
         variant: "destructive",
       });
     },
@@ -98,8 +105,14 @@ export default function CategoryPage({ category }: CategoryPageProps) {
     mutationFn: async (exerciseId: number) => {
       const response = await fetch(`/api/exercises/${exerciseId}/unpin`, {
         method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-      if (!response.ok) throw new Error("Failed to unpin exercise");
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to unpin exercise");
+      }
       return response.json();
     },
     onSuccess: () => {
@@ -110,9 +123,10 @@ export default function CategoryPage({ category }: CategoryPageProps) {
       });
     },
     onError: (error: any) => {
+      console.error("Unpin error:", error);
       toast({
         title: "Error",
-        description: "Failed to unpin exercise",
+        description: error.message || "Failed to unpin exercise",
         variant: "destructive",
       });
     },
