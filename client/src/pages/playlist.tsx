@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Play, X, Settings, ChevronLeft, ChevronRight } from "lucide-react";
+import { Play, X, Settings, ChevronLeft, ChevronRight, MoreHorizontal, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { CompletionModal } from "@/components/completion-modal";
 import { Exercise, Playlist } from "@shared/schema";
 import { useSwipe } from "@/hooks/use-swipe";
 import { Link } from "wouter";
+import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function PlaylistPage() {
   const [showVideoModal, setShowVideoModal] = useState(false);
@@ -15,6 +22,7 @@ export default function PlaylistPage() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   const { data: exercises = [] } = useQuery<Exercise[]>({
     queryKey: ["/api/exercises"],
@@ -57,6 +65,43 @@ export default function PlaylistPage() {
     },
   });
 
+  const removeFromPlaylistMutation = useMutation({
+    mutationFn: async (exerciseId: number) => {
+      if (!activePlaylist) {
+        throw new Error("No active playlist found");
+      }
+      const updatedExercises = activePlaylist.exerciseIds.filter(id => id !== exerciseId);
+      
+      const response = await fetch(`/api/playlists/${activePlaylist.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ exerciseIds: updatedExercises }),
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to remove from playlist");
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/playlists/active"] });
+      toast({
+        title: "Removed from playlist",
+        description: "Exercise removed from your workout playlist.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to remove exercise from playlist",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handlePlayVideo = (exercise: Exercise, index: number) => {
     setSelectedExercise(exercise);
     setCurrentVideoIndex(index);
@@ -67,6 +112,10 @@ export default function PlaylistPage() {
     completeMutation.mutate(exercise.id);
     setSelectedExercise(exercise);
     setShowCompletionModal(true);
+  };
+
+  const handleRemoveFromPlaylist = (exerciseId: number) => {
+    removeFromPlaylistMutation.mutate(exerciseId);
   };
 
   const isCompleted = (exerciseId: number) => {
@@ -115,14 +164,34 @@ export default function PlaylistPage() {
           </div>
 
           {/* Status/Action */}
-          <div className="w-16 h-12 bg-light-gray rounded-lg flex items-center justify-center">
-            {completed ? (
-              <div className="text-pink text-lg">✓</div>
-            ) : (
-              <div className="text-medium-gray text-xs text-center">
-                Swipe<br/>Left
-              </div>
-            )}
+          <div className="flex items-center space-x-2">
+            <div className="w-16 h-12 bg-light-gray rounded-lg flex items-center justify-center">
+              {completed ? (
+                <div className="text-pink text-lg">✓</div>
+              ) : (
+                <div className="text-medium-gray text-xs text-center">
+                  Swipe<br/>Left
+                </div>
+              )}
+            </div>
+            
+            {/* Three dots menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="p-2 h-8 w-8">
+                  <MoreHorizontal className="w-4 h-4 text-medium-gray" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem 
+                  onClick={() => handleRemoveFromPlaylist(exercise.id)}
+                  className="text-red-600 focus:text-red-600"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Remove from playlist
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
