@@ -53,15 +53,15 @@ export default function HomePage() {
     },
     {
       name: "Coordination",
-      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2398D8C8;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2372C3B3;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='200' fill='url(%23bg)'/%3E%3Ctext x='200' y='100' font-family='Arial, sans-serif' font-size='30' font-weight='bold' text-anchor='middle' fill='white'%3ECOORDINATION%3C/text%3E%3C/svg%3E"
+      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23B5F2D4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23A5E8C4;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='200' fill='url(%23bg)'/%3E%3Ctext x='200' y='100' font-family='Fredoka One, cursive' font-size='28' font-weight='bold' text-anchor='middle' fill='%23444'%3ECOORDINATION%3C/text%3E%3C/svg%3E"
     },
     {
       name: "Flexibility",
-      image: "/attached_assets/side-bends-sportive-latin-family-working-out-in-t-2023-11-27-05-01-40-utc.jpg"
+      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23B5F2F7;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23A5E8F0;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='200' fill='url(%23bg)'/%3E%3Ctext x='200' y='100' font-family='Fredoka One, cursive' font-size='30' font-weight='bold' text-anchor='middle' fill='%23444'%3EFLEXIBILITY%3C/text%3E%3C/svg%3E"
     },
     {
       name: "Cardio",
-      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23F0E68C;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23DAA520;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='200' fill='url(%23bg)'/%3E%3Ctext x='200' y='100' font-family='Arial, sans-serif' font-size='36' font-weight='bold' text-anchor='middle' fill='white'%3ECARDIO%3C/text%3E%3C/svg%3E"
+      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23F2C5B5;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23E8B5A5;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='200' fill='url(%23bg)'/%3E%3Ctext x='200' y='100' font-family='Fredoka One, cursive' font-size='36' font-weight='bold' text-anchor='middle' fill='%23444'%3ECARDIO%3C/text%3E%3C/svg%3E"
     }
   ];
 
@@ -93,9 +93,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-200 via-purple-100 via-pink-100 to-orange-200">
+    <div className="min-h-screen bg-cloud-pink">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 px-4 py-6 relative overflow-hidden shadow-xl">
+      <div className="bg-dreamy-lavender px-4 py-6 relative overflow-hidden shadow-xl">
         <div className="absolute inset-0 bg-white/10"></div>
         <div className="relative z-10 flex items-center justify-between">
           <div className="flex items-center space-x-3">
