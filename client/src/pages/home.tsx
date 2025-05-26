@@ -207,21 +207,10 @@ export default function HomePage() {
                 </div>
                 
                 {/* Action Buttons within the section */}
-                <div className="flex justify-center space-x-4 mt-8 flex-wrap gap-4">
-                  <Link href="/programs">
-                    <button className="bg-emerald-400 text-white px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:bg-emerald-300 transform hover:scale-105 transition-all flex items-center gap-2">
-                      ✨ Done for you programs
-                    </button>
-                  </Link>
+                <div className="flex justify-center mt-8">
                   <Link href="/search">
-                    <button className="bg-white/90 text-cyan-700 px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:bg-white transform hover:scale-105 transition-all">
+                    <button className="bg-emerald-400 text-white px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:bg-emerald-300 transform hover:scale-105 transition-all">
                       {texts.startButton}
-                    </button>
-                  </Link>
-                  <Link href="/playlist">
-                    <button className="bg-yellow-400 text-cyan-800 px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:bg-yellow-300 transform hover:scale-105 transition-all flex items-center gap-2">
-                      <Plus className="w-5 h-5" />
-                      {texts.programButton}
                     </button>
                   </Link>
                 </div>
