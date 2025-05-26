@@ -196,6 +196,101 @@ export default function SearchPage() {
           </Link>
         </div>
 
+        {/* Program Examples Carousel */}
+        <div className="mb-8">
+          <div className="flex space-x-4 overflow-x-auto pb-4 snap-x">
+            {/* Animal Adventures Program */}
+            <div className="flex-shrink-0 w-72 snap-start">
+              <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-orange-200 overflow-hidden shadow-xl">
+                <div className="bg-gradient-to-br from-orange-400 to-red-500 p-4 text-white">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                      <span className="text-xl">🦘</span>
+                    </div>
+                    <h3 className="text-lg font-bubble">Animal Adventures</h3>
+                  </div>
+                  <p className="text-white/90 text-sm font-rounded font-bold">Jump like a kangaroo, balance like a flamingo!</p>
+                  <div className="mt-3 text-white/80 text-xs font-rounded font-bold">6 exercises</div>
+                </div>
+                <div className="p-3 space-y-2">
+                  <div className="flex items-center space-x-2 text-sm">
+                    <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                    <span className="font-bubble text-gray-700">Kangaroo Jumps</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm">
+                    <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                    <span className="font-bubble text-gray-700">Flamingo Balance</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm">
+                    <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                    <span className="font-bubble text-gray-700">Lion Roars</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Balance Masters Program */}
+            <div className="flex-shrink-0 w-72 snap-start">
+              <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-blue-200 overflow-hidden shadow-xl">
+                <div className="bg-gradient-to-br from-blue-400 to-purple-500 p-4 text-white">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                      <span className="text-xl">⚖️</span>
+                    </div>
+                    <h3 className="text-lg font-bubble">Balance Masters</h3>
+                  </div>
+                  <p className="text-white/90 text-sm font-rounded font-bold">Develop amazing balance and coordination skills</p>
+                  <div className="mt-3 text-white/80 text-xs font-rounded font-bold">${exercises.filter(ex => ex.category === 'Balance').length} exercises</div>
+                </div>
+                <div className="p-3 space-y-2">
+                  <div className="flex items-center space-x-2 text-sm">
+                    <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                    <span className="font-bubble text-gray-700">Single Leg Stand</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm">
+                    <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                    <span className="font-bubble text-gray-700">Tree Pose</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm">
+                    <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                    <span className="font-bubble text-gray-700">Balance Beam Walk</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Strength Heroes Program */}
+            <div className="flex-shrink-0 w-72 snap-start">
+              <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-green-200 overflow-hidden shadow-xl">
+                <div className="bg-gradient-to-br from-green-400 to-emerald-500 p-4 text-white">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                      <span className="text-xl">💪</span>
+                    </div>
+                    <h3 className="text-lg font-bubble">Strength Heroes</h3>
+                  </div>
+                  <p className="text-white/90 text-sm font-rounded font-bold">Build strength through fun, engaging movements</p>
+                  <div className="mt-3 text-white/80 text-xs font-rounded font-bold">${exercises.filter(ex => ex.category === 'Strength').length} exercises</div>
+                </div>
+                <div className="p-3 space-y-2">
+                  <div className="flex items-center space-x-2 text-sm">
+                    <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                    <span className="font-bubble text-gray-700">Bear Crawls</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm">
+                    <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                    <span className="font-bubble text-gray-700">Wall Push-ups</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm">
+                    <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                    <span className="font-bubble text-gray-700">Squats</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Adventure Category Cards */}
         <div className="space-y-6">
           <div className="flex items-center space-x-3 mb-4">
