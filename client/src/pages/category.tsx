@@ -134,7 +134,7 @@ export default function CategoryPage({ category }: CategoryPageProps) {
             <div 
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url('/attached_assets/adorable-little-hispanic-boy-looking-excited-while-2025-04-06-11-25-29-utc.jpg')`
+                backgroundImage: `url('/attached_assets/boy-balancing-on-playground-equipment-2025-04-04-02-41-48-utc.jpg')`
               }}
             />
             <div className="absolute inset-0 bg-black/40" />
