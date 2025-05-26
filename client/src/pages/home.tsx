@@ -207,7 +207,12 @@ export default function HomePage() {
                 </div>
                 
                 {/* Action Buttons within the section */}
-                <div className="flex justify-center space-x-4 mt-8">
+                <div className="flex justify-center space-x-4 mt-8 flex-wrap gap-4">
+                  <Link href="/programs">
+                    <button className="bg-emerald-400 text-white px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:bg-emerald-300 transform hover:scale-105 transition-all flex items-center gap-2">
+                      ✨ Done for you programs
+                    </button>
+                  </Link>
                   <Link href="/search">
                     <button className="bg-white/90 text-cyan-700 px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:bg-white transform hover:scale-105 transition-all">
                       {texts.startButton}

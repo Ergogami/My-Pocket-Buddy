@@ -7,11 +7,13 @@ import HomePage from "@/pages/home";
 import SearchPage from "@/pages/search";
 import PlaylistPage from "@/pages/playlist";
 import CategoryPage from "@/pages/category";
+import ProgramsPage from "@/pages/programs";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/programs" component={ProgramsPage} />
       <Route path="/search" component={SearchPage} />
       <Route path="/playlist" component={PlaylistPage} />
       <Route path="/category/:category" component={({ params }) => <CategoryPage category={params.category} />} />
