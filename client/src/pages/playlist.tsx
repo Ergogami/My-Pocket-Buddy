@@ -139,17 +139,39 @@ export default function PlaylistPage() {
   };
 
   const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }) => {
+    const [isSwipping, setIsSwipping] = useState(false);
+    
     const swipeHandlers = useSwipe({
-      onSwipeLeft: () => handleCompleteExercise(exercise),
+      onSwipeRight: () => {
+        if (!isCompleted(exercise.id)) {
+          setIsSwipping(true);
+          setTimeout(() => {
+            handleCompleteExercise(exercise);
+            setIsSwipping(false);
+          }, 300);
+        }
+      },
     });
 
     const completed = isCompleted(exercise.id);
 
     return (
       <div className="relative mb-4">
+        {/* Completion Background Indicator */}
+        {isSwipping && (
+          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl flex items-center justify-end pr-6 z-10">
+            <div className="text-white text-lg font-bold flex items-center">
+              <span className="text-2xl mr-2">✓</span>
+              Complete!
+            </div>
+          </div>
+        )}
+        
         {/* Exercise Card */}
         <div
-          className={`relative rounded-2xl overflow-hidden ${completed ? 'opacity-60' : ''}`}
+          className={`relative rounded-2xl overflow-hidden transition-all duration-300 ${
+            completed ? 'opacity-60 bg-green-50' : ''
+          } ${isSwipping ? 'translate-x-2 scale-[0.98]' : ''}`}
           {...swipeHandlers}
         >
           {/* Background with exercise theme */}
@@ -174,13 +196,19 @@ export default function PlaylistPage() {
 
             {/* Action Buttons */}
             <div className="flex items-center space-x-2">
-              {/* Play Button */}
-              <button
-                onClick={() => handlePlayVideo(exercise, index)}
-                className="w-10 h-10 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all"
-              >
-                <Play className="w-5 h-5 text-white ml-0.5" />
-              </button>
+              {/* Complete Button or Play Button */}
+              {completed ? (
+                <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-md">
+                  <span className="text-white text-lg">✓</span>
+                </div>
+              ) : (
+                <button
+                  onClick={() => handlePlayVideo(exercise, index)}
+                  className="w-10 h-10 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all"
+                >
+                  <Play className="w-5 h-5 text-white ml-0.5" />
+                </button>
+              )}
 
               {/* Three dots menu */}
               <DropdownMenu>
@@ -261,6 +289,19 @@ export default function PlaylistPage() {
 
       {/* Main Content */}
       <div className="px-6 py-6 max-w-lg mx-auto">
+        {/* Swipe Instruction */}
+        {playlistExercises.length > 0 && completedCount < totalCount && (
+          <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-4 mb-6 border border-blue-200">
+            <div className="flex items-center space-x-3">
+              <div className="text-2xl">👆</div>
+              <div>
+                <p className="text-blue-800 font-medium text-sm">Swipe right to complete exercises!</p>
+                <p className="text-blue-600 text-xs">Or tap the play button to watch the video first</p>
+              </div>
+            </div>
+          </div>
+        )}
+        
         <div className="flex justify-between items-start">
           {/* Exercise List Column */}
           <div className="flex-1 pr-8">
