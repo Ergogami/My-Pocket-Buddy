@@ -4,13 +4,17 @@ import { ExerciseCard } from "../components/exercise-card";
 import { VideoPlayerModal } from "../components/video-player-modal";
 import { CompletionModal } from "../components/completion-modal";
 import { useState } from "react";
-import { Plus, Star } from "lucide-react";
+import { Plus, Star, Edit3, Save, X } from "lucide-react";
 import { Link } from "wouter";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function ProgramsPage() {
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editingProgram, setEditingProgram] = useState<number | null>(null);
 
   const { data: exercises = [] } = useQuery<Exercise[]>({
     queryKey: ['/api/exercises'],
@@ -27,7 +31,7 @@ export default function ProgramsPage() {
   };
 
   // Pre-made program definitions
-  const programs = [
+  const [programs, setPrograms] = useState([
     {
       id: 1,
       title: "Animal Adventures",
@@ -59,8 +63,13 @@ export default function ProgramsPage() {
       color: "from-green-400 to-emerald-500",
       exercises: exercises.filter(ex => ex.category === 'Strength')
     },
+  ]);
 
-  ];
+  const updateProgram = (id: number, field: string, value: string) => {
+    setPrograms(prev => prev.map(program => 
+      program.id === id ? { ...program, [field]: value } : program
+    ));
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 p-4">
@@ -73,24 +82,88 @@ export default function ProgramsPage() {
               <span className="text-2xl">✨</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bubble text-gray-800">Done for you programs</h1>
+            <Button
+              onClick={() => setEditMode(!editMode)}
+              variant={editMode ? "destructive" : "outline"}
+              size="sm"
+              className="ml-4"
+            >
+              {editMode ? (
+                <>
+                  <X className="h-4 w-4 mr-2" />
+                  Cancel
+                </>
+              ) : (
+                <>
+                  <Edit3 className="h-4 w-4 mr-2" />
+                  Edit
+                </>
+              )}
+            </Button>
           </div>
           <p className="text-lg text-gray-600 font-rounded font-bold max-w-2xl mx-auto">
-            Ready-made exercise programs designed to train specific areas and skills. Just pick and play!
+            {editMode ? "Click on any program to edit its title, description, or icon" : "Ready-made exercise programs designed to train specific areas and skills. Just pick and play!"}
           </p>
         </div>
 
         {/* Programs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {programs.map((program) => (
-            <div key={program.id} className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-purple-100 shadow-xl overflow-hidden">
+            <div 
+              key={program.id} 
+              className={`bg-white/90 backdrop-blur-md rounded-3xl border-4 border-purple-100 shadow-xl overflow-hidden transition-all duration-300 ${editMode ? 'ring-4 ring-blue-400 cursor-pointer hover:ring-blue-500' : ''}`}
+              onClick={() => editMode && setEditingProgram(program.id)}
+            >
               <div className={`bg-gradient-to-br ${program.color} p-6 text-white`}>
                 <div className="flex items-center space-x-3 mb-3">
                   <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <span className="text-2xl">{program.icon}</span>
+                    {editMode && editingProgram === program.id ? (
+                      <Input
+                        value={program.icon}
+                        onChange={(e) => updateProgram(program.id, 'icon', e.target.value)}
+                        className="w-10 h-10 text-center bg-transparent border-none text-white text-xl"
+                        maxLength={2}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    ) : (
+                      <span className="text-2xl">{program.icon}</span>
+                    )}
                   </div>
-                  <h3 className="text-xl font-bubble">{program.title}</h3>
+                  {editMode && editingProgram === program.id ? (
+                    <Input
+                      value={program.title}
+                      onChange={(e) => updateProgram(program.id, 'title', e.target.value)}
+                      className="flex-1 bg-white/20 border-white/30 text-white placeholder-white/70 font-bubble"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  ) : (
+                    <h3 className="text-xl font-bubble">{program.title}</h3>
+                  )}
                 </div>
-                <p className="text-white/90 font-rounded font-bold">{program.description}</p>
+                {editMode && editingProgram === program.id ? (
+                  <div className="space-y-3">
+                    <Input
+                      value={program.description}
+                      onChange={(e) => updateProgram(program.id, 'description', e.target.value)}
+                      className="bg-white/20 border-white/30 text-white placeholder-white/70 font-rounded"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditingProgram(null);
+                      }}
+                      size="sm"
+                      variant="secondary"
+                      className="mt-2"
+                    >
+                      <Save className="h-4 w-4 mr-2" />
+                      Save
+                    </Button>
+                  </div>
+                ) : (
+                  <p className="text-white/90 font-rounded font-bold">{program.description}</p>
+                )}
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-white/80 font-rounded font-bold">
                     {program.exercises.length} exercises
