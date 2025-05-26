@@ -10,10 +10,12 @@ interface DuckTimerProps {
 
 export function DuckTimer({ duration = 60, isActive, onComplete, onPause, onResume }: DuckTimerProps) {
   const [timeLeft, setTimeLeft] = useState(duration);
+  const [totalDuration, setTotalDuration] = useState(duration);
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     setTimeLeft(duration);
+    setTotalDuration(duration);
   }, [duration]);
 
   useEffect(() => {
@@ -32,7 +34,9 @@ export function DuckTimer({ duration = 60, isActive, onComplete, onPause, onResu
     return () => clearInterval(timer);
   }, [isActive, isPaused, onComplete]);
 
-  const progress = ((duration - timeLeft) / duration) * 100;
+  // Calculate progress based on how much time has passed from the total duration
+  const timeElapsed = totalDuration - timeLeft;
+  const progress = Math.max(0, Math.min(100, (timeElapsed / totalDuration) * 100));
   const coverProgress = 100 - progress; // How much of the duck is still covered
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
@@ -48,11 +52,13 @@ export function DuckTimer({ duration = 60, isActive, onComplete, onPause, onResu
   };
 
   const addTime = (seconds: number) => {
-    setTimeLeft(prev => Math.max(0, prev + seconds));
+    setTimeLeft(prev => prev + seconds);
+    setTotalDuration(prev => prev + seconds);
   };
 
   const subtractTime = (seconds: number) => {
     setTimeLeft(prev => Math.max(0, prev - seconds));
+    setTotalDuration(prev => Math.max(1, prev - seconds)); // Ensure minimum 1 second to avoid division by zero
   };
 
   return (
