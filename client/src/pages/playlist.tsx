@@ -100,15 +100,29 @@ export default function PlaylistPage() {
 
   const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }) => {
     const [isSwipping, setIsSwipping] = useState(false);
+    const [swipeDirection, setSwipeDirection] = useState<'right' | 'down' | null>(null);
     
     const swipeHandlers = useSwipe({
       onSwipeRight: () => {
         if (!isCompleted(exercise.id)) {
           setIsSwipping(true);
+          setSwipeDirection('right');
           setTimeout(() => {
             handleCompleteExercise(exercise);
             setIsSwipping(false);
-          }, 300);
+            setSwipeDirection(null);
+          }, 500);
+        }
+      },
+      onSwipeDown: () => {
+        if (!isCompleted(exercise.id)) {
+          setIsSwipping(true);
+          setSwipeDirection('down');
+          setTimeout(() => {
+            handleCompleteExercise(exercise);
+            setIsSwipping(false);
+            setSwipeDirection(null);
+          }, 500);
         }
       },
     });
@@ -120,13 +134,18 @@ export default function PlaylistPage() {
       return null;
     }
 
+    const getSwipeTransform = () => {
+      if (!isSwipping) return '';
+      if (swipeDirection === 'right') return 'transform translate-x-full opacity-0';
+      if (swipeDirection === 'down') return 'transform translate-y-full opacity-0';
+      return '';
+    };
+
     return (
       <div className="relative mb-4">
         {/* Exercise Card */}
         <div
-          className={`relative rounded-2xl overflow-hidden transition-all duration-300 ${
-            isSwipping ? 'transform translate-x-4 opacity-75' : ''
-          }`}
+          className={`relative rounded-2xl overflow-hidden transition-all duration-500 ${getSwipeTransform()}`}
           {...swipeHandlers}
         >
           {/* Background with exercise theme */}
@@ -172,9 +191,12 @@ export default function PlaylistPage() {
             </div>
           </div>
           
-          {/* Swipe indicator */}
+          {/* Multi-directional swipe indicators */}
           <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-green-100 to-transparent flex items-center justify-center opacity-50">
             <span className="text-green-600 font-bold text-xs">SWIPE →</span>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-amber-100 to-transparent flex items-end justify-center pb-2 opacity-50">
+            <span className="text-amber-600 font-bold text-xs">SWIPE ↓</span>
           </div>
         </div>
       </div>
