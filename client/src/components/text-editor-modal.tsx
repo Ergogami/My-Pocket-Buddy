@@ -28,7 +28,7 @@ export function TextEditorModal({ isOpen, onClose }: TextEditorModalProps) {
     guideGreeting: "HELLO!",
     guideIntro: "I'm your Guide!",
     guideDescription: "Ready to explore amazing exercises and have tons of fun together?",
-    startButton: "Start Adventure",
+    startButton: "🌟 Start Adventure",
     programButton: "My Program",
     exercisesTitle: "ADVENTURE EXERCISES",
     searchPlaceholder: "Search for fun exercises...",
@@ -37,26 +37,48 @@ export function TextEditorModal({ isOpen, onClose }: TextEditorModalProps) {
 
   const { toast } = useToast();
 
+  // Load saved texts when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const savedTexts = localStorage.getItem('appTexts');
+      if (savedTexts) {
+        try {
+          const parsedTexts = JSON.parse(savedTexts);
+          setAppTexts(prev => ({ ...prev, ...parsedTexts }));
+        } catch (error) {
+          console.error('Error loading saved texts:', error);
+        }
+      }
+    }
+  }, [isOpen]);
+
   const handleSave = () => {
     // Save to localStorage for now
     localStorage.setItem('appTexts', JSON.stringify(appTexts));
+    
+    // Trigger custom event to update text immediately
+    window.dispatchEvent(new Event('appTextsUpdated'));
     
     toast({
       title: "Success!",
       description: "Your text changes have been saved!",
     });
     
-    // Trigger a page reload to apply changes
-    window.location.reload();
+    onClose();
   };
 
   const handleReset = () => {
     localStorage.removeItem('appTexts');
+    
+    // Trigger custom event to update text immediately
+    window.dispatchEvent(new Event('appTextsUpdated'));
+    
     toast({
       title: "Reset Complete",
       description: "All text has been reset to default.",
     });
-    window.location.reload();
+    
+    onClose();
   };
 
   return (
