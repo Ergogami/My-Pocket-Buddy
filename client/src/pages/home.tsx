@@ -88,20 +88,29 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-200 via-purple-100 via-pink-100 to-orange-200">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4 flex items-center">
-        <Button variant="ghost" size="sm" className="p-2 rounded-full bg-gray-100">
-          <ArrowLeft className="w-5 h-5 text-gray-600" />
-        </Button>
-        <div className="flex-1" />
-        <Button variant="ghost" size="sm" className="p-2 rounded-full bg-gray-100">
-          <Menu className="w-5 h-5 text-gray-600" />
-        </Button>
-        <div className="flex-1" />
-        <Button variant="ghost" size="sm" className="p-2 rounded-full bg-gray-100">
-          <User className="w-5 h-5 text-gray-600" />
-        </Button>
+      <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 px-4 py-6 relative overflow-hidden shadow-xl">
+        <div className="absolute inset-0 bg-white/10"></div>
+        <div className="relative z-10 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-white text-xl">🏃</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white drop-shadow-lg">MY POCKET BUDDY</h1>
+              <p className="text-white/80 text-xs">Adventure awaits!</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-lg">
+              <Menu className="w-5 h-5 text-white" />
+            </div>
+            <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-lg">
+              <User className="w-5 h-5 text-white" />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Content */}

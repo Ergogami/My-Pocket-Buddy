@@ -1,36 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@400;600;700&display=swap');
-
 :root {
-  --background: 0 0% 98%; /* #FAFAFA */
-  --foreground: 0 0% 20%; /* #333333 */
-  --muted: 0 0% 96%; /* #F5F5F5 */
-  --muted-foreground: 0 0% 45%; /* #737373 */
+  --background: 200 50% 98%; /* Light adventure sky */
+  --foreground: 240 60% 15%; /* Deep adventure text */
+  --muted: 190 40% 95%; /* Soft cloud */
+  --muted-foreground: 240 30% 50%; /* Adventure gray */
   --popover: 0 0% 100%; /* #FFFFFF */
-  --popover-foreground: 0 0% 20%; /* #333333 */
+  --popover-foreground: 240 60% 15%; /* Deep adventure text */
   --card: 0 0% 100%; /* #FFFFFF */
-  --card-foreground: 0 0% 20%; /* #333333 */
-  --border: 0 0% 90%; /* #E5E5E5 */
-  --input: 0 0% 90%; /* #E5E5E5 */
-  --primary: 330 81% 60%; /* #E91E63 - pink */
+  --card-foreground: 240 60% 15%; /* Deep adventure text */
+  --border: 200 30% 88%; /* Soft adventure border */
+  --input: 200 30% 92%; /* Light adventure input */
+  --primary: 280 85% 68%; /* Magical purple */
   --primary-foreground: 0 0% 100%; /* #FFFFFF */
-  --secondary: 0 0% 96%; /* #F5F5F5 */
-  --secondary-foreground: 0 0% 20%; /* #333333 */
-  --accent: 330 81% 60%; /* #E91E63 - pink */
-  --accent-foreground: 0 0% 100%; /* #FFFFFF */
+  --secondary: 190 80% 75%; /* Adventure cyan */
+  --secondary-foreground: 240 60% 15%; /* Deep adventure text */
+  --accent: 45 95% 75%; /* Sunny yellow */
+  --accent-foreground: 240 60% 15%; /* Deep adventure text */
   --destructive: 0 84% 60%; /* #EF4444 */
   --destructive-foreground: 0 0% 98%; /* #FAFAFA */
-  --ring: 330 81% 60%; /* #E91E63 */
-  --radius: 0.5rem;
+  --ring: 280 85% 68%; /* Magical purple */
+  --radius: 1rem;
   
-  /* Custom colors for the app */
-  --pink: 330 81% 60%; /* #E91E63 */
-  --light-gray: 0 0% 96%; /* #F5F5F5 */
-  --dark-gray: 0 0% 20%; /* #333333 */
-  --medium-gray: 0 0% 60%; /* #999999 */
+  /* Adventure theme colors */
+  --adventure-purple: 280 85% 68%; /* Magical purple */
+  --adventure-blue: 200 90% 70%; /* Ocean blue */
+  --adventure-cyan: 190 80% 75%; /* Sky cyan */
+  --adventure-orange: 25 95% 68%; /* Sunset orange */
+  --adventure-pink: 330 85% 75%; /* Flower pink */
+  --adventure-green: 150 70% 60%; /* Forest green */
+  --adventure-yellow: 45 95% 75%; /* Sunny yellow */
+  --adventure-coral: 15 85% 70%; /* Coral reef */
 }
 
 .dark {
