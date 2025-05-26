@@ -130,93 +130,99 @@ export default function PlaylistPage() {
     const completed = isCompleted(exercise.id);
 
     return (
-      <div
-        className="bg-white rounded-lg border border-border p-4 mb-4 relative"
-        {...swipeHandlers}
-      >
-        {/* Drag Handle */}
-        <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
-          <div className="flex flex-col space-y-1">
-            <div className="w-1 h-1 bg-medium-gray rounded-full"></div>
-            <div className="w-1 h-1 bg-medium-gray rounded-full"></div>
-            <div className="w-1 h-1 bg-medium-gray rounded-full"></div>
+      <div className="relative mb-4">
+        {/* Exercise Card */}
+        <div
+          className={`relative rounded-2xl overflow-hidden ${completed ? 'opacity-60' : ''}`}
+          {...swipeHandlers}
+        >
+          {/* Background with exercise theme */}
+          <div className="bg-gradient-to-br from-blue-400 to-blue-600 p-4 h-24 flex items-center justify-between">
+            {/* Exercise Thumbnail */}
+            <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-lg">
+              <div className="text-2xl">
+                {exercise.category === 'Balance' ? '⚖️' : 
+                 exercise.category === 'Strength' ? '💪' : 
+                 exercise.category === 'Cardio' ? '❤️' : 
+                 exercise.category === 'Flexibility' ? '🤸' : 
+                 exercise.category === 'Ball Skills' ? '⚽' : 
+                 exercise.category === 'Coordination' ? '🎯' : '🏃'}
+              </div>
+            </div>
+
+            {/* Exercise Info */}
+            <div className="flex-1 mx-4">
+              <h3 className="font-bold text-white text-sm leading-tight">{exercise.name}</h3>
+              <p className="text-blue-100 text-xs mt-1">{exercise.duration}</p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center space-x-2">
+              {/* Play Button */}
+              <button
+                onClick={() => handlePlayVideo(exercise, index)}
+                className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center"
+              >
+                <Play className="w-5 h-5 text-white ml-0.5" />
+              </button>
+
+              {/* Three dots menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="p-2 h-8 w-8 text-white hover:bg-white hover:bg-opacity-20">
+                    <MoreHorizontal className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem 
+                    onClick={() => handleRemoveFromPlaylist(exercise.id)}
+                    className="text-red-600 focus:text-red-600"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Remove from playlist
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center space-x-4 ml-6">
-          {/* Play Button */}
-          <button
-            onClick={() => handlePlayVideo(exercise, index)}
-            className="w-12 h-12 bg-light-gray rounded-lg flex items-center justify-center"
-          >
-            <Play className="w-5 h-5 text-pink" />
-          </button>
-
-          {/* Exercise Info */}
-          <div className="flex-1">
-            <h3 className="font-medium text-dark-gray text-sm">{exercise.name}</h3>
-            <p className="text-xs text-medium-gray">{exercise.description}</p>
-            <div className="flex items-center space-x-2 mt-1">
-              <span className="text-xs text-medium-gray">{exercise.duration}</span>
-              <span className="text-xs text-medium-gray">•</span>
-              <span className="text-xs text-medium-gray">Ages {exercise.ageGroups.join(", ")}</span>
-            </div>
-          </div>
-
-          {/* Status/Action */}
-          <div className="flex items-center space-x-2">
-            <div className="w-16 h-12 bg-light-gray rounded-lg flex items-center justify-center">
-              {completed ? (
-                <div className="text-pink text-lg">✓</div>
-              ) : (
-                <div className="text-medium-gray text-xs text-center">
-                  Swipe<br/>Left
-                </div>
-              )}
-            </div>
-            
-            {/* Three dots menu */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="p-2 h-8 w-8">
-                  <MoreHorizontal className="w-4 h-4 text-medium-gray" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem 
-                  onClick={() => handleRemoveFromPlaylist(exercise.id)}
-                  className="text-red-600 focus:text-red-600"
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Remove from playlist
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-
-        {/* Completion Overlay */}
+        {/* Completion Checkmark */}
         {completed && (
-          <div className="absolute inset-0 bg-pink bg-opacity-10 rounded-lg"></div>
+          <div className="absolute top-2 right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shadow-lg z-10">
+            <span className="text-white font-bold text-sm">✓</span>
+          </div>
+        )}
+
+        {/* Arrow connector to next exercise */}
+        {index < playlistExercises.length - 1 && (
+          <div className="flex justify-center py-2">
+            <ChevronRight className="w-6 h-6 text-blue-400" />
+          </div>
         )}
       </div>
     );
   };
 
+  const completedCount = playlistExercises.filter(ex => isCompleted(ex.id)).length;
+  const totalCount = playlistExercises.length;
+  const allCompleted = completedCount === totalCount && totalCount > 0;
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-blue-600 to-blue-800">
       {/* Header */}
-      <div className="bg-white border-b border-border px-4 py-3 flex items-center justify-between">
+      <div className="bg-blue-700 px-4 py-6 flex items-center justify-between">
         <Link href="/">
-          <Button variant="ghost" size="sm" className="p-2">
-            <ChevronLeft className="w-5 h-5 text-dark-gray" />
+          <Button variant="ghost" size="sm" className="p-2 text-white hover:bg-white hover:bg-opacity-20">
+            <ChevronLeft className="w-5 h-5" />
           </Button>
         </Link>
-        <h1 className="text-xl font-semibold text-dark-gray">
-          {activePlaylist?.name || "PLAYLIST NAME"}
-        </h1>
-        <Button variant="ghost" size="sm" className="p-2">
-          <Settings className="w-5 h-5 text-medium-gray" />
+        <div className="text-center">
+          <h1 className="text-white text-lg font-bold">My nighttime schedule</h1>
+          <p className="text-blue-200 text-sm">First I need to</p>
+        </div>
+        <Button variant="ghost" size="sm" className="p-2 text-white hover:bg-white hover:bg-opacity-20">
+          <Settings className="w-5 h-5" />
         </Button>
       </div>
 
@@ -237,24 +243,51 @@ export default function PlaylistPage() {
         </div>
       )}
 
-      {/* Exercise List */}
-      <div className="px-6 py-6 max-w-sm mx-auto">
-        <div className="space-y-0">
-          {playlistExercises.map((exercise, index) => (
-            <ExerciseCard 
-              key={exercise.id} 
-              exercise={exercise} 
-              index={index}
-            />
-          ))}
-        </div>
-
-        {/* Slide to Complete Button */}
-        <div className="mt-8">
-          <div className="bg-light-gray rounded-full px-6 py-4 flex items-center justify-center">
-            <ChevronRight className="w-5 h-5 text-medium-gray mr-2" />
-            <span className="text-medium-gray font-medium">Slide to Complete</span>
+      {/* Main Content */}
+      <div className="px-6 py-6 max-w-lg mx-auto">
+        <div className="flex justify-between items-start">
+          {/* Exercise List Column */}
+          <div className="flex-1 pr-8">
+            {playlistExercises.length > 0 ? (
+              playlistExercises.map((exercise, index) => (
+                <ExerciseCard key={exercise.id} exercise={exercise} index={index} />
+              ))
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-blue-200 mb-4">No exercises in your playlist yet</p>
+                <Link href="/search">
+                  <Button className="bg-white text-blue-600 px-6 py-2 rounded-xl font-semibold">
+                    Add Exercises
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
+
+          {/* All Done Section */}
+          {playlistExercises.length > 0 && (
+            <div className="flex flex-col items-center">
+              <div className="text-blue-200 text-sm mb-2">All done</div>
+              <div 
+                className={`w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg ${
+                  allCompleted 
+                    ? 'bg-green-400' 
+                    : 'bg-white bg-opacity-20 border-2 border-dashed border-white border-opacity-40'
+                }`}
+              >
+                {allCompleted ? (
+                  <div className="text-white text-3xl">🎉</div>
+                ) : (
+                  <div className="text-white text-2xl opacity-60">🏆</div>
+                )}
+              </div>
+              {allCompleted && (
+                <div className="text-green-200 text-xs mt-2 text-center">
+                  Great job!<br/>All exercises<br/>completed
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
