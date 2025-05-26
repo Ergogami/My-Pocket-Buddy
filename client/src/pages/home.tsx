@@ -221,76 +221,7 @@ export default function HomePage() {
 
 
 
-        {/* Adventure Search Area */}
-        <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-purple-200 p-6 shadow-xl">
-          <div className="flex items-center space-x-3 mb-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
-              <span className="text-lg">🔍</span>
-            </div>
-            <h3 className="text-lg font-bubble text-purple-700">{texts.findAdventureTitle}</h3>
-          </div>
-          <input 
-            type="text" 
-            placeholder={texts.searchPlaceholder}
-            className="w-full text-purple-700 bg-purple-50 border-2 border-purple-200 rounded-2xl px-4 py-3 outline-none focus:border-purple-400 font-rounded font-bold placeholder:text-purple-400"
-          />
-        </div>
 
-        {/* Choose Your Adventure Header */}
-        <div className="flex items-center space-x-3 mb-6">
-          <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
-            <span className="text-xl">📖</span>
-          </div>
-          <h3 className="text-2xl font-bubble text-gray-800">CHOOSE YOUR ADVENTURE</h3>
-        </div>
-
-        {/* Done For Your Program Section */}
-        <div>
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
-              <span className="text-xl">✅</span>
-            </div>
-            <h3 className="text-2xl font-bubble text-gray-800">Done For Your Program</h3>
-          </div>
-          <div className="flex space-x-4 overflow-x-auto pb-4">
-            {exercises.slice(0, 3).map((exercise, index) => {
-              const colors = [
-                'from-purple-400 to-pink-500',
-                'from-cyan-400 to-blue-500', 
-                'from-orange-400 to-red-500'
-              ];
-              const emojis = ['🏃‍♀️', '🤸‍♂️', '⚽'];
-              
-              return (
-                <div key={exercise.id} className="flex-shrink-0 w-64">
-                  <div className="bg-white rounded-3xl border-4 border-purple-100 overflow-hidden shadow-2xl transform hover:scale-105 transition-all">
-                    <div className={`bg-gradient-to-br ${colors[index % colors.length]} h-40 relative`}>
-                      <div className="absolute inset-0 bg-white/10 flex items-center justify-center">
-                        <div className="flex flex-col items-center">
-                          <span className="text-4xl mb-2">{emojis[index % emojis.length]}</span>
-                          <Play className="w-12 h-12 text-white drop-shadow-lg" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <h4 className="font-bubble text-gray-800 mb-1">{exercise.name}</h4>
-                      <p className="text-sm text-purple-600 font-rounded font-bold uppercase">{exercise.category}</p>
-                      <div className="flex justify-between items-center mt-4">
-                        <span className="text-xs text-gray-500 font-rounded font-bold">{exercise.ageGroups.join(', ')}</span>
-                        <button 
-                          onClick={() => handlePlayVideo(exercise)}
-                          className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-110 transition-all"
-                        >
-                          <Play className="w-5 h-5 text-white" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
       </div>
 
       {/* Adventure Navigation */}
