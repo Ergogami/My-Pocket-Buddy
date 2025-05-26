@@ -57,7 +57,7 @@ export default function HomePage() {
     },
     {
       name: "Flexibility",
-      image: new URL('../../../attached_assets/side-bends-sportive-latin-family-working-out-in-t-2023-11-27-05-01-40-utc.jpg', import.meta.url).href
+      image: "/attached_assets/side-bends-sportive-latin-family-working-out-in-t-2023-11-27-05-01-40-utc.jpg"
     },
     {
       name: "Cardio",
