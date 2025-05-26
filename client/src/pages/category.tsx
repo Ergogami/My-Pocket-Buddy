@@ -196,6 +196,10 @@ export default function CategoryPage({ category }: CategoryPageProps) {
         isOpen={showVideoModal}
         onClose={() => setShowVideoModal(false)}
         exercise={selectedExercise}
+        onNext={handleNextExercise}
+        onPrevious={handlePreviousExercise}
+        hasNext={currentVideoIndex < categoryExercises.length - 1}
+        hasPrevious={currentVideoIndex > 0}
       />
     </div>
   );
