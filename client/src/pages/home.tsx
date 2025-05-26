@@ -230,6 +230,24 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Done for you programs button */}
+        <div className="text-center">
+          <Link href="/programs">
+            <button className="bg-gradient-to-r from-emerald-400 to-green-500 text-white px-12 py-5 rounded-3xl text-xl font-bubble shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all border-4 border-emerald-300 flex items-center gap-3 mx-auto">
+              <span className="text-2xl">✨</span>
+              Done for you programs
+            </button>
+          </Link>
+        </div>
+
+        {/* Choose Your Adventure Header */}
+        <div className="flex items-center space-x-3 mb-6">
+          <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+            <span className="text-xl">📖</span>
+          </div>
+          <h3 className="text-2xl font-bubble text-gray-800">CHOOSE YOUR ADVENTURE</h3>
+        </div>
+
         {/* Adventure Search Area */}
         <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-purple-200 p-6 shadow-xl">
           <div className="flex items-center space-x-3 mb-3">
