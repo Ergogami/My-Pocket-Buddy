@@ -128,11 +128,31 @@ export default function CategoryPage({ category }: CategoryPageProps) {
       </div>
 
       {/* Category Hero */}
-      <div className={`bg-gradient-to-r ${getCategoryColor(category)} p-6 text-white`}>
-        <h2 className="text-2xl font-bold text-center">{category} Exercises</h2>
-        <p className="text-center mt-2 opacity-90">
-          {categoryExercises.length} exercises to improve your {category.toLowerCase()} skills
-        </p>
+      <div className={`relative p-6 text-white ${category === 'Flexibility' ? 'h-64' : ''}`}>
+        {category === 'Flexibility' ? (
+          <>
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url('/attached_assets/side-bends-sportive-latin-family-working-out-in-t-2023-11-27-05-01-40-utc.jpg')`
+              }}
+            />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative z-10 h-full flex flex-col justify-center">
+              <h2 className="text-3xl font-bold text-center drop-shadow-lg">{category} Exercises</h2>
+              <p className="text-center mt-2 opacity-90 drop-shadow-lg text-lg">
+                {categoryExercises.length} exercises to improve your {category.toLowerCase()} skills
+              </p>
+            </div>
+          </>
+        ) : (
+          <div className={`bg-gradient-to-r ${getCategoryColor(category)} p-6 text-white rounded-lg`}>
+            <h2 className="text-2xl font-bold text-center">{category} Exercises</h2>
+            <p className="text-center mt-2 opacity-90">
+              {categoryExercises.length} exercises to improve your {category.toLowerCase()} skills
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Exercises List */}
