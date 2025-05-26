@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 
 interface DuckTimerProps {
-  duration: number; // Duration in seconds
+  duration?: number; // Duration in seconds, defaults to 60 (1 minute)
   isActive: boolean;
   onComplete?: () => void;
   onPause?: () => void;
   onResume?: () => void;
 }
 
-export function DuckTimer({ duration, isActive, onComplete, onPause, onResume }: DuckTimerProps) {
+export function DuckTimer({ duration = 60, isActive, onComplete, onPause, onResume }: DuckTimerProps) {
   const [timeLeft, setTimeLeft] = useState(duration);
   const [isPaused, setIsPaused] = useState(false);
 

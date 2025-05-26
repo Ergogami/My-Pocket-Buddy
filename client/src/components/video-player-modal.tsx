@@ -120,7 +120,7 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
             {showTimer && (
               <div className="mb-6">
                 <DuckTimer
-                  duration={parseDuration(exercise.duration)}
+                  duration={60}
                   isActive={timerActive}
                   onComplete={() => {
                     setTimerActive(false);
