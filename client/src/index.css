@@ -7,58 +7,58 @@
 @tailwind utilities;
 
 :root {
-  --background: 200 50% 98%; /* Light adventure sky */
-  --foreground: 240 60% 15%; /* Deep adventure text */
-  --muted: 190 40% 95%; /* Soft cloud */
-  --muted-foreground: 240 30% 50%; /* Adventure gray */
-  --popover: 0 0% 100%; /* #FFFFFF */
-  --popover-foreground: 240 60% 15%; /* Deep adventure text */
-  --card: 0 0% 100%; /* #FFFFFF */
-  --card-foreground: 240 60% 15%; /* Deep adventure text */
-  --border: 200 30% 88%; /* Soft adventure border */
-  --input: 200 30% 92%; /* Light adventure input */
-  --primary: 280 85% 68%; /* Magical purple */
-  --primary-foreground: 0 0% 100%; /* #FFFFFF */
-  --secondary: 190 80% 75%; /* Adventure cyan */
-  --secondary-foreground: 240 60% 15%; /* Deep adventure text */
-  --accent: 45 95% 75%; /* Sunny yellow */
-  --accent-foreground: 240 60% 15%; /* Deep adventure text */
-  --destructive: 0 84% 60%; /* #EF4444 */
-  --destructive-foreground: 0 0% 98%; /* #FAFAFA */
-  --ring: 280 85% 68%; /* Magical purple */
-  --radius: 1rem;
+  --background: 320 60% 97%; /* Dreamy pink-white */
+  --foreground: 240 15% 25%; /* Soft dark text */
+  --muted: 280 30% 94%; /* Lavender mist */
+  --muted-foreground: 240 20% 50%; /* Gentle gray */
+  --popover: 315 50% 96%; /* Soft pink popup */
+  --popover-foreground: 240 15% 25%; /* Soft dark text */
+  --card: 315 50% 96%; /* Soft pink card */
+  --card-foreground: 240 15% 25%; /* Soft dark text */
+  --border: 300 25% 88%; /* Dreamy border */
+  --input: 310 40% 94%; /* Pink input */
+  --primary: 280 70% 80%; /* Soft lavender */
+  --primary-foreground: 240 15% 25%; /* Soft dark text */
+  --secondary: 190 60% 85%; /* Dreamy mint */
+  --secondary-foreground: 240 15% 25%; /* Soft dark text */
+  --accent: 50 80% 88%; /* Warm cream */
+  --accent-foreground: 240 15% 25%; /* Soft dark text */
+  --destructive: 0 50% 75%; /* Soft coral */
+  --destructive-foreground: 240 15% 25%; /* Soft dark text */
+  --ring: 280 70% 80%; /* Soft lavender */
+  --radius: 1.2rem;
   
-  /* Adventure theme colors */
-  --adventure-purple: 280 85% 68%; /* Magical purple */
-  --adventure-blue: 200 90% 70%; /* Ocean blue */
-  --adventure-cyan: 190 80% 75%; /* Sky cyan */
-  --adventure-orange: 25 95% 68%; /* Sunset orange */
-  --adventure-pink: 330 85% 75%; /* Flower pink */
-  --adventure-green: 150 70% 60%; /* Forest green */
-  --adventure-yellow: 45 95% 75%; /* Sunny yellow */
-  --adventure-coral: 15 85% 70%; /* Coral reef */
+  /* Dreamy pastel colors */
+  --dreamy-lavender: 280 70% 80%; /* Soft lavender */
+  --dreamy-mint: 160 50% 85%; /* Soft mint */
+  --dreamy-peach: 20 70% 88%; /* Soft peach */
+  --dreamy-blue: 200 60% 85%; /* Soft blue */
+  --dreamy-pink: 330 60% 85%; /* Soft pink */
+  --dreamy-yellow: 50 80% 88%; /* Warm cream */
+  --dreamy-coral: 10 60% 85%; /* Soft coral */
+  --dreamy-lilac: 260 50% 85%; /* Soft lilac */
 }
 
 .dark {
-  --background: 222 84% 5%; /* #0F172A */
-  --foreground: 210 40% 98%; /* #F8FAFC */
-  --muted: 217 33% 17%; /* #1E293B */
-  --muted-foreground: 215 20% 65%; /* #94A3B8 */
-  --popover: 222 84% 5%; /* #0F172A */
-  --popover-foreground: 210 40% 98%; /* #F8FAFC */
-  --card: 222 84% 5%; /* #0F172A */
-  --card-foreground: 210 40% 98%; /* #F8FAFC */
-  --border: 217 33% 17%; /* #1E293B */
-  --input: 217 33% 17%; /* #1E293B */
-  --primary: 351 83% 69%; /* #FF6B6B - coral */
-  --primary-foreground: 0 0% 100%; /* #FFFFFF */
-  --secondary: 174 72% 56%; /* #4ECDC4 - turquoise */
-  --secondary-foreground: 0 0% 100%; /* #FFFFFF */
-  --accent: 48 100% 71%; /* #FFE66D - sunny */
-  --accent-foreground: 210 40% 2%; /* #020817 */
-  --destructive: 0 62% 30%; /* #991B1B */
-  --destructive-foreground: 0 0% 98%; /* #FAFAFA */
-  --ring: 212 12% 35%; /* #475569 */
+  --background: 280 40% 8%; /* Deep dreamy purple */
+  --foreground: 320 30% 92%; /* Soft pink light */
+  --muted: 280 30% 15%; /* Dark lavender */
+  --muted-foreground: 280 15% 65%; /* Muted purple */
+  --popover: 280 35% 12%; /* Dark dreamy popup */
+  --popover-foreground: 320 30% 92%; /* Soft pink light */
+  --card: 280 35% 12%; /* Dark dreamy card */
+  --card-foreground: 320 30% 92%; /* Soft pink light */
+  --border: 280 25% 20%; /* Dark dreamy border */
+  --input: 280 30% 15%; /* Dark input */
+  --primary: 280 60% 70%; /* Medium lavender */
+  --primary-foreground: 280 40% 8%; /* Deep dreamy purple */
+  --secondary: 190 50% 75%; /* Medium mint */
+  --secondary-foreground: 280 40% 8%; /* Deep dreamy purple */
+  --accent: 50 70% 78%; /* Medium cream */
+  --accent-foreground: 280 40% 8%; /* Deep dreamy purple */
+  --destructive: 0 40% 65%; /* Medium coral */
+  --destructive-foreground: 320 30% 92%; /* Soft pink light */
+  --ring: 280 60% 70%; /* Medium lavender */
 }
 
 @layer base {
@@ -77,48 +77,64 @@
 }
 
 @layer utilities {
-  .bg-pink {
-    background-color: hsl(var(--pink));
+  /* Dreamy gradient backgrounds */
+  .bg-dreamy-pink {
+    background: linear-gradient(135deg, hsl(var(--dreamy-pink)), hsl(var(--dreamy-peach)));
   }
   
-  .bg-light-gray {
-    background-color: hsl(var(--light-gray));
+  .bg-dreamy-lavender {
+    background: linear-gradient(135deg, hsl(var(--dreamy-lavender)), hsl(var(--dreamy-lilac)));
   }
   
-  .bg-dark-gray {
-    background-color: hsl(var(--dark-gray));
+  .bg-dreamy-mint {
+    background: linear-gradient(135deg, hsl(var(--dreamy-mint)), hsl(var(--dreamy-blue)));
   }
   
-  .bg-medium-gray {
-    background-color: hsl(var(--medium-gray));
+  .bg-dreamy-yellow {
+    background: linear-gradient(135deg, hsl(var(--dreamy-yellow)), hsl(var(--dreamy-peach)));
   }
   
-  .text-pink {
-    color: hsl(var(--pink));
+  .bg-dreamy-coral {
+    background: linear-gradient(135deg, hsl(var(--dreamy-coral)), hsl(var(--dreamy-pink)));
   }
   
-  .text-light-gray {
-    color: hsl(var(--light-gray));
+  .bg-dreamy-blue {
+    background: linear-gradient(135deg, hsl(var(--dreamy-blue)), hsl(var(--dreamy-mint)));
   }
   
-  .text-dark-gray {
-    color: hsl(var(--dark-gray));
+  /* Soft cloud backgrounds */
+  .bg-cloud-pink {
+    background: radial-gradient(circle at 30% 70%, hsl(var(--dreamy-pink)) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, hsl(var(--dreamy-lavender)) 0%, transparent 50%),
+                linear-gradient(135deg, hsl(320 60% 97%), hsl(280 30% 94%));
   }
   
-  .text-medium-gray {
-    color: hsl(var(--medium-gray));
+  .bg-cloud-mint {
+    background: radial-gradient(circle at 30% 70%, hsl(var(--dreamy-mint)) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, hsl(var(--dreamy-blue)) 0%, transparent 50%),
+                linear-gradient(135deg, hsl(320 60% 97%), hsl(190 30% 94%));
   }
   
-  .border-pink {
-    border-color: hsl(var(--pink));
+  /* Text colors */
+  .text-dreamy-lavender {
+    color: hsl(var(--dreamy-lavender));
   }
   
-  .border-light-gray {
-    border-color: hsl(var(--light-gray));
+  .text-dreamy-mint {
+    color: hsl(var(--dreamy-mint));
   }
   
-  .border-medium-gray {
-    border-color: hsl(var(--medium-gray));
+  .text-dreamy-pink {
+    color: hsl(var(--dreamy-pink));
+  }
+  
+  .text-dreamy-coral {
+    color: hsl(var(--dreamy-coral));
+  }
+  
+  /* Soft animations */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
   
   .animate-wiggle {
@@ -126,7 +142,7 @@
   }
   
   .animate-bounce-gentle {
-    animation: bounce 2s infinite;
+    animation: bounce-gentle 2s infinite;
   }
   
   .animate-confetti {
@@ -137,6 +153,23 @@
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     animation: swipe-hint 2s ease-in-out infinite;
   }
+  
+  /* Dreamy glass effect */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
 }
 
 @keyframes wiggle {
