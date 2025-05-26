@@ -72,10 +72,11 @@ export default function CategoryPage({ category }: CategoryPageProps) {
 
   const pinExerciseMutation = useMutation({
     mutationFn: async (exerciseId: number) => {
-      const response = await apiRequest(`/api/exercises/${exerciseId}/pin`, {
+      const response = await fetch(`/api/exercises/${exerciseId}/pin`, {
         method: "PATCH",
       });
-      return response;
+      if (!response.ok) throw new Error("Failed to pin exercise");
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/exercises"] });
@@ -95,10 +96,11 @@ export default function CategoryPage({ category }: CategoryPageProps) {
 
   const unpinExerciseMutation = useMutation({
     mutationFn: async (exerciseId: number) => {
-      const response = await apiRequest(`/api/exercises/${exerciseId}/unpin`, {
+      const response = await fetch(`/api/exercises/${exerciseId}/unpin`, {
         method: "PATCH",
       });
-      return response;
+      if (!response.ok) throw new Error("Failed to unpin exercise");
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/exercises"] });
@@ -323,6 +325,16 @@ export default function CategoryPage({ category }: CategoryPageProps) {
                     >
                       <Plus className="w-4 h-4 mr-1" />
                       Add to Playlist
+                    </Button>
+                    <Button
+                      onClick={() => exercise.isPinned ? unpinExerciseMutation.mutate(exercise.id) : pinExerciseMutation.mutate(exercise.id)}
+                      disabled={pinExerciseMutation.isPending || unpinExerciseMutation.isPending}
+                      size="sm"
+                      variant="outline"
+                      className={`px-3 py-2 ${exercise.isPinned ? 'border-yellow-500 text-yellow-600 hover:bg-yellow-50' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
+                    >
+                      <Star className={`w-4 h-4 mr-1 ${exercise.isPinned ? 'fill-yellow-500' : ''}`} />
+                      {exercise.isPinned ? 'Unpin' : 'Pin'}
                     </Button>
                   </div>
                 </div>
