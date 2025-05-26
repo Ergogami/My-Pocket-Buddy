@@ -128,7 +128,7 @@ export default function CategoryPage({ category }: CategoryPageProps) {
       </div>
 
       {/* Category Hero */}
-      <div className={`relative p-6 text-white ${category === 'Flexibility' || category === 'Strength' || category === 'Cardio' || category === 'Ball Skills' || category === 'Balance' ? 'h-64' : ''}`}>
+      <div className={`relative p-6 text-white ${category === 'Flexibility' || category === 'Strength' || category === 'Cardio' || category === 'Ball Skills' || category === 'Balance' || category === 'Coordination' ? 'h-64' : ''}`}>
         {category === 'Balance' ? (
           <>
             <div 
@@ -199,6 +199,22 @@ export default function CategoryPage({ category }: CategoryPageProps) {
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url('/attached_assets/cheerful-kids-sitting-on-fitness-mat-with-balls-2024-11-19-08-04-28-utc.jpg')`
+              }}
+            />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative z-10 h-full flex flex-col justify-center">
+              <h2 className="text-3xl font-bold text-center drop-shadow-lg">{category} Exercises</h2>
+              <p className="text-center mt-2 opacity-90 drop-shadow-lg text-lg">
+                {categoryExercises.length} exercises to improve your {category.toLowerCase()} skills
+              </p>
+            </div>
+          </>
+        ) : category === 'Coordination' ? (
+          <>
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url('/attached_assets/boys-training-2025-03-14-22-00-41-utc.JPG')`
               }}
             />
             <div className="absolute inset-0 bg-black/40" />

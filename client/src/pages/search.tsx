@@ -211,7 +211,7 @@ export default function SearchPage() {
                 onClick={() => setLocation(`/category/${category.name}`)}
                 className="relative rounded-3xl overflow-hidden cursor-pointer transform transition-all hover:scale-105 shadow-2xl border-4 border-white/50"
               >
-                <div className={`h-40 relative ${category.name === 'Flexibility' || category.name === 'Strength' || category.name === 'Cardio' || category.name === 'Ball Skills' || category.name === 'Balance' ? '' : `bg-gradient-to-br ${categoryColors[index]}`}`}>
+                <div className={`h-40 relative ${category.name === 'Flexibility' || category.name === 'Strength' || category.name === 'Cardio' || category.name === 'Ball Skills' || category.name === 'Balance' || category.name === 'Coordination' ? '' : `bg-gradient-to-br ${categoryColors[index]}`}`}>
                   {category.name === 'Balance' && (
                     <>
                       <div 
@@ -262,6 +262,17 @@ export default function SearchPage() {
                         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                         style={{
                           backgroundImage: `url('/attached_assets/cheerful-kids-sitting-on-fitness-mat-with-balls-2024-11-19-08-04-28-utc.jpg')`
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/30" />
+                    </>
+                  )}
+                  {category.name === 'Coordination' && (
+                    <>
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{
+                          backgroundImage: `url('/attached_assets/boys-training-2025-03-14-22-00-41-utc.JPG')`
                         }}
                       />
                       <div className="absolute inset-0 bg-black/30" />
