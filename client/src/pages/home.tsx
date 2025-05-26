@@ -197,30 +197,32 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/70"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-purple-600/40 via-transparent to-yellow-400/20"></div>
             <div className="relative z-10 text-center flex items-center justify-center min-h-full px-4">
-              <div className="space-y-3 w-full">
-                <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle1}</h2>
-                <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg text-yellow-300">{texts.mainCardTitle2}</h2>
-                <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle3}</h2>
-                <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg text-cyan-300">{texts.mainCardTitle4}</h2>
-                <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle5}</h2>
+              <div className="space-y-4 w-full">
+                <div className="space-y-3">
+                  <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle1}</h2>
+                  <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg text-yellow-300">{texts.mainCardTitle2}</h2>
+                  <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle3}</h2>
+                  <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg text-cyan-300">{texts.mainCardTitle4}</h2>
+                  <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle5}</h2>
+                </div>
+                
+                {/* Action Buttons within the section */}
+                <div className="flex justify-center space-x-4 mt-8">
+                  <Link href="/search">
+                    <button className="bg-white/90 text-cyan-700 px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:bg-white transform hover:scale-105 transition-all">
+                      {texts.startButton}
+                    </button>
+                  </Link>
+                  <Link href="/playlist">
+                    <button className="bg-yellow-400 text-cyan-800 px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:bg-yellow-300 transform hover:scale-105 transition-all flex items-center gap-2">
+                      <Plus className="w-5 h-5" />
+                      {texts.programButton}
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Action Buttons - Moved from guide section */}
-        <div className="flex justify-center space-x-4 -mt-4 relative z-10">
-          <Link href="/search">
-            <button className="bg-white/90 text-cyan-700 px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:bg-white transform hover:scale-105 transition-all">
-              {texts.startButton}
-            </button>
-          </Link>
-          <Link href="/playlist">
-            <button className="bg-yellow-400 text-cyan-800 px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:bg-yellow-300 transform hover:scale-105 transition-all flex items-center gap-2">
-              <Plus className="w-5 h-5" />
-              {texts.programButton}
-            </button>
-          </Link>
         </div>
 
         {/* Adventure Search Area */}
