@@ -209,13 +209,13 @@ export default function HomePage() {
             {/* Overlay for better text readability */}
             <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/70"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-purple-600/40 via-transparent to-yellow-400/20"></div>
-            <div className="relative z-10 text-center flex items-center justify-center min-h-full">
-              <div className="space-y-4">
-                <h2 className="text-4xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle1}</h2>
-                <h2 className="text-4xl font-bubble leading-tight drop-shadow-lg text-yellow-300">{texts.mainCardTitle2}</h2>
-                <h2 className="text-4xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle3}</h2>
-                <h2 className="text-4xl font-bubble leading-tight drop-shadow-lg text-cyan-300">{texts.mainCardTitle4}</h2>
-                <h2 className="text-4xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle5}</h2>
+            <div className="relative z-10 text-center flex items-center justify-center min-h-full px-4">
+              <div className="space-y-3 w-full">
+                <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle1}</h2>
+                <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg text-yellow-300">{texts.mainCardTitle2}</h2>
+                <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle3}</h2>
+                <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg text-cyan-300">{texts.mainCardTitle4}</h2>
+                <h2 className="text-5xl md:text-6xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle5}</h2>
               </div>
             </div>
           </div>
