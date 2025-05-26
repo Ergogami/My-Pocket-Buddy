@@ -165,101 +165,144 @@ export default function SearchPage() {
           </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <Input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-12 py-3 text-base border-2 border-blue-300 rounded-full focus:border-blue-500 bg-white"
-            />
+        {/* Adventure Search */}
+        <div className="mb-8">
+          <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-cyan-200 p-6 shadow-xl">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center">
+                <Search className="w-4 h-4 text-white" />
+              </div>
+              <h3 className="text-lg font-bold text-cyan-700">Find Your Perfect Exercise!</h3>
+            </div>
+            <div className="relative">
+              <Input
+                type="text"
+                placeholder="Search for amazing exercises..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-4 py-4 text-base border-2 border-cyan-200 rounded-2xl focus:border-cyan-400 bg-cyan-50 text-cyan-700 font-medium placeholder:text-cyan-400"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Category Cards */}
-        <div className="space-y-4">
-          {categoryData.map((category) => (
-            <div
-              key={category.name}
-              onClick={() => setLocation(`/category/${category.name}`)}
-              className="relative rounded-lg overflow-hidden cursor-pointer transform transition-transform hover:scale-105"
-            >
-              <img 
-                src={category.image} 
-                alt={category.name}
-                className="w-full h-32 object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-                <h3 className="text-white text-2xl font-bold">{category.name.toUpperCase()}</h3>
-              </div>
-              {category.name !== "Balance" && (
-                <div className="absolute bottom-3 right-3">
-                  <Button 
-                    size="sm" 
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-full flex items-center gap-1"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Block
-                  </Button>
-                </div>
-              )}
+        {/* Adventure Category Cards */}
+        <div className="space-y-6">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-xl">🗺️</span>
             </div>
-          ))}
+            <h3 className="text-2xl font-black text-gray-800">CHOOSE YOUR ADVENTURE</h3>
+          </div>
+          {categoryData.map((category, index) => {
+            const categoryColors = [
+              'from-sky-400 to-blue-600',      // Balance
+              'from-red-400 to-pink-600',      // Strength  
+              'from-orange-400 to-yellow-500', // Ball Skills
+              'from-green-400 to-teal-600',    // Coordination
+              'from-purple-400 to-pink-500',   // Flexibility
+              'from-yellow-400 to-orange-500'  // Cardio
+            ];
+            const categoryEmojis = ['🧘‍♀️', '💪', '⚽', '🤹‍♀️', '🧘‍♂️', '❤️'];
+            
+            return (
+              <div
+                key={category.name}
+                onClick={() => setLocation(`/category/${category.name}`)}
+                className="relative rounded-3xl overflow-hidden cursor-pointer transform transition-all hover:scale-105 shadow-2xl border-4 border-white/50"
+              >
+                <div className={`bg-gradient-to-br ${categoryColors[index]} h-40 relative`}>
+                  <div className="absolute inset-0 bg-white/10 flex items-center justify-between p-6">
+                    <div className="flex flex-col items-start">
+                      <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-3 shadow-lg">
+                        <span className="text-3xl">{categoryEmojis[index]}</span>
+                      </div>
+                      <h3 className="text-white text-2xl font-black drop-shadow-2xl">{category.name.toUpperCase()}</h3>
+                    </div>
+                    <div className="flex flex-col items-end space-y-2">
+                      <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
+                        <span className="text-lg">✨</span>
+                      </div>
+                      <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
+                        <span className="text-lg">🎯</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Show search results if search is active */}
         {searchTerm && (
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-4 text-gray-800">Search Results</h3>
-            <div className="space-y-3">
-              {filteredExercises.map((exercise) => (
-                <div
-                  key={exercise.id}
-                  className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between"
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <Play className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-gray-800 text-sm">{exercise.name}</h3>
-                      <p className="text-xs text-gray-600">{exercise.description}</p>
-                      <div className="flex items-center space-x-2 mt-1">
-                        <span className="text-xs text-gray-500">{exercise.duration}</span>
-                        <span className="text-xs text-gray-500">•</span>
-                        <span className="text-xs text-gray-500">Ages {exercise.ageGroups.join(", ")}</span>
+          <div className="mt-8">
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+                <span className="text-xl">🔍</span>
+              </div>
+              <h3 className="text-2xl font-black text-gray-800">ADVENTURE RESULTS</h3>
+            </div>
+            <div className="space-y-4">
+              {filteredExercises.map((exercise, index) => {
+                const colors = [
+                  'from-purple-400 to-pink-500',
+                  'from-cyan-400 to-blue-500', 
+                  'from-orange-400 to-red-500',
+                  'from-green-400 to-teal-500'
+                ];
+                const emojis = ['🏃‍♀️', '🤸‍♂️', '⚽', '🏀', '🧘‍♀️', '💪'];
+                
+                return (
+                  <div
+                    key={exercise.id}
+                    className="bg-white rounded-3xl border-4 border-purple-100 p-6 shadow-xl transform hover:scale-102 transition-all"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className={`w-16 h-16 bg-gradient-to-br ${colors[index % colors.length]} rounded-2xl flex items-center justify-center shadow-lg`}>
+                        <span className="text-2xl">{emojis[index % emojis.length]}</span>
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-gray-800 text-lg mb-1">{exercise.name}</h3>
+                        <p className="text-sm text-gray-600 mb-2 line-clamp-2">{exercise.description}</p>
+                        <div className="flex items-center space-x-3">
+                          <span className="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">{exercise.duration}</span>
+                          <span className="text-xs font-medium text-cyan-600 bg-cyan-100 px-2 py-1 rounded-full">{exercise.category}</span>
+                          <span className="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-1 rounded-full">Ages {exercise.ageGroups.join(", ")}</span>
+                        </div>
                       </div>
                     </div>
+                    <div className="flex items-center space-x-3 mt-4">
+                      <Button
+                        onClick={() => handlePlayVideo(exercise)}
+                        size="sm"
+                        className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg flex-1"
+                      >
+                        <Play className="w-4 h-4 mr-2" />
+                        🎬 Play Now
+                      </Button>
+                      <Button
+                        onClick={() => handleAddToPlaylist(exercise.id)}
+                        disabled={addToPlaylistMutation.isPending}
+                        size="sm"
+                        variant="outline"
+                        className="border-2 border-cyan-400 text-cyan-600 hover:bg-cyan-50 px-4 py-2 rounded-xl font-bold"
+                      >
+                        <Plus className="w-4 h-4 mr-1" />
+                        Add
+                      </Button>
+                    </div>
                   </div>
-                  <div className="flex flex-col space-y-2">
-                    <Button
-                      onClick={() => handlePlayVideo(exercise)}
-                      size="sm"
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1"
-                    >
-                      <Play className="w-3 h-3 mr-1" />
-                      Play
-                    </Button>
-                    <Button
-                      onClick={() => handleAddToPlaylist(exercise.id)}
-                      disabled={addToPlaylistMutation.isPending}
-                      size="sm"
-                      variant="outline"
-                      className="border-blue-600 text-blue-600 hover:bg-blue-50 px-3 py-1"
-                    >
-                      <Plus className="w-3 h-3 mr-1" />
-                      Add
-                    </Button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             {filteredExercises.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                <p>No exercises found matching "{searchTerm}"</p>
+              <div className="text-center py-12">
+                <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+                  <span className="text-4xl">🔍</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-700 mb-2">No Adventures Found!</h3>
+                <p className="text-gray-500">Try searching for something else like "ball", "jump", or "balance"</p>
               </div>
             )}
           </div>
