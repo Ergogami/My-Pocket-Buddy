@@ -209,30 +209,13 @@ export default function HomePage() {
             {/* Overlay for better text readability */}
             <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/70"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-purple-600/40 via-transparent to-yellow-400/20"></div>
-            <div className="relative z-10 text-center">
-              <div className="flex items-center justify-center space-x-6 mb-6">
-                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <span className="text-2xl">🎯</span>
-                </div>
-                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <span className="text-2xl">⭐</span>
-                </div>
-              </div>
-              <h2 className="text-3xl font-bubble mb-3 leading-tight drop-shadow-lg">{texts.mainCardTitle1}</h2>
-              <h2 className="text-3xl font-bubble mb-3 leading-tight drop-shadow-lg text-yellow-300">{texts.mainCardTitle2}</h2>
-              <h2 className="text-3xl font-bubble mb-3 leading-tight drop-shadow-lg">{texts.mainCardTitle3}</h2>
-              <h2 className="text-3xl font-bubble mb-3 leading-tight drop-shadow-lg text-cyan-300">{texts.mainCardTitle4}</h2>
-              <h2 className="text-3xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle5}</h2>
-              <div className="mt-6 flex justify-center space-x-2">
-                <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
-                  <span className="text-lg">🏃</span>
-                </div>
-                <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
-                  <span className="text-lg">🤸</span>
-                </div>
-                <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
-                  <span className="text-lg">🏀</span>
-                </div>
+            <div className="relative z-10 text-center flex items-center justify-center min-h-full">
+              <div className="space-y-4">
+                <h2 className="text-4xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle1}</h2>
+                <h2 className="text-4xl font-bubble leading-tight drop-shadow-lg text-yellow-300">{texts.mainCardTitle2}</h2>
+                <h2 className="text-4xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle3}</h2>
+                <h2 className="text-4xl font-bubble leading-tight drop-shadow-lg text-cyan-300">{texts.mainCardTitle4}</h2>
+                <h2 className="text-4xl font-bubble leading-tight drop-shadow-lg">{texts.mainCardTitle5}</h2>
               </div>
             </div>
           </div>
