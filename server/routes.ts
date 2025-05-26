@@ -107,6 +107,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.patch("/api/exercises/:id/pin", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const exercise = await storage.pinExercise(id);
+      if (!exercise) {
+        return res.status(404).json({ message: "Exercise not found" });
+      }
+      res.json(exercise);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to pin exercise" });
+    }
+  });
+
+  app.patch("/api/exercises/:id/unpin", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const exercise = await storage.unpinExercise(id);
+      if (!exercise) {
+        return res.status(404).json({ message: "Exercise not found" });
+      }
+      res.json(exercise);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to unpin exercise" });
+    }
+  });
+
   // Playlist routes
   app.get("/api/playlists", async (req, res) => {
     try {

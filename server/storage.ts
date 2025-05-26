@@ -128,6 +128,26 @@ export class MemStorage implements IStorage {
     return this.exercises.delete(id);
   }
 
+  async pinExercise(id: number): Promise<Exercise | undefined> {
+    const exercise = this.exercises.get(id);
+    if (exercise) {
+      const updatedExercise = { ...exercise, isPinned: true };
+      this.exercises.set(id, updatedExercise);
+      return updatedExercise;
+    }
+    return undefined;
+  }
+
+  async unpinExercise(id: number): Promise<Exercise | undefined> {
+    const exercise = this.exercises.get(id);
+    if (exercise) {
+      const updatedExercise = { ...exercise, isPinned: false };
+      this.exercises.set(id, updatedExercise);
+      return updatedExercise;
+    }
+    return undefined;
+  }
+
   // Playlist methods
   async getPlaylist(id: number): Promise<Playlist | undefined> {
     return this.playlists.get(id);

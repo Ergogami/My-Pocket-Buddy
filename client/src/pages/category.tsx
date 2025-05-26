@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { ArrowLeft, Play, MoreHorizontal, Plus } from "lucide-react";
+import { ArrowLeft, Play, MoreHorizontal, Plus, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Exercise, Playlist } from "@shared/schema";
 import { useLocation } from "wouter";
@@ -65,6 +65,52 @@ export default function CategoryPage({ category }: CategoryPageProps) {
       toast({
         title: "Error",
         description: error.message || "Failed to add exercise to playlist",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const pinExerciseMutation = useMutation({
+    mutationFn: async (exerciseId: number) => {
+      const response = await apiRequest(`/api/exercises/${exerciseId}/pin`, {
+        method: "PATCH",
+      });
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/exercises"] });
+      toast({
+        title: "Exercise pinned!",
+        description: "Exercise pinned to top of list.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: "Failed to pin exercise",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const unpinExerciseMutation = useMutation({
+    mutationFn: async (exerciseId: number) => {
+      const response = await apiRequest(`/api/exercises/${exerciseId}/unpin`, {
+        method: "PATCH",
+      });
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/exercises"] });
+      toast({
+        title: "Exercise unpinned!",
+        description: "Exercise removed from top of list.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: "Failed to unpin exercise",
         variant: "destructive",
       });
     },
