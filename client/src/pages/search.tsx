@@ -113,36 +113,55 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4 flex items-center">
-        <Button variant="ghost" size="sm" className="p-2 rounded-full bg-gray-100">
-          <ArrowLeft className="w-5 h-5 text-gray-600" />
-        </Button>
-        <div className="flex-1" />
-        <Button variant="ghost" size="sm" className="p-2 rounded-full bg-gray-100">
-          <Menu className="w-5 h-5 text-gray-600" />
-        </Button>
-        <div className="flex-1" />
-        <Button variant="ghost" size="sm" className="p-2 rounded-full bg-gray-100">
-          <User className="w-5 h-5 text-gray-600" />
-        </Button>
+    <div className="min-h-screen bg-gradient-to-br from-cyan-200 via-purple-100 via-pink-100 to-orange-200">
+      {/* Adventure Header */}
+      <div className="bg-gradient-to-r from-green-400 via-cyan-500 to-blue-600 px-4 py-6 relative overflow-hidden shadow-xl">
+        <div className="absolute inset-0 bg-white/10"></div>
+        <div className="relative z-10 flex items-center justify-between">
+          <Link href="/">
+            <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
+              <ArrowLeft className="w-5 h-5 text-white" />
+            </div>
+          </Link>
+          <div className="text-center">
+            <h1 className="text-xl font-black text-white drop-shadow-lg">ADVENTURE LIBRARY</h1>
+            <p className="text-white/80 text-xs font-medium">Discover amazing exercises!</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
+              <Menu className="w-4 h-4 text-white" />
+            </div>
+            <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
+              <User className="w-4 h-4 text-white" />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Content */}
       <div className="px-4 py-6 max-w-md mx-auto">
-        {/* Title */}
-        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">WORKOUT LIBRARY</h1>
-        
-        {/* Hero Banner */}
-        <div className="relative mb-6 rounded-lg overflow-hidden">
-          <div className="bg-gradient-to-br from-blue-400 to-blue-600 p-6 text-white">
-            <h2 className="text-2xl font-bold mb-3">Time to Explore!</h2>
-            <p className="text-sm leading-relaxed">
-              Enough boring adult exercises! Here you can find fun and creative exercises 
-              for your child. I've grouped them by 'categories' so that you can easily 
-              access the content most relevant to you.
-            </p>
+        {/* Adventure Welcome */}
+        <div className="relative mb-8 rounded-3xl overflow-hidden shadow-2xl">
+          <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 p-8 text-white relative">
+            <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 via-transparent to-yellow-400/10"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                  <span className="text-2xl">🎯</span>
+                </div>
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                  <span className="text-2xl">🏃‍♀️</span>
+                </div>
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                  <span className="text-2xl">⚽</span>
+                </div>
+              </div>
+              <h2 className="text-3xl font-black mb-4 text-center drop-shadow-lg">Time to Explore!</h2>
+              <p className="text-lg leading-relaxed text-center font-medium drop-shadow-md">
+                Welcome to your adventure playground! Find amazing exercises grouped by categories. 
+                Let's make fitness fun and exciting together!
+              </p>
+            </div>
           </div>
         </div>
 
