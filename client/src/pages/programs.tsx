@@ -59,30 +59,7 @@ export default function ProgramsPage() {
       color: "from-green-400 to-emerald-500",
       exercises: exercises.filter(ex => ex.category === 'Strength')
     },
-    {
-      id: 4,
-      title: "Flexibility Flow",
-      description: "Stretch and move with grace and flexibility",
-      icon: "🤸‍♀️",
-      color: "from-pink-400 to-rose-500",
-      exercises: exercises.filter(ex => ex.category === 'Flexibility')
-    },
-    {
-      id: 5,
-      title: "Ball Skills Fun",
-      description: "Master ball handling and coordination",
-      icon: "⚽",
-      color: "from-yellow-400 to-orange-500",
-      exercises: exercises.filter(ex => ex.category === 'Ball Skills')
-    },
-    {
-      id: 6,
-      title: "Coordination Champions",
-      description: "Improve coordination through challenging movements",
-      icon: "🎯",
-      color: "from-purple-400 to-indigo-500",
-      exercises: exercises.filter(ex => ex.category === 'Coordination')
-    }
+
   ];
 
   return (
