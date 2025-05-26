@@ -230,26 +230,24 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Done for you programs button */}
-        <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-emerald-200 p-6 shadow-xl">
+        {/* Adventure Search Area */}
+        <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-purple-200 p-6 shadow-xl space-y-4">
+          {/* Done for you programs button */}
           <Link href="/programs">
-            <button className="w-full bg-gradient-to-r from-emerald-400 to-green-500 text-white px-8 py-5 rounded-2xl text-xl font-bubble shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all flex items-center justify-center gap-3">
-              <span className="text-2xl">✨</span>
+            <button className="w-full bg-gradient-to-r from-emerald-400 to-green-500 text-white px-8 py-4 rounded-2xl text-lg font-bubble shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all flex items-center justify-center gap-3">
+              <span className="text-xl">✨</span>
               Done for you programs
             </button>
           </Link>
-        </div>
 
-        {/* Choose Your Adventure Header */}
-        <div className="flex items-center space-x-3 mb-6">
-          <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
-            <span className="text-xl">📖</span>
+          {/* Choose Your Adventure Header */}
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-lg">📖</span>
+            </div>
+            <h3 className="text-xl font-bubble text-gray-800">CHOOSE YOUR ADVENTURE</h3>
           </div>
-          <h3 className="text-2xl font-bubble text-gray-800">CHOOSE YOUR ADVENTURE</h3>
-        </div>
 
-        {/* Adventure Search Area */}
-        <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-purple-200 p-6 shadow-xl">
           <div className="flex items-center space-x-3 mb-3">
             <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
               <span className="text-lg">🔍</span>
