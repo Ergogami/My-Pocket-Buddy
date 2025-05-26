@@ -231,9 +231,9 @@ export default function HomePage() {
         </div>
 
         {/* Done for you programs button */}
-        <div className="text-center">
+        <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-emerald-200 p-6 shadow-xl">
           <Link href="/programs">
-            <button className="bg-gradient-to-r from-emerald-400 to-green-500 text-white px-12 py-5 rounded-3xl text-xl font-bubble shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all border-4 border-emerald-300 flex items-center gap-3 mx-auto">
+            <button className="w-full bg-gradient-to-r from-emerald-400 to-green-500 text-white px-8 py-5 rounded-2xl text-xl font-bubble shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all flex items-center justify-center gap-3">
               <span className="text-2xl">✨</span>
               Done for you programs
             </button>
