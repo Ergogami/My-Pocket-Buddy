@@ -273,10 +273,10 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="p-4">
-                      <h4 className="font-bold text-gray-800 mb-1">{exercise.name}</h4>
-                      <p className="text-sm text-purple-600 font-bold uppercase tracking-wide">{exercise.category}</p>
+                      <h4 className="font-chunky text-gray-800 mb-1 tracking-wide">{exercise.name}</h4>
+                      <p className="text-sm text-purple-600 font-heavy font-bold uppercase tracking-wider">{exercise.category}</p>
                       <div className="flex justify-between items-center mt-4">
-                        <span className="text-xs text-gray-500 font-medium">{exercise.ageGroups.join(', ')}</span>
+                        <span className="text-xs text-gray-500 font-heavy font-bold tracking-wide">{exercise.ageGroups.join(', ')}</span>
                         <button 
                           onClick={() => handlePlayVideo(exercise)}
                           className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-110 transition-all"
