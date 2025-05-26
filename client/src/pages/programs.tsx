@@ -4,7 +4,7 @@ import { ExerciseCard } from "../components/exercise-card";
 import { VideoPlayerModal } from "../components/video-player-modal";
 import { CompletionModal } from "../components/completion-modal";
 import { useState, useEffect } from "react";
-import { Plus, Star, Edit3, Save, X, Trash2 } from "lucide-react";
+import { Plus, Star, Edit3, Save, X, Trash2, ArrowLeft, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Link } from "wouter";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,8 @@ export default function ProgramsPage() {
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editingProgram, setEditingProgram] = useState<number | null>(null);
+  const [activeProgram, setActiveProgram] = useState<any>(null);
+  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
 
   const { data: exercises = [] } = useQuery<Exercise[]>({
     queryKey: ['/api/exercises'],
@@ -29,6 +31,31 @@ export default function ProgramsPage() {
   const handleCompleteExercise = (exercise: Exercise) => {
     setSelectedExercise(exercise);
     setShowCompletionModal(true);
+  };
+
+  const startProgram = (program: any) => {
+    const programExercises = getProgramExercises(program);
+    if (programExercises.length > 0) {
+      setActiveProgram({ ...program, exercises: programExercises });
+      setCurrentExerciseIndex(0);
+    }
+  };
+
+  const handleProgramNext = () => {
+    if (activeProgram && currentExerciseIndex < activeProgram.exercises.length - 1) {
+      setCurrentExerciseIndex(currentExerciseIndex + 1);
+    }
+  };
+
+  const handleProgramPrevious = () => {
+    if (activeProgram && currentExerciseIndex > 0) {
+      setCurrentExerciseIndex(currentExerciseIndex - 1);
+    }
+  };
+
+  const exitProgram = () => {
+    setActiveProgram(null);
+    setCurrentExerciseIndex(0);
   };
 
   // Pre-made program definitions
@@ -124,6 +151,148 @@ export default function ProgramsPage() {
       program.id === id ? { ...program, [field]: value } : program
     ));
   };
+
+  // Show workout screen when a program is active
+  if (activeProgram) {
+    const currentExercise = activeProgram.exercises[currentExerciseIndex];
+    const isFirst = currentExerciseIndex === 0;
+    const isLast = currentExerciseIndex === activeProgram.exercises.length - 1;
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 p-4">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <Button onClick={exitProgram} variant="ghost" className="p-2">
+            <ArrowLeft className="h-6 w-6" />
+          </Button>
+          <div className="text-center">
+            <h1 className="text-2xl font-bubble text-gray-800">{activeProgram.title}</h1>
+            <p className="text-sm text-gray-600">
+              Exercise {currentExerciseIndex + 1} of {activeProgram.exercises.length}
+            </p>
+          </div>
+          <div className="w-10" /> {/* Spacer */}
+        </div>
+
+        {/* Progress Bar */}
+        <div className="mb-8">
+          <div className="bg-gray-200 rounded-full h-2">
+            <div 
+              className="bg-gradient-to-r from-purple-400 to-pink-500 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${((currentExerciseIndex + 1) / activeProgram.exercises.length) * 100}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Current Exercise Card */}
+        <div className="bg-white rounded-3xl shadow-xl p-6 mb-6">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bubble text-gray-800 mb-2">{currentExercise.name}</h2>
+            <p className="text-gray-600 text-lg">{currentExercise.description}</p>
+            <div className="inline-block bg-purple-100 px-4 py-2 rounded-full mt-4">
+              <span className="text-purple-700 font-bold">{currentExercise.duration}</span>
+            </div>
+          </div>
+
+          {/* Play Button */}
+          <div className="text-center mb-6">
+            <Button
+              onClick={() => handlePlayVideo(currentExercise)}
+              className="bg-gradient-to-r from-purple-400 to-pink-500 text-white px-8 py-4 rounded-2xl text-lg font-bubble shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+            >
+              <Play className="h-6 w-6 mr-2" />
+              Play Exercise
+            </Button>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex items-center justify-between">
+          <Button
+            onClick={handleProgramPrevious}
+            disabled={isFirst}
+            variant="outline"
+            className="flex items-center gap-2 px-6 py-3 rounded-2xl"
+          >
+            <ChevronLeft className="h-5 w-5" />
+            Previous
+          </Button>
+
+          <Button
+            onClick={() => handleCompleteExercise(currentExercise)}
+            className="bg-emerald-400 text-white px-8 py-3 rounded-2xl font-bubble shadow-lg hover:bg-emerald-300 transform hover:scale-105 transition-all"
+          >
+            Mark Complete
+          </Button>
+
+          <Button
+            onClick={handleProgramNext}
+            disabled={isLast}
+            variant="outline"
+            className="flex items-center gap-2 px-6 py-3 rounded-2xl"
+          >
+            Next
+            <ChevronRight className="h-5 w-5" />
+          </Button>
+        </div>
+
+        {/* Exercise List */}
+        <div className="mt-8 bg-white rounded-3xl shadow-xl p-6">
+          <h3 className="text-xl font-bubble text-gray-800 mb-4">Program Exercises</h3>
+          <div className="space-y-3">
+            {activeProgram.exercises.map((exercise: Exercise, index: number) => (
+              <div
+                key={exercise.id}
+                className={`flex items-center justify-between p-3 rounded-xl transition-all ${
+                  index === currentExerciseIndex 
+                    ? 'bg-purple-100 border-2 border-purple-300' 
+                    : index < currentExerciseIndex 
+                      ? 'bg-emerald-100 border-2 border-emerald-300'
+                      : 'bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                    index === currentExerciseIndex 
+                      ? 'bg-purple-500 text-white' 
+                      : index < currentExerciseIndex 
+                        ? 'bg-emerald-500 text-white'
+                        : 'bg-gray-300 text-gray-600'
+                  }`}>
+                    {index < currentExerciseIndex ? '✓' : index + 1}
+                  </div>
+                  <div>
+                    <p className="font-bubble text-gray-800">{exercise.name}</p>
+                    <p className="text-sm text-gray-600">{exercise.duration}</p>
+                  </div>
+                </div>
+                {index === currentExerciseIndex && (
+                  <span className="text-purple-600 font-bold text-sm">Current</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Modals */}
+        <VideoPlayerModal
+          isOpen={showVideoModal}
+          onClose={() => setShowVideoModal(false)}
+          exercise={selectedExercise}
+          onNext={handleProgramNext}
+          onPrevious={handleProgramPrevious}
+          hasNext={!isLast}
+          hasPrevious={!isFirst}
+        />
+
+        <CompletionModal
+          isOpen={showCompletionModal}
+          onClose={() => setShowCompletionModal(false)}
+          exercise={selectedExercise}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 p-4">
@@ -295,7 +464,10 @@ export default function ProgramsPage() {
               
               {/* Action Button */}
               <div className="p-4 pt-0">
-                <button className="w-full bg-gradient-to-r from-purple-400 to-pink-500 text-white py-3 rounded-2xl font-bubble text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                <button 
+                  onClick={() => startProgram(program)}
+                  className="w-full bg-gradient-to-r from-purple-400 to-pink-500 text-white py-3 rounded-2xl font-bubble text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+                >
                   Start Program
                 </button>
               </div>
