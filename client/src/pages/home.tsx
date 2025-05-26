@@ -103,8 +103,8 @@ export default function HomePage() {
               <span className="text-white text-xl">🏃</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white drop-shadow-lg">{texts.appTitle}</h1>
-              <p className="text-white/80 text-xs">{texts.appSubtitle}</p>
+              <h1 className="text-xl font-chunky text-white drop-shadow-lg tracking-wider">{texts.appTitle}</h1>
+              <p className="text-white/80 text-xs font-heavy font-bold tracking-wide">{texts.appSubtitle}</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -146,11 +146,11 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <h1 className="text-4xl font-black text-white drop-shadow-2xl tracking-wide">{texts.welcomeTitle}</h1>
-                <h1 className="text-5xl font-black text-yellow-300 drop-shadow-2xl tracking-wide">{texts.welcomeSubtitle1}</h1>
-                <h1 className="text-5xl font-black text-white drop-shadow-2xl tracking-wide">{texts.welcomeSubtitle2}</h1>
+                <h1 className="text-4xl font-chunky text-white drop-shadow-2xl tracking-wider">{texts.welcomeTitle}</h1>
+                <h1 className="text-5xl font-chunky text-yellow-300 drop-shadow-2xl tracking-wider">{texts.welcomeSubtitle1}</h1>
+                <h1 className="text-5xl font-chunky text-white drop-shadow-2xl tracking-wider">{texts.welcomeSubtitle2}</h1>
               </div>
-              <p className="text-white/90 text-lg mt-4 font-medium drop-shadow-lg">{texts.welcomeDescription}</p>
+              <p className="text-white/90 text-lg mt-4 font-heavy font-bold drop-shadow-lg tracking-wide">{texts.welcomeDescription}</p>
             </div>
           </div>
         </div>
@@ -168,11 +168,11 @@ export default function HomePage() {
                   <span className="text-2xl">⭐</span>
                 </div>
               </div>
-              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg">{texts.mainCardTitle1}</h2>
-              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg text-yellow-300">{texts.mainCardTitle2}</h2>
-              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg">{texts.mainCardTitle3}</h2>
-              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg text-cyan-300">{texts.mainCardTitle4}</h2>
-              <h2 className="text-3xl font-black leading-tight drop-shadow-lg">{texts.mainCardTitle5}</h2>
+              <h2 className="text-3xl font-chunky mb-3 leading-tight drop-shadow-lg tracking-wider">{texts.mainCardTitle1}</h2>
+              <h2 className="text-3xl font-chunky mb-3 leading-tight drop-shadow-lg text-yellow-300 tracking-wider">{texts.mainCardTitle2}</h2>
+              <h2 className="text-3xl font-chunky mb-3 leading-tight drop-shadow-lg tracking-wider">{texts.mainCardTitle3}</h2>
+              <h2 className="text-3xl font-chunky mb-3 leading-tight drop-shadow-lg text-cyan-300 tracking-wider">{texts.mainCardTitle4}</h2>
+              <h2 className="text-3xl font-chunky leading-tight drop-shadow-lg tracking-wider">{texts.mainCardTitle5}</h2>
               <div className="mt-6 flex space-x-2">
                 <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
                   <span className="text-lg">🏃</span>
@@ -194,12 +194,12 @@ export default function HomePage() {
             <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
               <span className="text-lg">🔍</span>
             </div>
-            <h3 className="text-lg font-bold text-purple-700">{texts.findAdventureTitle}</h3>
+            <h3 className="text-lg font-chunky text-purple-700 tracking-wide">{texts.findAdventureTitle}</h3>
           </div>
           <input 
             type="text" 
             placeholder={texts.searchPlaceholder}
-            className="w-full text-purple-700 bg-purple-50 border-2 border-purple-200 rounded-2xl px-4 py-3 outline-none focus:border-purple-400 font-medium placeholder:text-purple-400"
+            className="w-full text-purple-700 bg-purple-50 border-2 border-purple-200 rounded-2xl px-4 py-3 outline-none focus:border-purple-400 font-heavy font-bold placeholder:text-purple-400"
           />
         </div>
 
@@ -222,19 +222,19 @@ export default function HomePage() {
                   <span className="text-3xl">🧗‍♂️</span>
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black mb-1 drop-shadow-lg">{texts.guideGreeting}</h3>
-                  <h3 className="text-2xl font-black text-yellow-300 drop-shadow-lg"><em>{texts.guideIntro}</em></h3>
+                  <h3 className="text-3xl font-chunky mb-1 drop-shadow-lg tracking-wider">{texts.guideGreeting}</h3>
+                  <h3 className="text-2xl font-chunky text-yellow-300 drop-shadow-lg tracking-wide"><em>{texts.guideIntro}</em></h3>
                 </div>
               </div>
-              <p className="text-lg mb-6 opacity-95 font-medium drop-shadow-md">{texts.guideDescription}</p>
+              <p className="text-lg mb-6 opacity-95 font-heavy font-bold drop-shadow-md tracking-wide">{texts.guideDescription}</p>
               <div className="flex space-x-4">
                 <Link href="/search">
-                  <button className="bg-white/90 text-cyan-700 px-6 py-3 rounded-2xl text-sm font-bold shadow-lg hover:bg-white transform hover:scale-105 transition-all">
+                  <button className="bg-white/90 text-cyan-700 px-6 py-3 rounded-2xl text-sm font-chunky shadow-lg hover:bg-white transform hover:scale-105 transition-all tracking-wide">
                     {texts.startButton}
                   </button>
                 </Link>
                 <Link href="/playlist">
-                  <button className="bg-yellow-400 text-cyan-800 px-6 py-3 rounded-2xl text-sm font-bold shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition-all flex items-center gap-2">
+                  <button className="bg-yellow-400 text-cyan-800 px-6 py-3 rounded-2xl text-sm font-chunky shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition-all flex items-center gap-2 tracking-wide">
                     <Plus className="w-4 h-4" />
                     {texts.programButton}
                   </button>
@@ -250,7 +250,7 @@ export default function HomePage() {
             <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
               <span className="text-xl">🚀</span>
             </div>
-            <h3 className="text-2xl font-black text-gray-800">{texts.exercisesTitle}</h3>
+            <h3 className="text-2xl font-chunky text-gray-800 tracking-wider">{texts.exercisesTitle}</h3>
           </div>
           <div className="flex space-x-4 overflow-x-auto pb-4">
             {exercises.slice(0, 3).map((exercise, index) => {

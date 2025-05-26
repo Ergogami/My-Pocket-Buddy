@@ -5,6 +5,11 @@ export default {
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        'chunky': ['Black Ops One', 'cursive'],
+        'bold': ['Fredoka', 'sans-serif'], 
+        'heavy': ['Nunito', 'sans-serif'],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
