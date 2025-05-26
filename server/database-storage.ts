@@ -39,6 +39,34 @@ export class DatabaseStorage implements IStorage {
     return result.rowCount > 0;
   }
 
+  async pinExercise(id: number): Promise<Exercise | undefined> {
+    try {
+      const [updatedExercise] = await db
+        .update(exercises)
+        .set({ isPinned: true })
+        .where(eq(exercises.id, id))
+        .returning();
+      return updatedExercise;
+    } catch (error) {
+      console.error('Error pinning exercise:', error);
+      return undefined;
+    }
+  }
+
+  async unpinExercise(id: number): Promise<Exercise | undefined> {
+    try {
+      const [updatedExercise] = await db
+        .update(exercises)
+        .set({ isPinned: false })
+        .where(eq(exercises.id, id))
+        .returning();
+      return updatedExercise;
+    } catch (error) {
+      console.error('Error unpinning exercise:', error);
+      return undefined;
+    }
+  }
+
   async getPlaylist(id: number): Promise<Playlist | undefined> {
     const [playlist] = await db.select().from(playlists).where(eq(playlists.id, id));
     return playlist || undefined;

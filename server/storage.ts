@@ -8,6 +8,8 @@ export interface IStorage {
   createExercise(exercise: InsertExercise): Promise<Exercise>;
   updateExercise(id: number, updates: Partial<Exercise>): Promise<Exercise | undefined>;
   deleteExercise(id: number): Promise<boolean>;
+  pinExercise(id: number): Promise<Exercise | undefined>;
+  unpinExercise(id: number): Promise<Exercise | undefined>;
 
   // Playlist methods
   getPlaylist(id: number): Promise<Playlist | undefined>;
@@ -108,7 +110,7 @@ export class MemStorage implements IStorage {
 
   async createExercise(insertExercise: InsertExercise): Promise<Exercise> {
     const id = this.currentExerciseId++;
-    const exercise: Exercise = { ...insertExercise, id, isCompleted: false };
+    const exercise: Exercise = { ...insertExercise, id, isCompleted: false, isPinned: false };
     this.exercises.set(id, exercise);
     return exercise;
   }

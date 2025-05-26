@@ -12,6 +12,7 @@ export const exercises = pgTable("exercises", {
   videoUrl: text("video_url").notNull(),
   thumbnailUrl: text("thumbnail_url"),
   isCompleted: boolean("is_completed").default(false),
+  isPinned: boolean("is_pinned").default(false),
 });
 
 export const playlists = pgTable("playlists", {
@@ -31,6 +32,7 @@ export const progress = pgTable("progress", {
 export const insertExerciseSchema = createInsertSchema(exercises).omit({
   id: true,
   isCompleted: true,
+  isPinned: true,
 });
 
 export const insertPlaylistSchema = createInsertSchema(playlists).omit({
