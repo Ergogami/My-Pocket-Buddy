@@ -283,23 +283,36 @@ export default function PlaylistPage() {
           {/* All Done Section */}
           {playlistExercises.length > 0 && (
             <div className="flex flex-col items-center">
-              <div className="text-gray-500 text-sm mb-2">All done</div>
-              <div 
-                className={`w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg ${
-                  allCompleted 
-                    ? 'bg-gradient-to-br from-green-400 to-emerald-500' 
-                    : 'bg-white/60 border-2 border-dashed border-gray-300'
-                }`}
-              >
-                {allCompleted ? (
-                  <div className="text-white text-3xl">🎉</div>
-                ) : (
-                  <div className="text-gray-400 text-2xl">🏆</div>
-                )}
+              <div className="text-gray-700 text-lg font-bold mb-4 text-center">
+                🏆 All Done Zone
+              </div>
+              <div className="space-y-3">
+                {playlistExercises.map((exercise, index) => {
+                  const isCompleted = todayProgress.some(p => p.exerciseId === exercise.id);
+                  return (
+                    <div 
+                      key={exercise.id}
+                      className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 ${
+                        isCompleted 
+                          ? 'bg-gradient-to-br from-green-400 to-emerald-500 transform scale-110' 
+                          : 'bg-white/60 border-2 border-dashed border-gray-300'
+                      }`}
+                    >
+                      {isCompleted ? (
+                        <div className="text-white text-2xl">✅</div>
+                      ) : (
+                        <div className="text-gray-400 text-xl">{index + 1}</div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
               {allCompleted && (
-                <div className="text-green-600 text-xs mt-2 text-center font-medium">
-                  Great job!<br/>All exercises<br/>completed
+                <div className="mt-4 text-center">
+                  <div className="text-3xl mb-2">🎉</div>
+                  <div className="text-green-600 text-sm font-bold">
+                    Amazing Work!<br/>All Exercises<br/>Completed!
+                  </div>
                 </div>
               )}
             </div>
