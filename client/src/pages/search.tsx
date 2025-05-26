@@ -243,6 +243,17 @@ export default function SearchPage() {
           </div>
         </div>
 
+        {/* OR Separator */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center space-x-4">
+            <div className="flex-1 h-0.5 bg-gradient-to-r from-transparent via-gray-300 to-gray-300"></div>
+            <div className="bg-gradient-to-r from-purple-400 to-pink-500 text-white px-8 py-3 rounded-full text-3xl font-black shadow-2xl border-4 border-white">
+              OR
+            </div>
+            <div className="flex-1 h-0.5 bg-gradient-to-l from-transparent via-gray-300 to-gray-300"></div>
+          </div>
+        </div>
+
         {/* Adventure Category Cards */}
         <div className="space-y-6">
           <div className="flex items-center space-x-3 mb-4">
