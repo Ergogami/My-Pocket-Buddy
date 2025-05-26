@@ -211,7 +211,18 @@ export default function SearchPage() {
                 onClick={() => setLocation(`/category/${category.name}`)}
                 className="relative rounded-3xl overflow-hidden cursor-pointer transform transition-all hover:scale-105 shadow-2xl border-4 border-white/50"
               >
-                <div className={`bg-gradient-to-br ${categoryColors[index]} h-40 relative`}>
+                <div className={`h-40 relative ${category.name === 'Flexibility' ? '' : `bg-gradient-to-br ${categoryColors[index]}`}`}>
+                  {category.name === 'Flexibility' && (
+                    <>
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{
+                          backgroundImage: `url('/attached_assets/side-bends-sportive-latin-family-working-out-in-t-2023-11-27-05-01-40-utc.jpg')`
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/30" />
+                    </>
+                  )}
                   <div className="absolute inset-0 bg-white/10 flex items-center justify-between p-6">
                     <div className="flex flex-col items-start">
                       <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-3 shadow-lg">
