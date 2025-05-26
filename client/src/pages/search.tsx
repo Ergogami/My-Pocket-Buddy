@@ -211,7 +211,7 @@ export default function SearchPage() {
                 onClick={() => setLocation(`/category/${category.name}`)}
                 className="relative rounded-3xl overflow-hidden cursor-pointer transform transition-all hover:scale-105 shadow-2xl border-4 border-white/50"
               >
-                <div className={`h-40 relative ${category.name === 'Flexibility' || category.name === 'Strength' ? '' : `bg-gradient-to-br ${categoryColors[index]}`}`}>
+                <div className={`h-40 relative ${category.name === 'Flexibility' || category.name === 'Strength' || category.name === 'Cardio' ? '' : `bg-gradient-to-br ${categoryColors[index]}`}`}>
                   {category.name === 'Flexibility' && (
                     <>
                       <div 
@@ -229,6 +229,17 @@ export default function SearchPage() {
                         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                         style={{
                           backgroundImage: `url('/attached_assets/group-of-children-playing-twister-indoors-2024-10-18-17-47-33-utc.jpg')`
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/30" />
+                    </>
+                  )}
+                  {category.name === 'Cardio' && (
+                    <>
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{
+                          backgroundImage: `url('/attached_assets/black-kid-and-his-friends-having-pe-class-at-the-s-2024-12-13-17-48-23-utc.jpg')`
                         }}
                       />
                       <div className="absolute inset-0 bg-black/30" />
