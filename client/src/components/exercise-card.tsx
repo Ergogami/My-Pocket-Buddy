@@ -81,21 +81,21 @@ export function ExerciseCard({
           </div>
 
           <div className="flex-1">
-            <h4 className={`text-xl font-chunky mb-2 tracking-wide ${isLocked ? 'text-gray-500' : 'text-navy'}`}>
+            <h4 className={`text-xl font-bubble mb-2 ${isLocked ? 'text-gray-500' : 'text-navy'}`}>
               {exercise.name}
             </h4>
-            <p className={`mb-2 font-heavy font-bold tracking-wide ${isLocked ? 'text-gray-400' : 'text-gray-600'}`}>
+            <p className={`mb-2 font-rounded font-bold ${isLocked ? 'text-gray-400' : 'text-gray-600'}`}>
               {exercise.description}
             </p>
             <div className="flex items-center space-x-4">
-              <span className={`px-3 py-1 rounded-full text-sm font-chunky tracking-wide ${
+              <span className={`px-3 py-1 rounded-full text-sm font-bubble ${
                 isLocked 
                   ? 'bg-gray-200 text-gray-500' 
                   : 'bg-sunny text-navy'
               }`}>
                 Ages {exercise.ageGroups.join(", ")}
               </span>
-              <span className={`font-heavy font-bold tracking-wide ${isLocked ? 'text-gray-400' : 'text-gray-500'}`}>
+              <span className={`font-rounded font-bold ${isLocked ? 'text-gray-400' : 'text-gray-500'}`}>
                 {exercise.duration}
               </span>
             </div>

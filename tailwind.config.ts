@@ -6,9 +6,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'chunky': ['Black Ops One', 'cursive'],
-        'bold': ['Fredoka', 'sans-serif'], 
-        'heavy': ['Nunito', 'sans-serif'],
+        'bubble': ['Fredoka One', 'cursive'],
+        'rounded': ['Baloo 2', 'sans-serif'], 
+        'soft': ['Comfortaa', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
