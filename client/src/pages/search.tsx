@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Search, Home, Menu, User, ArrowLeft, Plus, Play, MoreHorizontal, Star } from "lucide-react";
+import { usePrograms } from "@/hooks/use-programs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Exercise, Playlist } from "@shared/schema";
@@ -26,6 +27,8 @@ export default function SearchPage() {
   const { data: activePlaylist } = useQuery<Playlist>({
     queryKey: ["/api/playlists/active"],
   });
+
+  const { programs, getProgramExercises } = usePrograms();
 
   const addToPlaylistMutation = useMutation({
     mutationFn: async (exerciseId: number) => {

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Exercise } from "@shared/schema";
+import { usePrograms } from "@/hooks/use-programs";
 import { ExerciseCard } from "../components/exercise-card";
 import { VideoPlayerModal } from "../components/video-player-modal";
 import { CompletionModal } from "../components/completion-modal";
@@ -19,9 +20,7 @@ export default function ProgramsPage() {
   const [activeProgram, setActiveProgram] = useState<any>(null);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
 
-  const { data: exercises = [] } = useQuery<Exercise[]>({
-    queryKey: ['/api/exercises'],
-  });
+  const { programs, updateProgram, addExerciseToProgram, removeExerciseFromProgram, getProgramExercises, exercises } = usePrograms();
 
   const handlePlayVideo = (exercise: Exercise) => {
     setSelectedExercise(exercise);
@@ -58,99 +57,7 @@ export default function ProgramsPage() {
     setCurrentExerciseIndex(0);
   };
 
-  // Pre-made program definitions
-  const [programs, setPrograms] = useState([
-    {
-      id: 1,
-      title: "Animal Adventures",
-      description: "Jump like a kangaroo, balance like a flamingo, and roar like a lion!",
-      icon: "🦘",
-      color: "from-orange-400 to-red-500",
-      exerciseIds: [] as number[]
-    },
-    {
-      id: 2,
-      title: "Balance Masters",
-      description: "Develop amazing balance and coordination skills",
-      icon: "⚖️",
-      color: "from-blue-400 to-purple-500",
-      exerciseIds: [] as number[]
-    },
-    {
-      id: 3,
-      title: "Strength Heroes",
-      description: "Build strength through fun, engaging movements",
-      icon: "💪",
-      color: "from-green-400 to-emerald-500",
-      exerciseIds: [] as number[]
-    },
-  ]);
 
-  // Initialize programs with exercises when exercises are loaded
-  useEffect(() => {
-    if (exercises.length > 0) {
-      setPrograms(prev => prev.map(program => {
-        if (program.exerciseIds.length === 0) {
-          if (program.id === 1) {
-            // Animal Adventures
-            return {
-              ...program,
-              exerciseIds: exercises
-                .filter(ex => 
-                  ex.name.toLowerCase().includes('animal') ||
-                  ex.name.toLowerCase().includes('kangaroo') ||
-                  ex.name.toLowerCase().includes('flamingo') ||
-                  ex.name.toLowerCase().includes('lion') ||
-                  ex.name.toLowerCase().includes('dolphin') ||
-                  ex.name.toLowerCase().includes('kneeling')
-                )
-                .map(ex => ex.id)
-            };
-          } else if (program.id === 2) {
-            // Balance Masters
-            return {
-              ...program,
-              exerciseIds: exercises.filter(ex => ex.category === 'Balance').map(ex => ex.id)
-            };
-          } else if (program.id === 3) {
-            // Strength Heroes
-            return {
-              ...program,
-              exerciseIds: exercises.filter(ex => ex.category === 'Strength').map(ex => ex.id)
-            };
-          }
-        }
-        return program;
-      }));
-    }
-  }, [exercises]);
-
-  // Get exercises for a program based on their IDs
-  const getProgramExercises = (program: any) => {
-    return exercises.filter(ex => program.exerciseIds.includes(ex.id));
-  };
-
-  const addExerciseToProgram = (programId: number, exerciseId: number) => {
-    setPrograms(prev => prev.map(program => 
-      program.id === programId 
-        ? { ...program, exerciseIds: [...program.exerciseIds, exerciseId] }
-        : program
-    ));
-  };
-
-  const removeExerciseFromProgram = (programId: number, exerciseId: number) => {
-    setPrograms(prev => prev.map(program => 
-      program.id === programId 
-        ? { ...program, exerciseIds: program.exerciseIds.filter(id => id !== exerciseId) }
-        : program
-    ));
-  };
-
-  const updateProgram = (id: number, field: string, value: string) => {
-    setPrograms(prev => prev.map(program => 
-      program.id === id ? { ...program, [field]: value } : program
-    ));
-  };
 
   // Show workout screen when a program is active
   if (activeProgram) {
