@@ -116,118 +116,190 @@ export default function HomePage() {
       {/* Content */}
       <div className="px-4 py-6 max-w-md mx-auto space-y-6">
         {/* Hero Section with MY POCKET BUDDY */}
-        <div className="bg-gradient-to-b from-blue-100 to-blue-200 rounded-lg p-6 text-center">
-          <div className="flex justify-center items-center mb-4">
-            <div className="flex space-x-2">
-              {/* Cute cartoon characters */}
-              <div className="w-12 h-12 bg-yellow-300 rounded-full flex items-center justify-center">
-                <span className="text-2xl">👶</span>
-              </div>
-              <div className="w-12 h-12 bg-pink-300 rounded-full flex items-center justify-center">
-                <span className="text-2xl">👧</span>
-              </div>
-            </div>
-          </div>
-          <h1 className="text-3xl font-bold text-brown-800 mb-2">MY</h1>
-          <h1 className="text-3xl font-bold text-brown-800 mb-2">POCKET</h1>
-          <h1 className="text-3xl font-bold text-brown-800">BUDDY</h1>
-        </div>
-
-        {/* Main Hero Card */}
-        <div className="relative rounded-lg overflow-hidden">
-          <div className="bg-gradient-to-br from-gray-600 to-gray-800 p-8 text-white relative">
-            <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+        <div className="relative overflow-hidden rounded-3xl shadow-2xl">
+          <div className="bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 p-8 text-center relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-300/20 via-transparent to-cyan-300/20"></div>
             <div className="relative z-10">
-              <h2 className="text-4xl font-bold mb-4 leading-tight">ALL YOUR</h2>
-              <h2 className="text-4xl font-bold mb-4 leading-tight">FUN</h2>
-              <h2 className="text-4xl font-bold mb-4 leading-tight">EXERCISES</h2>
-              <h2 className="text-4xl font-bold mb-4 leading-tight">IN YOUR</h2>
-              <h2 className="text-4xl font-bold leading-tight">FINGERTIPS</h2>
-            </div>
-          </div>
-        </div>
-
-        {/* Text Input Area */}
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <input 
-            type="text" 
-            placeholder="Write Something..."
-            className="w-full text-gray-500 bg-transparent border-none outline-none"
-          />
-        </div>
-
-        {/* Introduction Card */}
-        <div className="relative rounded-lg overflow-hidden">
-          <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-6 text-white relative">
-            <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-            <div className="relative z-10">
-              <h3 className="text-2xl font-bold mb-2">HELLO! <em>I'm Ed!</em></h3>
-              <p className="text-sm mb-4 opacity-90">I am a physio and your Pocket Buddy!</p>
-              <div className="flex space-x-3">
-                <button className="bg-white text-gray-800 px-4 py-2 rounded-full text-sm font-medium">
-                  Discover More
-                </button>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-1">
-                  <Plus className="w-4 h-4" />
-                  Block
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Latest Exercises Section */}
-        <div>
-          <h3 className="text-xl font-bold text-gray-800 mb-4">LATEST EXERCISES</h3>
-          <div className="flex space-x-4 overflow-x-auto pb-4">
-            {exercises.slice(0, 3).map((exercise, index) => (
-              <div key={exercise.id} className="flex-shrink-0 w-64">
-                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                  <div className="bg-gradient-to-br from-gray-600 to-gray-800 h-40 relative">
-                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                      <Play className="w-12 h-12 text-white" />
-                    </div>
+              <div className="flex justify-center items-center mb-6">
+                <div className="flex space-x-3">
+                  {/* Adventure characters */}
+                  <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-xl transform hover:scale-110 transition-transform">
+                    <span className="text-3xl">🏃‍♀️</span>
                   </div>
-                  <div className="p-4">
-                    <h4 className="font-bold text-gray-800 mb-1">{exercise.name}</h4>
-                    <p className="text-sm text-blue-600 uppercase tracking-wide">WORKOUT</p>
-                    <div className="flex justify-between items-center mt-3">
-                      <span className="text-xs text-gray-500">{exercise.duration}</span>
-                      <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-                        <Play className="w-4 h-4 text-gray-600" />
-                      </button>
-                    </div>
+                  <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center shadow-xl transform hover:scale-110 transition-transform">
+                    <span className="text-3xl">🤸‍♂️</span>
+                  </div>
+                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center shadow-xl transform hover:scale-110 transition-transform">
+                    <span className="text-3xl">⚽</span>
                   </div>
                 </div>
               </div>
-            ))}
+              <div className="space-y-2">
+                <h1 className="text-4xl font-black text-white drop-shadow-2xl tracking-wide">Welcome to</h1>
+                <h1 className="text-5xl font-black text-yellow-300 drop-shadow-2xl tracking-wide">YOUR FITNESS</h1>
+                <h1 className="text-5xl font-black text-white drop-shadow-2xl tracking-wide">ADVENTURE!</h1>
+              </div>
+              <p className="text-white/90 text-lg mt-4 font-medium drop-shadow-lg">Explore fun exercises and grow stronger every day!</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Adventure Card */}
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+          <div className="bg-gradient-to-br from-orange-400 via-red-500 to-pink-600 p-8 text-white relative">
+            <div className="absolute inset-0 bg-gradient-to-t from-purple-600/30 via-transparent to-yellow-400/20"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <span className="text-2xl">🎯</span>
+                </div>
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <span className="text-2xl">⭐</span>
+                </div>
+              </div>
+              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg">ALL YOUR</h2>
+              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg text-yellow-300">AMAZING</h2>
+              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg">EXERCISES</h2>
+              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg text-cyan-300">IN YOUR</h2>
+              <h2 className="text-3xl font-black leading-tight drop-shadow-lg">POCKET!</h2>
+              <div className="mt-6 flex space-x-2">
+                <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
+                  <span className="text-lg">🏃</span>
+                </div>
+                <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
+                  <span className="text-lg">🤸</span>
+                </div>
+                <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
+                  <span className="text-lg">🏀</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Adventure Search Area */}
+        <div className="bg-white/90 backdrop-blur-md rounded-3xl border-4 border-purple-200 p-6 shadow-xl">
+          <div className="flex items-center space-x-3 mb-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
+              <span className="text-lg">🔍</span>
+            </div>
+            <h3 className="text-lg font-bold text-purple-700">Find Your Adventure!</h3>
+          </div>
+          <input 
+            type="text" 
+            placeholder="Search for fun exercises..."
+            className="w-full text-purple-700 bg-purple-50 border-2 border-purple-200 rounded-2xl px-4 py-3 outline-none focus:border-purple-400 font-medium placeholder:text-purple-400"
+          />
+        </div>
+
+        {/* Adventure Guide Card */}
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+          <div className="bg-gradient-to-br from-green-400 via-cyan-500 to-blue-600 p-8 text-white relative">
+            <div className="absolute inset-0 bg-gradient-to-t from-purple-500/20 via-transparent to-yellow-400/10"></div>
+            <div className="relative z-10">
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl">
+                  <span className="text-3xl">🧗‍♂️</span>
+                </div>
+                <div>
+                  <h3 className="text-3xl font-black mb-1 drop-shadow-lg">HELLO!</h3>
+                  <h3 className="text-2xl font-black text-yellow-300 drop-shadow-lg"><em>I'm your Guide!</em></h3>
+                </div>
+              </div>
+              <p className="text-lg mb-6 opacity-95 font-medium drop-shadow-md">Ready to explore amazing exercises and have tons of fun together?</p>
+              <div className="flex space-x-4">
+                <Link href="/search">
+                  <button className="bg-white/90 text-cyan-700 px-6 py-3 rounded-2xl text-sm font-bold shadow-lg hover:bg-white transform hover:scale-105 transition-all">
+                    🌟 Start Adventure
+                  </button>
+                </Link>
+                <Link href="/playlist">
+                  <button className="bg-yellow-400 text-cyan-800 px-6 py-3 rounded-2xl text-sm font-bold shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition-all flex items-center gap-2">
+                    <Plus className="w-4 h-4" />
+                    My Program
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Adventure Exercises Section */}
+        <div>
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-xl">🚀</span>
+            </div>
+            <h3 className="text-2xl font-black text-gray-800">ADVENTURE EXERCISES</h3>
+          </div>
+          <div className="flex space-x-4 overflow-x-auto pb-4">
+            {exercises.slice(0, 3).map((exercise, index) => {
+              const colors = [
+                'from-purple-400 to-pink-500',
+                'from-cyan-400 to-blue-500', 
+                'from-orange-400 to-red-500'
+              ];
+              const emojis = ['🏃‍♀️', '🤸‍♂️', '⚽'];
+              
+              return (
+                <div key={exercise.id} className="flex-shrink-0 w-64">
+                  <div className="bg-white rounded-3xl border-4 border-purple-100 overflow-hidden shadow-2xl transform hover:scale-105 transition-all">
+                    <div className={`bg-gradient-to-br ${colors[index % colors.length]} h-40 relative`}>
+                      <div className="absolute inset-0 bg-white/10 flex items-center justify-center">
+                        <div className="flex flex-col items-center">
+                          <span className="text-4xl mb-2">{emojis[index % emojis.length]}</span>
+                          <Play className="w-12 h-12 text-white drop-shadow-lg" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <h4 className="font-bold text-gray-800 mb-1">{exercise.name}</h4>
+                      <p className="text-sm text-purple-600 font-bold uppercase tracking-wide">{exercise.category}</p>
+                      <div className="flex justify-between items-center mt-4">
+                        <span className="text-xs text-gray-500 font-medium">{exercise.ageGroups.join(', ')}</span>
+                        <button 
+                          onClick={() => handlePlayVideo(exercise)}
+                          className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-110 transition-all"
+                        >
+                          <Play className="w-5 h-5 text-white" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border">
-        <div className="flex justify-around py-3 max-w-sm mx-auto">
-          <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
-            <Home className="w-5 h-5 text-pink" />
+      {/* Adventure Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 shadow-2xl">
+        <div className="flex justify-around py-4 max-w-sm mx-auto">
+          <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-3 bg-white/20 backdrop-blur-sm rounded-2xl">
+            <Home className="w-6 h-6 text-white" />
+            <span className="text-xs text-white font-bold">Home</span>
           </Button>
           <Link href="/search">
-            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
-              <Search className="w-5 h-5 text-medium-gray" />
+            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-3 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all">
+              <Search className="w-6 h-6 text-white/80" />
+              <span className="text-xs text-white/80 font-bold">Search</span>
             </Button>
           </Link>
           <Link href="/playlist">
-            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-2">
-              <Menu className="w-5 h-5 text-medium-gray" />
+            <Button variant="ghost" size="sm" className="flex flex-col items-center gap-1 p-3 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all">
+              <Menu className="w-6 h-6 text-white/80" />
+              <span className="text-xs text-white/80 font-bold">Program</span>
             </Button>
           </Link>
           <Button 
             onClick={() => setShowUploadModal(true)}
             variant="ghost" 
             size="sm" 
-            className="flex flex-col items-center gap-1 p-2"
+            className="flex flex-col items-center gap-1 p-3 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all"
           >
-            <User className="w-5 h-5 text-medium-gray" />
+            <User className="w-6 h-6 text-white/80" />
+            <span className="text-xs text-white/80 font-bold">Upload</span>
           </Button>
         </div>
       </div>
