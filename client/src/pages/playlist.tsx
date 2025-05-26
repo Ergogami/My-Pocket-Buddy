@@ -108,6 +108,22 @@ export default function PlaylistPage() {
     setShowVideoModal(true);
   };
 
+  const handleNextExercise = () => {
+    if (currentVideoIndex < playlistExercises.length - 1) {
+      const nextIndex = currentVideoIndex + 1;
+      setCurrentVideoIndex(nextIndex);
+      setSelectedExercise(playlistExercises[nextIndex]);
+    }
+  };
+
+  const handlePreviousExercise = () => {
+    if (currentVideoIndex > 0) {
+      const prevIndex = currentVideoIndex - 1;
+      setCurrentVideoIndex(prevIndex);
+      setSelectedExercise(playlistExercises[prevIndex]);
+    }
+  };
+
   const handleCompleteExercise = (exercise: Exercise) => {
     completeMutation.mutate(exercise.id);
     setSelectedExercise(exercise);
@@ -296,6 +312,10 @@ export default function PlaylistPage() {
         isOpen={showVideoModal}
         onClose={() => setShowVideoModal(false)}
         exercise={selectedExercise}
+        onNext={handleNextExercise}
+        onPrevious={handlePreviousExercise}
+        hasNext={currentVideoIndex < playlistExercises.length - 1}
+        hasPrevious={currentVideoIndex > 0}
       />
       
       <CompletionModal

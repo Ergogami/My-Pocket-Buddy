@@ -8,9 +8,13 @@ interface VideoPlayerModalProps {
   isOpen: boolean;
   onClose: () => void;
   exercise: Exercise | null;
+  onNext?: () => void;
+  onPrevious?: () => void;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
 }
 
-export function VideoPlayerModal({ isOpen, onClose, exercise }: VideoPlayerModalProps) {
+export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious, hasNext, hasPrevious }: VideoPlayerModalProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -26,13 +30,15 @@ export function VideoPlayerModal({ isOpen, onClose, exercise }: VideoPlayerModal
   };
 
   const handlePrevious = () => {
-    // TODO: Implement previous exercise logic
-    console.log("Previous exercise");
+    if (onPrevious) {
+      onPrevious();
+    }
   };
 
   const handleNext = () => {
-    // TODO: Implement next exercise logic
-    console.log("Next exercise");
+    if (onNext) {
+      onNext();
+    }
   };
 
   if (!exercise) return null;
@@ -87,9 +93,10 @@ export function VideoPlayerModal({ isOpen, onClose, exercise }: VideoPlayerModal
           <div className="flex justify-center space-x-6">
             <Button
               onClick={handlePrevious}
+              disabled={!hasPrevious}
               size="lg"
               variant="outline"
-              className="w-16 h-16 rounded-full"
+              className="w-16 h-16 rounded-full disabled:opacity-50"
             >
               <SkipBack className="text-xl" />
             </Button>
@@ -108,9 +115,10 @@ export function VideoPlayerModal({ isOpen, onClose, exercise }: VideoPlayerModal
             
             <Button
               onClick={handleNext}
+              disabled={!hasNext}
               size="lg"
               variant="outline"
-              className="w-16 h-16 rounded-full"
+              className="w-16 h-16 rounded-full disabled:opacity-50"
             >
               <SkipForward className="text-xl" />
             </Button>

@@ -16,6 +16,7 @@ export default function CategoryPage({ category }: CategoryPageProps) {
   const [, setLocation] = useLocation();
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const { toast } = useToast();
 
   const { data: exercises = [] } = useQuery<Exercise[]>({
@@ -70,8 +71,26 @@ export default function CategoryPage({ category }: CategoryPageProps) {
   });
 
   const handlePlayVideo = (exercise: Exercise) => {
+    const exerciseIndex = categoryExercises.findIndex(ex => ex.id === exercise.id);
     setSelectedExercise(exercise);
+    setCurrentVideoIndex(exerciseIndex);
     setShowVideoModal(true);
+  };
+
+  const handleNextExercise = () => {
+    if (currentVideoIndex < categoryExercises.length - 1) {
+      const nextIndex = currentVideoIndex + 1;
+      setCurrentVideoIndex(nextIndex);
+      setSelectedExercise(categoryExercises[nextIndex]);
+    }
+  };
+
+  const handlePreviousExercise = () => {
+    if (currentVideoIndex > 0) {
+      const prevIndex = currentVideoIndex - 1;
+      setCurrentVideoIndex(prevIndex);
+      setSelectedExercise(categoryExercises[prevIndex]);
+    }
   };
 
   const handleAddToPlaylist = (exerciseId: number) => {
