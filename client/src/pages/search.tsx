@@ -211,7 +211,18 @@ export default function SearchPage() {
                 onClick={() => setLocation(`/category/${category.name}`)}
                 className="relative rounded-3xl overflow-hidden cursor-pointer transform transition-all hover:scale-105 shadow-2xl border-4 border-white/50"
               >
-                <div className={`h-40 relative ${category.name === 'Flexibility' || category.name === 'Strength' || category.name === 'Cardio' || category.name === 'Ball Skills' ? '' : `bg-gradient-to-br ${categoryColors[index]}`}`}>
+                <div className={`h-40 relative ${category.name === 'Flexibility' || category.name === 'Strength' || category.name === 'Cardio' || category.name === 'Ball Skills' || category.name === 'Balance' ? '' : `bg-gradient-to-br ${categoryColors[index]}`}`}>
+                  {category.name === 'Balance' && (
+                    <>
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{
+                          backgroundImage: `url('/attached_assets/adorable-little-hispanic-boy-looking-excited-while-2025-04-06-11-25-29-utc.jpg')`
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/30" />
+                    </>
+                  )}
                   {category.name === 'Flexibility' && (
                     <>
                       <div 
