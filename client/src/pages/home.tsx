@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Play, MoreHorizontal, Home, Search, Menu, User, ArrowLeft, Plus } from "lucide-react";
+import { Play, MoreHorizontal, Home, Search, Menu, User, ArrowLeft, Plus, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VideoUploadModal } from "@/components/video-upload-modal";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { CompletionModal } from "@/components/completion-modal";
+import { TextEditorModal } from "@/components/text-editor-modal";
+import { useAppText } from "@/hooks/use-app-text";
 import { Exercise, Playlist } from "@shared/schema";
 import { Link } from "wouter";
 
@@ -13,9 +15,12 @@ export default function HomePage() {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [showTextEditor, setShowTextEditor] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const texts = useAppText();
 
   const { data: exercises = [] } = useQuery<Exercise[]>({
     queryKey: ["/api/exercises"],
@@ -98,11 +103,17 @@ export default function HomePage() {
               <span className="text-white text-xl">🏃</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white drop-shadow-lg">MY POCKET BUDDY</h1>
-              <p className="text-white/80 text-xs">Adventure awaits!</p>
+              <h1 className="text-xl font-bold text-white drop-shadow-lg">{texts.appTitle}</h1>
+              <p className="text-white/80 text-xs">{texts.appSubtitle}</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
+            <button 
+              onClick={() => setShowTextEditor(true)}
+              className="bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-lg hover:bg-white/30 transition-colors"
+            >
+              <Edit className="w-5 h-5 text-white" />
+            </button>
             <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-lg">
               <Menu className="w-5 h-5 text-white" />
             </div>
@@ -135,11 +146,11 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <h1 className="text-4xl font-black text-white drop-shadow-2xl tracking-wide">Welcome to</h1>
-                <h1 className="text-5xl font-black text-yellow-300 drop-shadow-2xl tracking-wide">YOUR FITNESS</h1>
-                <h1 className="text-5xl font-black text-white drop-shadow-2xl tracking-wide">ADVENTURE!</h1>
+                <h1 className="text-4xl font-black text-white drop-shadow-2xl tracking-wide">{texts.welcomeTitle}</h1>
+                <h1 className="text-5xl font-black text-yellow-300 drop-shadow-2xl tracking-wide">{texts.welcomeSubtitle1}</h1>
+                <h1 className="text-5xl font-black text-white drop-shadow-2xl tracking-wide">{texts.welcomeSubtitle2}</h1>
               </div>
-              <p className="text-white/90 text-lg mt-4 font-medium drop-shadow-lg">Explore fun exercises and grow stronger every day!</p>
+              <p className="text-white/90 text-lg mt-4 font-medium drop-shadow-lg">{texts.welcomeDescription}</p>
             </div>
           </div>
         </div>
@@ -157,11 +168,11 @@ export default function HomePage() {
                   <span className="text-2xl">⭐</span>
                 </div>
               </div>
-              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg">ALL YOUR</h2>
-              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg text-yellow-300">AMAZING</h2>
-              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg">EXERCISES</h2>
-              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg text-cyan-300">IN YOUR</h2>
-              <h2 className="text-3xl font-black leading-tight drop-shadow-lg">POCKET!</h2>
+              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg">{texts.mainCardTitle1}</h2>
+              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg text-yellow-300">{texts.mainCardTitle2}</h2>
+              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg">{texts.mainCardTitle3}</h2>
+              <h2 className="text-3xl font-black mb-3 leading-tight drop-shadow-lg text-cyan-300">{texts.mainCardTitle4}</h2>
+              <h2 className="text-3xl font-black leading-tight drop-shadow-lg">{texts.mainCardTitle5}</h2>
               <div className="mt-6 flex space-x-2">
                 <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
                   <span className="text-lg">🏃</span>
