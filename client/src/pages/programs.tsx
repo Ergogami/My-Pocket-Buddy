@@ -3,11 +3,12 @@ import { Exercise } from "@shared/schema";
 import { ExerciseCard } from "../components/exercise-card";
 import { VideoPlayerModal } from "../components/video-player-modal";
 import { CompletionModal } from "../components/completion-modal";
-import { useState } from "react";
-import { Plus, Star, Edit3, Save, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Plus, Star, Edit3, Save, X, Trash2 } from "lucide-react";
 import { Link } from "wouter";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function ProgramsPage() {
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
@@ -38,14 +39,7 @@ export default function ProgramsPage() {
       description: "Jump like a kangaroo, balance like a flamingo, and roar like a lion!",
       icon: "🦘",
       color: "from-orange-400 to-red-500",
-      exercises: exercises.filter(ex => 
-        ex.name.toLowerCase().includes('animal') ||
-        ex.name.toLowerCase().includes('kangaroo') ||
-        ex.name.toLowerCase().includes('flamingo') ||
-        ex.name.toLowerCase().includes('lion') ||
-        ex.name.toLowerCase().includes('dolphin') ||
-        ex.name.toLowerCase().includes('kneeling')
-      )
+      exerciseIds: [] as number[]
     },
     {
       id: 2,
@@ -53,7 +47,7 @@ export default function ProgramsPage() {
       description: "Develop amazing balance and coordination skills",
       icon: "⚖️",
       color: "from-blue-400 to-purple-500",
-      exercises: exercises.filter(ex => ex.category === 'Balance')
+      exerciseIds: [] as number[]
     },
     {
       id: 3,
@@ -61,9 +55,69 @@ export default function ProgramsPage() {
       description: "Build strength through fun, engaging movements",
       icon: "💪",
       color: "from-green-400 to-emerald-500",
-      exercises: exercises.filter(ex => ex.category === 'Strength')
+      exerciseIds: [] as number[]
     },
   ]);
+
+  // Initialize programs with exercises when exercises are loaded
+  useEffect(() => {
+    if (exercises.length > 0) {
+      setPrograms(prev => prev.map(program => {
+        if (program.exerciseIds.length === 0) {
+          if (program.id === 1) {
+            // Animal Adventures
+            return {
+              ...program,
+              exerciseIds: exercises
+                .filter(ex => 
+                  ex.name.toLowerCase().includes('animal') ||
+                  ex.name.toLowerCase().includes('kangaroo') ||
+                  ex.name.toLowerCase().includes('flamingo') ||
+                  ex.name.toLowerCase().includes('lion') ||
+                  ex.name.toLowerCase().includes('dolphin') ||
+                  ex.name.toLowerCase().includes('kneeling')
+                )
+                .map(ex => ex.id)
+            };
+          } else if (program.id === 2) {
+            // Balance Masters
+            return {
+              ...program,
+              exerciseIds: exercises.filter(ex => ex.category === 'Balance').map(ex => ex.id)
+            };
+          } else if (program.id === 3) {
+            // Strength Heroes
+            return {
+              ...program,
+              exerciseIds: exercises.filter(ex => ex.category === 'Strength').map(ex => ex.id)
+            };
+          }
+        }
+        return program;
+      }));
+    }
+  }, [exercises]);
+
+  // Get exercises for a program based on their IDs
+  const getProgramExercises = (program: any) => {
+    return exercises.filter(ex => program.exerciseIds.includes(ex.id));
+  };
+
+  const addExerciseToProgram = (programId: number, exerciseId: number) => {
+    setPrograms(prev => prev.map(program => 
+      program.id === programId 
+        ? { ...program, exerciseIds: [...program.exerciseIds, exerciseId] }
+        : program
+    ));
+  };
+
+  const removeExerciseFromProgram = (programId: number, exerciseId: number) => {
+    setPrograms(prev => prev.map(program => 
+      program.id === programId 
+        ? { ...program, exerciseIds: program.exerciseIds.filter(id => id !== exerciseId) }
+        : program
+    ));
+  };
 
   const updateProgram = (id: number, field: string, value: string) => {
     setPrograms(prev => prev.map(program => 
@@ -166,7 +220,7 @@ export default function ProgramsPage() {
                 )}
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-white/80 font-rounded font-bold">
-                    {program.exercises.length} exercises
+                    {getProgramExercises(program).length} exercises
                   </span>
                   <div className="flex items-center space-x-1">
                     <Star className="w-4 h-4 fill-yellow-300 text-yellow-300" />
@@ -180,21 +234,60 @@ export default function ProgramsPage() {
               
               {/* Exercise Preview */}
               <div className="p-4 space-y-2 max-h-48 overflow-y-auto">
-                {program.exercises.slice(0, 3).map((exercise) => (
-                  <div key={exercise.id} className="flex items-center space-x-3 p-2 bg-gray-50 rounded-xl">
-                    <div className="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center">
-                      <span className="text-sm">🎯</span>
+                {getProgramExercises(program).slice(0, 3).map((exercise) => (
+                  <div key={exercise.id} className="flex items-center justify-between p-2 bg-gray-50 rounded-xl">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center">
+                        <span className="text-sm">🎯</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-bubble text-gray-800">{exercise.name}</p>
+                        <p className="text-xs text-gray-500 font-rounded">{exercise.duration}</p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-bubble text-gray-800">{exercise.name}</p>
-                      <p className="text-xs text-gray-500 font-rounded">{exercise.duration}</p>
-                    </div>
+                    {editMode && editingProgram === program.id && (
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeExerciseFromProgram(program.id, exercise.id);
+                        }}
+                        size="sm"
+                        variant="destructive"
+                        className="h-6 w-6 p-1"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    )}
                   </div>
                 ))}
-                {program.exercises.length > 3 && (
+                
+                {/* Add Exercise Section */}
+                {editMode && editingProgram === program.id && (
+                  <div className="mt-4 p-3 bg-blue-50 rounded-xl border-2 border-dashed border-blue-200">
+                    <div className="flex items-center gap-2">
+                      <Select onValueChange={(value) => addExerciseToProgram(program.id, parseInt(value))}>
+                        <SelectTrigger className="flex-1">
+                          <SelectValue placeholder="Add an exercise" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {exercises
+                            .filter(ex => !program.exerciseIds.includes(ex.id))
+                            .map((exercise) => (
+                            <SelectItem key={exercise.id} value={exercise.id.toString()}>
+                              {exercise.name} ({exercise.category})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Plus className="h-4 w-4 text-blue-500" />
+                    </div>
+                  </div>
+                )}
+                
+                {getProgramExercises(program).length > 3 && (
                   <div className="text-center py-2">
                     <span className="text-sm text-gray-500 font-rounded font-bold">
-                      +{program.exercises.length - 3} more exercises
+                      +{getProgramExercises(program).length - 3} more exercises
                     </span>
                   </div>
                 )}
