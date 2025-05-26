@@ -19,6 +19,7 @@ export default function PlaylistPage() {
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [isDraggedOver, setIsDraggedOver] = useState(false);
 
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -139,8 +140,10 @@ export default function PlaylistPage() {
 
   const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }) => {
     const [isDragging, setIsDragging] = useState(false);
+    const [isOverDropZone, setIsOverDropZone] = useState(false);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+    const [cardRect, setCardRect] = useState<DOMRect | null>(null);
 
     const completed = isCompleted(exercise.id);
 
@@ -151,57 +154,114 @@ export default function PlaylistPage() {
 
     useEffect(() => {
       const handleGlobalMouseMove = (e: MouseEvent) => {
-        if (isDragging) {
-          setDragOffset({
+        if (isDragging && cardRect) {
+          const newOffset = {
             x: e.clientX - startPos.x,
             y: e.clientY - startPos.y
-          });
+          };
+          setDragOffset(newOffset);
+
+          // Check if over drop zone
+          const dropZone = document.querySelector('.trophy-zone');
+          if (dropZone) {
+            const rect = dropZone.getBoundingClientRect();
+            const draggedX = cardRect.left + newOffset.x + cardRect.width / 2;
+            const draggedY = cardRect.top + newOffset.y + cardRect.height / 2;
+            
+            const isOver = draggedX >= rect.left && draggedX <= rect.right && 
+                          draggedY >= rect.top && draggedY <= rect.bottom;
+            setIsOverDropZone(isOver);
+          }
         }
       };
 
       const handleGlobalMouseUp = (e: MouseEvent) => {
         if (isDragging) {
-          const dropZone = document.querySelector('.trophy-zone');
-          if (dropZone) {
-            const rect = dropZone.getBoundingClientRect();
-            
-            if (e.clientX >= rect.left && e.clientX <= rect.right && 
-                e.clientY >= rect.top && e.clientY <= rect.bottom) {
-              handleCompleteExercise(exercise);
+          if (isOverDropZone) {
+            // Animate to center of drop zone before completing
+            const dropZone = document.querySelector('.trophy-zone');
+            if (dropZone && cardRect) {
+              const rect = dropZone.getBoundingClientRect();
+              const centerX = rect.left + rect.width / 2 - cardRect.width / 2;
+              const centerY = rect.top + rect.height / 2 - cardRect.height / 2;
+              
+              setDragOffset({
+                x: centerX - cardRect.left,
+                y: centerY - cardRect.top
+              });
+              
+              setTimeout(() => {
+                handleCompleteExercise(exercise);
+                setIsDragging(false);
+                setDragOffset({ x: 0, y: 0 });
+                setIsOverDropZone(false);
+              }, 300);
             }
+          } else {
+            // Animate back to original position
+            setDragOffset({ x: 0, y: 0 });
+            setTimeout(() => {
+              setIsDragging(false);
+              setIsOverDropZone(false);
+            }, 300);
           }
-          
-          setIsDragging(false);
-          setDragOffset({ x: 0, y: 0 });
         }
       };
 
       const handleGlobalTouchMove = (e: TouchEvent) => {
-        if (isDragging && e.touches.length > 0) {
+        if (isDragging && e.touches.length > 0 && cardRect) {
           const touch = e.touches[0];
-          setDragOffset({
+          const newOffset = {
             x: touch.clientX - startPos.x,
             y: touch.clientY - startPos.y
-          });
+          };
+          setDragOffset(newOffset);
+
+          // Check if over drop zone
+          const dropZone = document.querySelector('.trophy-zone');
+          if (dropZone) {
+            const rect = dropZone.getBoundingClientRect();
+            const draggedX = cardRect.left + newOffset.x + cardRect.width / 2;
+            const draggedY = cardRect.top + newOffset.y + cardRect.height / 2;
+            
+            const isOver = draggedX >= rect.left && draggedX <= rect.right && 
+                          draggedY >= rect.top && draggedY <= rect.bottom;
+            setIsOverDropZone(isOver);
+          }
           e.preventDefault();
         }
       };
 
       const handleGlobalTouchEnd = (e: TouchEvent) => {
-        if (isDragging && e.changedTouches.length > 0) {
-          const touch = e.changedTouches[0];
-          const dropZone = document.querySelector('.trophy-zone');
-          if (dropZone) {
-            const rect = dropZone.getBoundingClientRect();
-            
-            if (touch.clientX >= rect.left && touch.clientX <= rect.right && 
-                touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
-              handleCompleteExercise(exercise);
+        if (isDragging) {
+          if (isOverDropZone) {
+            // Animate to center of drop zone before completing
+            const dropZone = document.querySelector('.trophy-zone');
+            if (dropZone && cardRect) {
+              const rect = dropZone.getBoundingClientRect();
+              const centerX = rect.left + rect.width / 2 - cardRect.width / 2;
+              const centerY = rect.top + rect.height / 2 - cardRect.height / 2;
+              
+              setDragOffset({
+                x: centerX - cardRect.left,
+                y: centerY - cardRect.top
+              });
+              
+              setTimeout(() => {
+                handleCompleteExercise(exercise);
+                setIsDragging(false);
+                setDragOffset({ x: 0, y: 0 });
+                setIsOverDropZone(false);
+              }, 300);
             }
+          } else {
+            // Animate back to original position
+            setDragOffset({ x: 0, y: 0 });
+            setTimeout(() => {
+              setIsDragging(false);
+              setIsOverDropZone(false);
+            }, 300);
           }
-          
-          setIsDragging(false);
-          setDragOffset({ x: 0, y: 0 });
         }
       };
 
@@ -218,9 +278,12 @@ export default function PlaylistPage() {
         document.removeEventListener('touchmove', handleGlobalTouchMove);
         document.removeEventListener('touchend', handleGlobalTouchEnd);
       };
-    }, [isDragging, startPos, exercise]);
+    }, [isDragging, startPos, exercise, cardRect, isOverDropZone]);
 
     const handleMouseDown = (e: React.MouseEvent) => {
+      const card = e.currentTarget as HTMLElement;
+      const rect = card.getBoundingClientRect();
+      setCardRect(rect);
       setIsDragging(true);
       setStartPos({ x: e.clientX, y: e.clientY });
       e.preventDefault();
@@ -228,6 +291,9 @@ export default function PlaylistPage() {
 
     const handleTouchStart = (e: React.TouchEvent) => {
       const touch = e.touches[0];
+      const card = e.currentTarget as HTMLElement;
+      const rect = card.getBoundingClientRect();
+      setCardRect(rect);
       setIsDragging(true);
       setStartPos({ x: touch.clientX, y: touch.clientY });
       e.preventDefault();
@@ -239,11 +305,14 @@ export default function PlaylistPage() {
         <div
           className={`relative rounded-2xl overflow-hidden transition-all duration-300 cursor-grab select-none ${
             isDragging ? 'cursor-grabbing scale-110 shadow-2xl z-50' : ''
+          } ${
+            isOverDropZone ? 'ring-4 ring-green-400 ring-opacity-75' : ''
           }`}
           style={{
-            transform: isDragging ? `translate(${dragOffset.x}px, ${dragOffset.y}px)` : 'none',
+            transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)`,
             position: isDragging ? 'fixed' : 'static',
-            zIndex: isDragging ? 1000 : 1
+            zIndex: isDragging ? 1000 : 1,
+            transition: isDragging ? 'none' : 'all 0.3s ease-out'
           }}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
@@ -407,7 +476,11 @@ export default function PlaylistPage() {
               <div className="text-gray-700 text-lg font-bold mb-4 text-center">
                 🏆 Trophy Zone
               </div>
-              <div className="trophy-zone space-y-3 p-4 rounded-3xl border-4 border-dashed border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-100 min-h-48 transition-all duration-300 hover:border-amber-400 hover:bg-gradient-to-br hover:from-amber-100 hover:to-yellow-200">
+              <div className={`trophy-zone space-y-3 p-4 rounded-3xl border-4 border-dashed min-h-48 transition-all duration-300 ${
+                isDraggedOver 
+                  ? 'border-green-400 bg-gradient-to-br from-green-100 to-emerald-200 scale-105 shadow-lg'
+                  : 'border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-100 hover:border-amber-400 hover:bg-gradient-to-br hover:from-amber-100 hover:to-yellow-200'
+              }`}>
                 {playlistExercises.map((exercise, index) => {
                   const isCompleted = todayProgress.some(p => p.exerciseId === exercise.id);
                   return (
