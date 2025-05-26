@@ -157,8 +157,17 @@ export default function HomePage() {
 
         {/* Main Adventure Card */}
         <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-          <div className="bg-gradient-to-br from-orange-400 via-red-500 to-pink-600 p-8 text-white relative">
-            <div className="absolute inset-0 bg-gradient-to-t from-purple-600/30 via-transparent to-yellow-400/20"></div>
+          <div className="relative p-8 text-white min-h-[400px]">
+            {/* Background Image */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url('${new URL('../../../attached_assets/beautiful-family-indoor-playing-with-balloon-toys-2024-10-18-07-47-21-utc.jpg', import.meta.url).href}')`
+              }}
+            ></div>
+            {/* Overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/70"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-purple-600/40 via-transparent to-yellow-400/20"></div>
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-6">
                 <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
