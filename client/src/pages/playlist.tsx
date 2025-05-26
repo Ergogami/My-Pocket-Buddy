@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Play, X, Settings, ChevronLeft, ChevronRight, MoreHorizontal, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { CompletionModal } from "@/components/completion-modal";
 import { Exercise, Playlist } from "@shared/schema";
-import { useSwipe } from "@/hooks/use-swipe";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -139,48 +138,115 @@ export default function PlaylistPage() {
   };
 
   const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }) => {
-    const [isSwipping, setIsSwipping] = useState(false);
-    const [isMovingToComplete, setIsMovingToComplete] = useState(false);
-    
-    const swipeHandlers = useSwipe({
-      onSwipeRight: () => {
-        if (!isCompleted(exercise.id)) {
-          setIsSwipping(true);
-          setIsMovingToComplete(true);
-          setTimeout(() => {
-            handleCompleteExercise(exercise);
-            setIsSwipping(false);
-            setTimeout(() => setIsMovingToComplete(false), 500);
-          }, 600);
-        }
-      },
-    });
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
     const completed = isCompleted(exercise.id);
 
     // Don't render the card if it's completed (it will appear in the All Done zone)
-    if (completed && !isMovingToComplete) {
+    if (completed) {
       return null;
     }
 
+    useEffect(() => {
+      const handleGlobalMouseMove = (e: MouseEvent) => {
+        if (isDragging) {
+          setDragOffset({
+            x: e.clientX - startPos.x,
+            y: e.clientY - startPos.y
+          });
+        }
+      };
+
+      const handleGlobalMouseUp = (e: MouseEvent) => {
+        if (isDragging) {
+          const dropZone = document.querySelector('.trophy-zone');
+          if (dropZone) {
+            const rect = dropZone.getBoundingClientRect();
+            
+            if (e.clientX >= rect.left && e.clientX <= rect.right && 
+                e.clientY >= rect.top && e.clientY <= rect.bottom) {
+              handleCompleteExercise(exercise);
+            }
+          }
+          
+          setIsDragging(false);
+          setDragOffset({ x: 0, y: 0 });
+        }
+      };
+
+      const handleGlobalTouchMove = (e: TouchEvent) => {
+        if (isDragging && e.touches.length > 0) {
+          const touch = e.touches[0];
+          setDragOffset({
+            x: touch.clientX - startPos.x,
+            y: touch.clientY - startPos.y
+          });
+          e.preventDefault();
+        }
+      };
+
+      const handleGlobalTouchEnd = (e: TouchEvent) => {
+        if (isDragging && e.changedTouches.length > 0) {
+          const touch = e.changedTouches[0];
+          const dropZone = document.querySelector('.trophy-zone');
+          if (dropZone) {
+            const rect = dropZone.getBoundingClientRect();
+            
+            if (touch.clientX >= rect.left && touch.clientX <= rect.right && 
+                touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+              handleCompleteExercise(exercise);
+            }
+          }
+          
+          setIsDragging(false);
+          setDragOffset({ x: 0, y: 0 });
+        }
+      };
+
+      if (isDragging) {
+        document.addEventListener('mousemove', handleGlobalMouseMove);
+        document.addEventListener('mouseup', handleGlobalMouseUp);
+        document.addEventListener('touchmove', handleGlobalTouchMove, { passive: false });
+        document.addEventListener('touchend', handleGlobalTouchEnd);
+      }
+
+      return () => {
+        document.removeEventListener('mousemove', handleGlobalMouseMove);
+        document.removeEventListener('mouseup', handleGlobalMouseUp);
+        document.removeEventListener('touchmove', handleGlobalTouchMove);
+        document.removeEventListener('touchend', handleGlobalTouchEnd);
+      };
+    }, [isDragging, startPos, exercise]);
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+      setIsDragging(true);
+      setStartPos({ x: e.clientX, y: e.clientY });
+      e.preventDefault();
+    };
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+      const touch = e.touches[0];
+      setIsDragging(true);
+      setStartPos({ x: touch.clientX, y: touch.clientY });
+      e.preventDefault();
+    };
+
     return (
       <div className="relative mb-4">
-        {/* Completion Background Indicator */}
-        {isSwipping && (
-          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center z-10">
-            <div className="text-white text-lg font-bold flex items-center">
-              <span className="text-3xl mr-2">🏆</span>
-              Moving to All Done Zone!
-            </div>
-          </div>
-        )}
-        
         {/* Exercise Card */}
         <div
-          className={`relative rounded-2xl overflow-hidden transition-all duration-700 ease-out ${
-            isMovingToComplete ? 'transform translate-x-96 scale-75 opacity-0' : ''
-          } ${isSwipping ? 'translate-x-8 scale-[0.95]' : ''}`}
-          {...swipeHandlers}
+          className={`relative rounded-2xl overflow-hidden transition-all duration-300 cursor-grab select-none ${
+            isDragging ? 'cursor-grabbing scale-110 shadow-2xl z-50' : ''
+          }`}
+          style={{
+            transform: isDragging ? `translate(${dragOffset.x}px, ${dragOffset.y}px)` : 'none',
+            position: isDragging ? 'fixed' : 'static',
+            zIndex: isDragging ? 1000 : 1
+          }}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
         >
           {/* Background with exercise theme */}
           <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 shadow-lg p-4 h-24 flex items-center justify-between">
@@ -297,14 +363,14 @@ export default function PlaylistPage() {
 
       {/* Main Content */}
       <div className="px-6 py-6 max-w-lg mx-auto">
-        {/* Swipe Instruction */}
+        {/* Drag and Drop Instruction */}
         {playlistExercises.filter(ex => !isCompleted(ex.id)).length > 0 && (
           <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-4 mb-6 border border-blue-200">
             <div className="flex items-center space-x-3">
-              <div className="text-2xl">👉</div>
+              <div className="text-2xl">🖱️</div>
               <div>
-                <p className="text-blue-800 font-medium text-sm">Swipe right to move to All Done Zone!</p>
-                <p className="text-blue-600 text-xs">Watch exercises fly into the trophy zone when completed</p>
+                <p className="text-blue-800 font-medium text-sm">Drag exercises to the Trophy Zone!</p>
+                <p className="text-blue-600 text-xs">Click and drag exercise cards to complete them</p>
               </div>
             </div>
           </div>
@@ -339,9 +405,9 @@ export default function PlaylistPage() {
           {playlistExercises.length > 0 && (
             <div className="flex flex-col items-center">
               <div className="text-gray-700 text-lg font-bold mb-4 text-center">
-                🏆 All Done Zone
+                🏆 Trophy Zone
               </div>
-              <div className="space-y-3">
+              <div className="trophy-zone space-y-3 p-4 rounded-3xl border-4 border-dashed border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-100 min-h-48 transition-all duration-300 hover:border-amber-400 hover:bg-gradient-to-br hover:from-amber-100 hover:to-yellow-200">
                 {playlistExercises.map((exercise, index) => {
                   const isCompleted = todayProgress.some(p => p.exerciseId === exercise.id);
                   return (
