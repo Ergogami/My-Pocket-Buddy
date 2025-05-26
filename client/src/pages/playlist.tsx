@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Play, X, Settings, ChevronLeft, ChevronRight, MoreHorizontal, Trash2 } from "lucide-react";
+import { Play, ChevronLeft, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { CompletionModal } from "@/components/completion-modal";
@@ -20,88 +20,49 @@ export default function PlaylistPage() {
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [isDraggedOver, setIsDraggedOver] = useState(false);
 
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const { data: exercises = [] } = useQuery<Exercise[]>({
-    queryKey: ["/api/exercises"],
+  // Fetch active playlist
+  const { data: activePlaylist, isLoading: playlistLoading } = useQuery<Playlist>({
+    queryKey: ['/api/playlists/active'],
   });
 
-  const { data: activePlaylist } = useQuery<Playlist>({
-    queryKey: ["/api/playlists/active"],
+  // Fetch all exercises
+  const { data: allExercises = [], isLoading: exercisesLoading } = useQuery<Exercise[]>({
+    queryKey: ['/api/exercises'],
   });
 
-  const { data: todayProgress = [] } = useQuery<any[]>({
-    queryKey: ["/api/progress/today"],
+  // Fetch today's progress
+  const { data: todayProgress = [], isLoading: progressLoading } = useQuery({
+    queryKey: ['/api/progress/today'],
+  });
+
+  // Fetch streak
+  const { data: streak } = useQuery({
+    queryKey: ['/api/progress/streak'],
+  });
+
+  // Create progress mutation
+  const createProgressMutation = useMutation({
+    mutationFn: async (exerciseId: number) => {
+      const res = await fetch('/api/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ exerciseId }),
+      });
+      if (!res.ok) throw new Error('Failed to create progress');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/progress'] });
+    },
   });
 
   const playlistExercises = activePlaylist 
-    ? exercises.filter(ex => activePlaylist.exerciseIds.includes(ex.id))
+    ? allExercises.filter(ex => activePlaylist.exerciseIds.includes(ex.id))
     : [];
-
-  const completeMutation = useMutation({
-    mutationFn: async (exerciseId: number) => {
-      const response = await fetch("/api/progress", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          exerciseId,
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error("Failed to record progress");
-      }
-      
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/progress"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/progress/today"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/progress/streak"] });
-    },
-  });
-
-  const removeFromPlaylistMutation = useMutation({
-    mutationFn: async (exerciseId: number) => {
-      if (!activePlaylist) {
-        throw new Error("No active playlist found");
-      }
-      const updatedExercises = activePlaylist.exerciseIds.filter(id => id !== exerciseId);
-      
-      const response = await fetch(`/api/playlists/${activePlaylist.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ exerciseIds: updatedExercises }),
-      });
-      
-      if (!response.ok) {
-        throw new Error("Failed to remove from playlist");
-      }
-      
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/playlists/active"] });
-      toast({
-        title: "Removed from playlist",
-        description: "Exercise removed from your workout playlist.",
-      });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to remove exercise from playlist",
-        variant: "destructive",
-      });
-    },
-  });
 
   const handlePlayVideo = (exercise: Exercise, index: number) => {
     setSelectedExercise(exercise);
@@ -109,30 +70,28 @@ export default function PlaylistPage() {
     setShowVideoModal(true);
   };
 
-  const handleNextExercise = () => {
-    if (currentVideoIndex < playlistExercises.length - 1) {
-      const nextIndex = currentVideoIndex + 1;
-      setCurrentVideoIndex(nextIndex);
-      setSelectedExercise(playlistExercises[nextIndex]);
-    }
-  };
-
-  const handlePreviousExercise = () => {
-    if (currentVideoIndex > 0) {
-      const prevIndex = currentVideoIndex - 1;
-      setCurrentVideoIndex(prevIndex);
-      setSelectedExercise(playlistExercises[prevIndex]);
-    }
-  };
-
   const handleCompleteExercise = (exercise: Exercise) => {
-    completeMutation.mutate(exercise.id);
+    createProgressMutation.mutate(exercise.id);
     setSelectedExercise(exercise);
     setShowCompletionModal(true);
   };
 
-  const handleRemoveFromPlaylist = (exerciseId: number) => {
-    removeFromPlaylistMutation.mutate(exerciseId);
+  const handleNextVideo = () => {
+    const currentIndex = playlistExercises.findIndex(ex => ex.id === selectedExercise?.id);
+    if (currentIndex < playlistExercises.length - 1) {
+      const nextExercise = playlistExercises[currentIndex + 1];
+      setSelectedExercise(nextExercise);
+      setCurrentVideoIndex(currentIndex + 1);
+    }
+  };
+
+  const handlePreviousVideo = () => {
+    const currentIndex = playlistExercises.findIndex(ex => ex.id === selectedExercise?.id);
+    if (currentIndex > 0) {
+      const prevExercise = playlistExercises[currentIndex - 1];
+      setSelectedExercise(prevExercise);
+      setCurrentVideoIndex(currentIndex - 1);
+    }
   };
 
   const isCompleted = (exerciseId: number) => {
@@ -156,7 +115,7 @@ export default function PlaylistPage() {
 
     const completed = isCompleted(exercise.id);
 
-    // Don't render the card if it's completed (it will appear in the All Done zone)
+    // Don't render the card if it's completed (it will appear in the trophy zone)
     if (completed) {
       return null;
     }
@@ -174,210 +133,179 @@ export default function PlaylistPage() {
           <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 shadow-lg p-4 h-24 flex items-center justify-between">
             {/* Exercise Thumbnail */}
             <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-pink-100 rounded-xl flex items-center justify-center shadow-md border border-orange-200/50">
-              <div className="text-2xl">
-                {exercise.category === 'Balance' ? '⚖️' : 
-                 exercise.category === 'Strength' ? '💪' : 
-                 exercise.category === 'Cardio' ? '❤️' : 
-                 exercise.category === 'Flexibility' ? '🤸' : 
-                 exercise.category === 'Ball Skills' ? '⚽' : 
-                 exercise.category === 'Coordination' ? '🎯' : '🏃'}
-              </div>
+              <span className="text-2xl">{exercise.category === 'balance' ? '🤸' : 
+                                       exercise.category === 'strength' ? '💪' : 
+                                       exercise.category === 'flexibility' ? '🧘' : 
+                                       exercise.category === 'ball-skills' ? '⚽' : 
+                                       exercise.category === 'coordination' ? '🎯' : '❤️'}</span>
             </div>
-
+            
             {/* Exercise Info */}
-            <div className="flex-1 mx-4">
-              <h3 className="font-bold text-gray-800 text-sm leading-tight">{exercise.name}</h3>
-              <p className="text-gray-500 text-xs mt-1">{exercise.duration}</p>
+            <div className="flex-1 ml-4">
+              <h3 className="font-bold text-gray-800 text-lg leading-tight">{exercise.name}</h3>
+              <p className="text-sm text-gray-600 mt-1">{exercise.description}</p>
             </div>
-
+            
             {/* Action Buttons */}
             <div className="flex items-center space-x-2">
-              {/* Complete Button or Play Button */}
-              {completed ? (
-                <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-md">
-                  <span className="text-white text-lg">✓</span>
-                </div>
-              ) : (
-                <button
-                  onClick={() => handlePlayVideo(exercise, index)}
-                  className="w-10 h-10 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all"
-                >
-                  <Play className="w-5 h-5 text-white ml-0.5" />
-                </button>
-              )}
-
-              {/* Three dots menu */}
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => handlePlayVideo(exercise, index)}
+                className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+              >
+                <Play size={16} />
+              </Button>
+              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="p-2 h-8 w-8 text-gray-500 hover:bg-gray-100">
-                    <MoreHorizontal className="w-4 h-4" />
+                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                    <MoreHorizontal size={16} />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem 
-                    onClick={() => handleRemoveFromPlaylist(exercise.id)}
-                    className="text-red-600 focus:text-red-600"
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Remove from playlist
+                  <DropdownMenuItem onClick={() => handleCompleteExercise(exercise)}>
+                    Mark Complete
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           </div>
+          
+          {/* Swipe indicator */}
+          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-green-100 to-transparent flex items-center justify-center opacity-50">
+            <span className="text-green-600 font-bold text-xs">SWIPE →</span>
+          </div>
         </div>
-
-        {/* Completion Checkmark */}
-        {completed && (
-          <div className="absolute top-2 right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shadow-lg z-10">
-            <span className="text-white font-bold text-sm">✓</span>
-          </div>
-        )}
-
-        {/* Arrow connector to next exercise */}
-        {index < playlistExercises.length - 1 && (
-          <div className="flex justify-center py-2">
-            <ChevronRight className="w-6 h-6 text-orange-300" />
-          </div>
-        )}
       </div>
     );
   };
 
-  const completedCount = playlistExercises.filter(ex => isCompleted(ex.id)).length;
-  const totalCount = playlistExercises.length;
-  const allCompleted = completedCount === totalCount && totalCount > 0;
+  if (playlistLoading || exercisesLoading || progressLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 p-4">
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <div className="animate-spin w-8 h-8 border-4 border-purple-300 border-t-purple-600 rounded-full mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading your workout...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!activePlaylist) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 p-4">
+        <div className="max-w-md mx-auto pt-20 text-center">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">No Active Playlist</h1>
+          <p className="text-gray-600 mb-6">Create a playlist to get started with your workout!</p>
+          <Link href="/search">
+            <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+              Browse Exercises
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const completedExercises = playlistExercises.filter(ex => isCompleted(ex.id));
+  const incompleteExercises = playlistExercises.filter(ex => !isCompleted(ex.id));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm px-4 py-6 flex items-center justify-between shadow-sm">
-        <Link href="/">
-          <Button variant="ghost" size="sm" className="p-2 text-gray-600 hover:bg-gray-100">
-            <ChevronLeft className="w-5 h-5" />
-          </Button>
-        </Link>
-        <div className="text-center">
-          <h1 className="text-gray-800 text-lg font-bold">My Movement Program</h1>
-          <p className="text-gray-500 text-sm">Let's get moving!</p>
-        </div>
-        <Button variant="ghost" size="sm" className="p-2 text-gray-600 hover:bg-gray-100">
-          <Settings className="w-5 h-5" />
-        </Button>
-      </div>
-
-      {/* Video Player Section */}
-      {selectedExercise && showVideoModal && (
-        <div className="bg-gray-900 aspect-video relative">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-              <Play className="w-8 h-8 text-white ml-1" />
+      <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center space-x-3">
+            <Link href="/">
+              <Button variant="ghost" size="sm" className="p-2">
+                <ChevronLeft size={20} />
+              </Button>
+            </Link>
+            <div>
+              <h1 className="font-bold text-xl text-gray-800">{activePlaylist.name}</h1>
+              <p className="text-sm text-gray-600">
+                {completedExercises.length} of {playlistExercises.length} complete
+              </p>
             </div>
           </div>
-          <Button
-            onClick={() => setShowVideoModal(false)}
-            className="absolute top-4 right-4 w-8 h-8 bg-black bg-opacity-50 text-white rounded-full p-0"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-        </div>
-      )}
-
-      {/* Main Content */}
-      <div className="px-6 py-6 max-w-lg mx-auto">
-        {/* Drag and Drop Instruction */}
-        {playlistExercises.filter(ex => !isCompleted(ex.id)).length > 0 && (
-          <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-4 mb-6 border border-blue-200">
-            <div className="flex items-center space-x-3">
-              <div className="text-2xl">🖱️</div>
-              <div>
-                <p className="text-blue-800 font-medium text-sm">Drag exercises to the Trophy Zone!</p>
-                <p className="text-blue-600 text-xs">Click and drag exercise cards to complete them</p>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        <div className="flex justify-between items-start">
-          {/* Exercise List Column */}
-          <div className="flex-1 pr-8">
-            {playlistExercises.filter(ex => !isCompleted(ex.id)).length > 0 ? (
-              playlistExercises.map((exercise, index) => (
-                <ExerciseCard key={exercise.id} exercise={exercise} index={index} />
-              ))
-            ) : playlistExercises.length > 0 ? (
-              <div className="text-center py-12">
-                <div className="text-6xl mb-4">🎉</div>
-                <p className="text-gray-700 font-bold text-lg mb-2">All exercises complete!</p>
-                <p className="text-gray-500">Great job finishing your workout!</p>
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <p className="text-gray-500 mb-4">No exercises in your playlist yet</p>
-                <Link href="/search">
-                  <Button className="bg-gradient-to-r from-orange-400 to-pink-400 text-white px-6 py-2 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all">
-                    Add Exercises
-                  </Button>
-                </Link>
+          <div className="flex items-center space-x-2">
+            {streak && (
+              <div className="bg-orange-100 px-3 py-1 rounded-full">
+                <span className="text-orange-600 font-bold text-sm">🔥 {(streak as any)?.streak}</span>
               </div>
             )}
           </div>
+        </div>
+      </div>
 
-          {/* All Done Section */}
-          {playlistExercises.length > 0 && (
+      <div className="p-4 max-w-md mx-auto">
+        {/* Remaining Exercises */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-gray-800 mb-4">Let's Move! 💪</h2>
+          {incompleteExercises.length > 0 ? (
+            <div className="space-y-4">
+              {incompleteExercises.map((exercise, index) => (
+                <ExerciseCard key={exercise.id} exercise={exercise} index={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <div className="text-6xl mb-4">🎉</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Amazing Work!</h3>
+              <p className="text-gray-600">You've completed all exercises in this playlist!</p>
+            </div>
+          )}
+        </div>
+
+        {/* Trophy Zone - Individual Cells */}
+        {completedExercises.length > 0 && (
+          <div className="mb-8">
             <div className="flex flex-col items-center">
               <div className="text-gray-700 text-lg font-bold mb-4 text-center">
                 🏆 Trophy Zone
               </div>
-              <div className={`trophy-zone space-y-3 p-4 rounded-3xl border-4 border-dashed min-h-48 transition-all duration-300 ${
-                isDraggedOver 
-                  ? 'border-green-400 bg-gradient-to-br from-green-100 to-emerald-200 scale-105 shadow-lg'
-                  : 'border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-100 hover:border-amber-400 hover:bg-gradient-to-br hover:from-amber-100 hover:to-yellow-200'
-              }`}>
-                {playlistExercises.map((exercise, index) => {
-                  const isCompleted = todayProgress.some(p => p.exerciseId === exercise.id);
-                  return (
-                    <div 
-                      key={exercise.id}
-                      className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 ${
-                        isCompleted 
-                          ? 'bg-gradient-to-br from-green-400 to-emerald-500 transform scale-110' 
-                          : 'bg-white/60 border-2 border-dashed border-gray-300'
-                      }`}
-                    >
-                      {isCompleted ? (
-                        <div className="text-white text-2xl">✅</div>
-                      ) : (
-                        <div className="text-gray-400 text-xl">{index + 1}</div>
-                      )}
+              <div className="space-y-3 w-full">
+                {completedExercises.map((exercise) => (
+                  <div 
+                    key={exercise.id}
+                    className="bg-gradient-to-br from-amber-100 to-yellow-200 border-2 border-amber-300 rounded-2xl p-4 h-24 flex items-center justify-between shadow-lg"
+                  >
+                    {/* Exercise Thumbnail */}
+                    <div className="w-16 h-16 bg-gradient-to-br from-yellow-200 to-amber-200 rounded-xl flex items-center justify-center shadow-md border border-amber-300">
+                      <span className="text-2xl">🏆</span>
                     </div>
-                  );
-                })}
-              </div>
-              {allCompleted && (
-                <div className="mt-4 text-center">
-                  <div className="text-3xl mb-2">🎉</div>
-                  <div className="text-green-600 text-sm font-bold">
-                    Amazing Work!<br/>All Exercises<br/>Completed!
+                    
+                    {/* Exercise Info */}
+                    <div className="flex-1 ml-4">
+                      <h3 className="font-bold text-amber-800 text-lg leading-tight">{exercise.name}</h3>
+                      <p className="text-sm text-amber-700 mt-1">Completed! ✨</p>
+                    </div>
+                    
+                    {/* Celebration Icon */}
+                    <div className="text-2xl">⭐</div>
                   </div>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
-      {/* Modals */}
+      {/* Video Player Modal */}
       <VideoPlayerModal
         isOpen={showVideoModal}
         onClose={() => setShowVideoModal(false)}
         exercise={selectedExercise}
-        onNext={handleNextExercise}
-        onPrevious={handlePreviousExercise}
+        onNext={handleNextVideo}
+        onPrevious={handlePreviousVideo}
         hasNext={currentVideoIndex < playlistExercises.length - 1}
         hasPrevious={currentVideoIndex > 0}
       />
-      
+
+      {/* Completion Modal */}
       <CompletionModal
         isOpen={showCompletionModal}
         onClose={() => setShowCompletionModal(false)}
