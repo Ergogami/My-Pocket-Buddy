@@ -62,15 +62,22 @@ export function ExerciseCard({
           <div className={getImageStyles()}>
             {exercise.thumbnailUrl ? (
               <img 
-                src={exercise.thumbnailUrl} 
+                src={exercise.thumbnailUrl.startsWith('@assets/') 
+                  ? new URL(`../../../attached_assets/${exercise.thumbnailUrl.replace('@assets/', '')}`, import.meta.url).href
+                  : exercise.thumbnailUrl
+                } 
                 alt={exercise.name}
                 className="w-full h-full object-cover rounded-2xl"
+                onError={(e) => {
+                  // Fallback to play icon if image fails to load
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                }}
               />
-            ) : (
-              <div className="w-full h-full bg-gray-200 rounded-2xl flex items-center justify-center">
-                <Play className="text-gray-400 text-2xl" />
-              </div>
-            )}
+            ) : null}
+            <div className={`w-full h-full bg-gradient-to-br from-sunny to-coral rounded-2xl flex items-center justify-center ${exercise.thumbnailUrl ? 'hidden' : ''}`}>
+              <Play className="text-white text-2xl drop-shadow-lg" />
+            </div>
           </div>
 
           <div className="flex-1">

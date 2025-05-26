@@ -23,6 +23,7 @@ export function VideoUploadModal({ isOpen, onClose }: VideoUploadModalProps) {
     ageGroups: [] as string[],
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [dragOver, setDragOver] = useState(false);
 
   const { toast } = useToast();
