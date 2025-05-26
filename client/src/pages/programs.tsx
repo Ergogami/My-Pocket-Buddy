@@ -89,7 +89,7 @@ export default function ProgramsPage() {
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 p-4">
       <div className="max-w-6xl mx-auto space-y-8">
         
-        {/* Header */}
+        {/* Done for you programs Header */}
         <div className="text-center space-y-4 py-8">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-green-500 rounded-2xl flex items-center justify-center shadow-lg">
