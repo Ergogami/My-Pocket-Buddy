@@ -137,9 +137,9 @@ export default function PlaylistPage() {
           {...swipeHandlers}
         >
           {/* Background with exercise theme */}
-          <div className="bg-gradient-to-br from-blue-400 to-blue-600 p-4 h-24 flex items-center justify-between">
+          <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 shadow-lg p-4 h-24 flex items-center justify-between">
             {/* Exercise Thumbnail */}
-            <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-pink-100 rounded-xl flex items-center justify-center shadow-md border border-orange-200/50">
               <div className="text-2xl">
                 {exercise.category === 'Balance' ? '⚖️' : 
                  exercise.category === 'Strength' ? '💪' : 
@@ -152,8 +152,8 @@ export default function PlaylistPage() {
 
             {/* Exercise Info */}
             <div className="flex-1 mx-4">
-              <h3 className="font-bold text-white text-sm leading-tight">{exercise.name}</h3>
-              <p className="text-blue-100 text-xs mt-1">{exercise.duration}</p>
+              <h3 className="font-bold text-gray-800 text-sm leading-tight">{exercise.name}</h3>
+              <p className="text-gray-500 text-xs mt-1">{exercise.duration}</p>
             </div>
 
             {/* Action Buttons */}
@@ -161,7 +161,7 @@ export default function PlaylistPage() {
               {/* Play Button */}
               <button
                 onClick={() => handlePlayVideo(exercise, index)}
-                className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center"
+                className="w-10 h-10 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all"
               >
                 <Play className="w-5 h-5 text-white ml-0.5" />
               </button>
@@ -169,7 +169,7 @@ export default function PlaylistPage() {
               {/* Three dots menu */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="p-2 h-8 w-8 text-white hover:bg-white hover:bg-opacity-20">
+                  <Button variant="ghost" size="sm" className="p-2 h-8 w-8 text-gray-500 hover:bg-gray-100">
                     <MoreHorizontal className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -197,7 +197,7 @@ export default function PlaylistPage() {
         {/* Arrow connector to next exercise */}
         {index < playlistExercises.length - 1 && (
           <div className="flex justify-center py-2">
-            <ChevronRight className="w-6 h-6 text-blue-400" />
+            <ChevronRight className="w-6 h-6 text-orange-300" />
           </div>
         )}
       </div>
@@ -209,19 +209,19 @@ export default function PlaylistPage() {
   const allCompleted = completedCount === totalCount && totalCount > 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-600 to-blue-800">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50">
       {/* Header */}
-      <div className="bg-blue-700 px-4 py-6 flex items-center justify-between">
+      <div className="bg-white/80 backdrop-blur-sm px-4 py-6 flex items-center justify-between shadow-sm">
         <Link href="/">
-          <Button variant="ghost" size="sm" className="p-2 text-white hover:bg-white hover:bg-opacity-20">
+          <Button variant="ghost" size="sm" className="p-2 text-gray-600 hover:bg-gray-100">
             <ChevronLeft className="w-5 h-5" />
           </Button>
         </Link>
         <div className="text-center">
-          <h1 className="text-white text-lg font-bold">My nighttime schedule</h1>
-          <p className="text-blue-200 text-sm">First I need to</p>
+          <h1 className="text-gray-800 text-lg font-bold">My Movement Program</h1>
+          <p className="text-gray-500 text-sm">Let's get moving!</p>
         </div>
-        <Button variant="ghost" size="sm" className="p-2 text-white hover:bg-white hover:bg-opacity-20">
+        <Button variant="ghost" size="sm" className="p-2 text-gray-600 hover:bg-gray-100">
           <Settings className="w-5 h-5" />
         </Button>
       </div>
@@ -254,9 +254,9 @@ export default function PlaylistPage() {
               ))
             ) : (
               <div className="text-center py-12">
-                <p className="text-blue-200 mb-4">No exercises in your playlist yet</p>
+                <p className="text-gray-500 mb-4">No exercises in your playlist yet</p>
                 <Link href="/search">
-                  <Button className="bg-white text-blue-600 px-6 py-2 rounded-xl font-semibold">
+                  <Button className="bg-gradient-to-r from-orange-400 to-pink-400 text-white px-6 py-2 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all">
                     Add Exercises
                   </Button>
                 </Link>
@@ -267,22 +267,22 @@ export default function PlaylistPage() {
           {/* All Done Section */}
           {playlistExercises.length > 0 && (
             <div className="flex flex-col items-center">
-              <div className="text-blue-200 text-sm mb-2">All done</div>
+              <div className="text-gray-500 text-sm mb-2">All done</div>
               <div 
                 className={`w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg ${
                   allCompleted 
-                    ? 'bg-green-400' 
-                    : 'bg-white bg-opacity-20 border-2 border-dashed border-white border-opacity-40'
+                    ? 'bg-gradient-to-br from-green-400 to-emerald-500' 
+                    : 'bg-white/60 border-2 border-dashed border-gray-300'
                 }`}
               >
                 {allCompleted ? (
                   <div className="text-white text-3xl">🎉</div>
                 ) : (
-                  <div className="text-white text-2xl opacity-60">🏆</div>
+                  <div className="text-gray-400 text-2xl">🏆</div>
                 )}
               </div>
               {allCompleted && (
-                <div className="text-green-200 text-xs mt-2 text-center">
+                <div className="text-green-600 text-xs mt-2 text-center font-medium">
                   Great job!<br/>All exercises<br/>completed
                 </div>
               )}
