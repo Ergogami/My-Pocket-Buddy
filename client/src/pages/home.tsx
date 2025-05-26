@@ -240,13 +240,13 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Adventure Exercises Section */}
+        {/* Done For Your Program Section */}
         <div>
           <div className="flex items-center space-x-3 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
-              <span className="text-xl">🚀</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-xl">✅</span>
             </div>
-            <h3 className="text-2xl font-bubble text-gray-800">{texts.exercisesTitle}</h3>
+            <h3 className="text-2xl font-bubble text-gray-800">Done For Your Program</h3>
           </div>
           <div className="flex space-x-4 overflow-x-auto pb-4">
             {exercises.slice(0, 3).map((exercise, index) => {
