@@ -140,38 +140,46 @@ export default function PlaylistPage() {
 
   const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }) => {
     const [isSwipping, setIsSwipping] = useState(false);
+    const [isMovingToComplete, setIsMovingToComplete] = useState(false);
     
     const swipeHandlers = useSwipe({
       onSwipeRight: () => {
         if (!isCompleted(exercise.id)) {
           setIsSwipping(true);
+          setIsMovingToComplete(true);
           setTimeout(() => {
             handleCompleteExercise(exercise);
             setIsSwipping(false);
-          }, 300);
+            setTimeout(() => setIsMovingToComplete(false), 500);
+          }, 600);
         }
       },
     });
 
     const completed = isCompleted(exercise.id);
 
+    // Don't render the card if it's completed (it will appear in the All Done zone)
+    if (completed && !isMovingToComplete) {
+      return null;
+    }
+
     return (
       <div className="relative mb-4">
         {/* Completion Background Indicator */}
         {isSwipping && (
-          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl flex items-center justify-end pr-6 z-10">
+          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center z-10">
             <div className="text-white text-lg font-bold flex items-center">
-              <span className="text-2xl mr-2">✓</span>
-              Complete!
+              <span className="text-3xl mr-2">🏆</span>
+              Moving to All Done Zone!
             </div>
           </div>
         )}
         
         {/* Exercise Card */}
         <div
-          className={`relative rounded-2xl overflow-hidden transition-all duration-300 ${
-            completed ? 'opacity-60 bg-green-50' : ''
-          } ${isSwipping ? 'translate-x-2 scale-[0.98]' : ''}`}
+          className={`relative rounded-2xl overflow-hidden transition-all duration-700 ease-out ${
+            isMovingToComplete ? 'transform translate-x-96 scale-75 opacity-0' : ''
+          } ${isSwipping ? 'translate-x-8 scale-[0.95]' : ''}`}
           {...swipeHandlers}
         >
           {/* Background with exercise theme */}
@@ -290,13 +298,13 @@ export default function PlaylistPage() {
       {/* Main Content */}
       <div className="px-6 py-6 max-w-lg mx-auto">
         {/* Swipe Instruction */}
-        {playlistExercises.length > 0 && completedCount < totalCount && (
+        {playlistExercises.filter(ex => !isCompleted(ex.id)).length > 0 && (
           <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-4 mb-6 border border-blue-200">
             <div className="flex items-center space-x-3">
-              <div className="text-2xl">👆</div>
+              <div className="text-2xl">👉</div>
               <div>
-                <p className="text-blue-800 font-medium text-sm">Swipe right to complete exercises!</p>
-                <p className="text-blue-600 text-xs">Or tap the play button to watch the video first</p>
+                <p className="text-blue-800 font-medium text-sm">Swipe right to move to All Done Zone!</p>
+                <p className="text-blue-600 text-xs">Watch exercises fly into the trophy zone when completed</p>
               </div>
             </div>
           </div>
@@ -305,10 +313,16 @@ export default function PlaylistPage() {
         <div className="flex justify-between items-start">
           {/* Exercise List Column */}
           <div className="flex-1 pr-8">
-            {playlistExercises.length > 0 ? (
+            {playlistExercises.filter(ex => !isCompleted(ex.id)).length > 0 ? (
               playlistExercises.map((exercise, index) => (
                 <ExerciseCard key={exercise.id} exercise={exercise} index={index} />
               ))
+            ) : playlistExercises.length > 0 ? (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">🎉</div>
+                <p className="text-gray-700 font-bold text-lg mb-2">All exercises complete!</p>
+                <p className="text-gray-500">Great job finishing your workout!</p>
+              </div>
             ) : (
               <div className="text-center py-12">
                 <p className="text-gray-500 mb-4">No exercises in your playlist yet</p>
