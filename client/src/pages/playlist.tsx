@@ -127,34 +127,36 @@ export default function PlaylistPage() {
           className={`relative rounded-2xl overflow-hidden transition-all duration-500 ${
             isSwipping ? 'transform translate-x-full opacity-0' : ''
           }`}
-          {...swipeHandlers}
         >
           {/* Background with exercise theme */}
           <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 shadow-lg p-4 h-24 flex items-center justify-between">
-            {/* Exercise Thumbnail */}
-            <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-pink-100 rounded-xl flex items-center justify-center shadow-md border border-orange-200/50">
-              <span className="text-2xl">{exercise.category === 'balance' ? '🤸' : 
-                                       exercise.category === 'strength' ? '💪' : 
-                                       exercise.category === 'flexibility' ? '🧘' : 
-                                       exercise.category === 'ball-skills' ? '⚽' : 
-                                       exercise.category === 'coordination' ? '🎯' : '❤️'}</span>
+            {/* Exercise Thumbnail + Info - Swipeable Area */}
+            <div 
+              className="flex items-center flex-1 mr-4 cursor-pointer"
+              {...swipeHandlers}
+            >
+              {/* Exercise Thumbnail */}
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-pink-100 rounded-xl flex items-center justify-center shadow-md border border-orange-200/50">
+                <span className="text-2xl">{exercise.category === 'balance' ? '🤸' : 
+                                         exercise.category === 'strength' ? '💪' : 
+                                         exercise.category === 'flexibility' ? '🧘' : 
+                                         exercise.category === 'ball-skills' ? '⚽' : 
+                                         exercise.category === 'coordination' ? '🎯' : '❤️'}</span>
+              </div>
+              
+              {/* Exercise Info */}
+              <div className="flex-1 ml-4">
+                <h3 className="font-bold text-gray-800 text-lg leading-tight">{exercise.name}</h3>
+                <p className="text-sm text-gray-600 mt-1">{exercise.description}</p>
+              </div>
             </div>
             
-            {/* Exercise Info */}
-            <div className="flex-1 ml-4">
-              <h3 className="font-bold text-gray-800 text-lg leading-tight">{exercise.name}</h3>
-              <p className="text-sm text-gray-600 mt-1">{exercise.description}</p>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
+            {/* Action Buttons - Not Swipeable */}
+            <div className="flex items-center space-x-2 z-10">
               <Button
                 size="sm"
                 variant="outline"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePlayVideo(exercise, index);
-                }}
+                onClick={() => handlePlayVideo(exercise, index)}
                 className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
               >
                 <Play size={16} />
@@ -166,7 +168,6 @@ export default function PlaylistPage() {
                     size="sm" 
                     variant="ghost" 
                     className="h-8 w-8 p-0"
-                    onClick={(e) => e.stopPropagation()}
                   >
                     <MoreHorizontal size={16} />
                   </Button>
@@ -181,7 +182,7 @@ export default function PlaylistPage() {
           </div>
           
           {/* Swipe to All Done Zone indicator */}
-          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-amber-100 to-transparent flex items-center justify-center opacity-60">
+          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-amber-100 to-transparent flex items-center justify-center opacity-60 pointer-events-none">
             <div className="text-center">
               <div className="text-amber-600 font-bold text-xs">SWIPE →</div>
               <div className="text-amber-500 text-xs">All Done!</div>
