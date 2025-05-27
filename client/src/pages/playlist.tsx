@@ -147,11 +147,14 @@ export default function PlaylistPage() {
             </div>
             
             {/* Action Buttons */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => handlePlayVideo(exercise, index)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePlayVideo(exercise, index);
+                }}
                 className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
               >
                 <Play size={16} />
@@ -159,7 +162,12 @@ export default function PlaylistPage() {
               
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                  <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    className="h-8 w-8 p-0"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <MoreHorizontal size={16} />
                   </Button>
                 </DropdownMenuTrigger>
