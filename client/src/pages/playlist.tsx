@@ -100,28 +100,14 @@ export default function PlaylistPage() {
 
   const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }) => {
     const [isSwipping, setIsSwipping] = useState(false);
-    const [swipeDirection, setSwipeDirection] = useState<'right' | 'down' | null>(null);
     
     const swipeHandlers = useSwipe({
       onSwipeRight: () => {
         if (!isCompleted(exercise.id)) {
           setIsSwipping(true);
-          setSwipeDirection('right');
           setTimeout(() => {
             handleCompleteExercise(exercise);
             setIsSwipping(false);
-            setSwipeDirection(null);
-          }, 500);
-        }
-      },
-      onSwipeDown: () => {
-        if (!isCompleted(exercise.id)) {
-          setIsSwipping(true);
-          setSwipeDirection('down');
-          setTimeout(() => {
-            handleCompleteExercise(exercise);
-            setIsSwipping(false);
-            setSwipeDirection(null);
           }, 500);
         }
       },
@@ -129,23 +115,18 @@ export default function PlaylistPage() {
 
     const completed = isCompleted(exercise.id);
 
-    // Don't render the card if it's completed (it will appear in the trophy zone)
+    // Don't render the card if it's completed (it will appear in the All Done Zone)
     if (completed) {
       return null;
     }
-
-    const getSwipeTransform = () => {
-      if (!isSwipping) return '';
-      if (swipeDirection === 'right') return 'transform translate-x-full opacity-0';
-      if (swipeDirection === 'down') return 'transform translate-y-full opacity-0';
-      return '';
-    };
 
     return (
       <div className="relative mb-4">
         {/* Exercise Card */}
         <div
-          className={`relative rounded-2xl overflow-hidden transition-all duration-500 ${getSwipeTransform()}`}
+          className={`relative rounded-2xl overflow-hidden transition-all duration-500 ${
+            isSwipping ? 'transform translate-x-full opacity-0' : ''
+          }`}
           {...swipeHandlers}
         >
           {/* Background with exercise theme */}
@@ -191,12 +172,12 @@ export default function PlaylistPage() {
             </div>
           </div>
           
-          {/* Multi-directional swipe indicators */}
-          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-green-100 to-transparent flex items-center justify-center opacity-50">
-            <span className="text-green-600 font-bold text-xs">SWIPE →</span>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-amber-100 to-transparent flex items-end justify-center pb-2 opacity-50">
-            <span className="text-amber-600 font-bold text-xs">SWIPE ↓</span>
+          {/* Swipe to All Done Zone indicator */}
+          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-amber-100 to-transparent flex items-center justify-center opacity-60">
+            <div className="text-center">
+              <div className="text-amber-600 font-bold text-xs">SWIPE →</div>
+              <div className="text-amber-500 text-xs">All Done!</div>
+            </div>
           </div>
         </div>
       </div>
@@ -263,57 +244,67 @@ export default function PlaylistPage() {
         </div>
       </div>
 
-      <div className="p-4 max-w-md mx-auto">
-        {/* Remaining Exercises */}
-        <div className="mb-8">
-          <h2 className="text-lg font-bold text-gray-800 mb-4">Let's Move! 💪</h2>
-          {incompleteExercises.length > 0 ? (
-            <div className="space-y-4">
-              {incompleteExercises.map((exercise, index) => (
-                <ExerciseCard key={exercise.id} exercise={exercise} index={index} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <div className="text-6xl mb-4">🎉</div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Amazing Work!</h3>
-              <p className="text-gray-600">You've completed all exercises in this playlist!</p>
-            </div>
-          )}
-        </div>
-
-        {/* Trophy Zone - Individual Cells */}
-        {completedExercises.length > 0 && (
-          <div className="mb-8">
-            <div className="flex flex-col items-center">
-              <div className="text-gray-700 text-lg font-bold mb-4 text-center">
-                🏆 Trophy Zone
-              </div>
-              <div className="space-y-3 w-full">
-                {completedExercises.map((exercise) => (
-                  <div 
-                    key={exercise.id}
-                    className="bg-gradient-to-br from-amber-100 to-yellow-200 border-2 border-amber-300 rounded-2xl p-4 h-24 flex items-center justify-between shadow-lg"
-                  >
-                    {/* Exercise Thumbnail */}
-                    <div className="w-16 h-16 bg-gradient-to-br from-yellow-200 to-amber-200 rounded-xl flex items-center justify-center shadow-md border border-amber-300">
-                      <span className="text-2xl">🏆</span>
-                    </div>
-                    
-                    {/* Exercise Info */}
-                    <div className="flex-1 ml-4">
-                      <h3 className="font-bold text-amber-800 text-lg leading-tight">{exercise.name}</h3>
-                      <p className="text-sm text-amber-700 mt-1">Completed! ✨</p>
-                    </div>
-                    
-                    {/* Celebration Icon */}
-                    <div className="text-2xl">⭐</div>
-                  </div>
+      <div className="p-4 max-w-6xl mx-auto">
+        {/* Two Column Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          {/* Left Column - Exercises */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-bold text-gray-800 mb-4">Let's Move! 💪</h2>
+            {incompleteExercises.length > 0 ? (
+              <div className="space-y-4">
+                {incompleteExercises.map((exercise, index) => (
+                  <ExerciseCard key={exercise.id} exercise={exercise} index={index} />
                 ))}
               </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="text-6xl mb-4">🎉</div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Amazing Work!</h3>
+                <p className="text-gray-600">You've completed all exercises in this playlist!</p>
+              </div>
+            )}
+          </div>
+
+          {/* Right Column - All Done Zone */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-bold text-gray-800 mb-4">🏆 All Done Zone</h2>
+            
+            {/* Drop Zone Area */}
+            <div className="all-done-zone min-h-96 bg-gradient-to-br from-amber-50 to-yellow-100 border-4 border-dashed border-amber-300 rounded-3xl p-4 transition-all duration-300">
+              {completedExercises.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-center py-12">
+                  <div className="text-6xl mb-4">🏆</div>
+                  <h3 className="text-xl font-bold text-amber-700 mb-2">Swipe Here!</h3>
+                  <p className="text-amber-600">Completed exercises will appear here</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {completedExercises.map((exercise) => (
+                    <div 
+                      key={exercise.id}
+                      className="bg-gradient-to-br from-amber-100 to-yellow-200 border-2 border-amber-300 rounded-2xl p-4 h-24 flex items-center justify-between shadow-lg"
+                    >
+                      {/* Exercise Thumbnail */}
+                      <div className="w-16 h-16 bg-gradient-to-br from-yellow-200 to-amber-200 rounded-xl flex items-center justify-center shadow-md border border-amber-300">
+                        <span className="text-2xl">🏆</span>
+                      </div>
+                      
+                      {/* Exercise Info */}
+                      <div className="flex-1 ml-4">
+                        <h3 className="font-bold text-amber-800 text-lg leading-tight">{exercise.name}</h3>
+                        <p className="text-sm text-amber-700 mt-1">Completed! ✨</p>
+                      </div>
+                      
+                      {/* Celebration Icon */}
+                      <div className="text-2xl">⭐</div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Video Player Modal */}
