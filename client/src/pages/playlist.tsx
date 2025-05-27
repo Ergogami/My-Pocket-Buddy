@@ -253,11 +253,11 @@ export default function PlaylistPage() {
         </div>
       </div>
 
-      <div className="p-4 max-w-6xl mx-auto">
-        {/* Two Column Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="p-4 max-w-md mx-auto lg:max-w-6xl">
+        {/* Mobile: Single Column, Desktop: Two Columns */}
+        <div className="lg:grid lg:grid-cols-2 lg:gap-6 space-y-6 lg:space-y-0">
           
-          {/* Left Column - Exercises */}
+          {/* Exercises Section */}
           <div className="space-y-4">
             <h2 className="text-lg font-bold text-gray-800 mb-4">Let's Move! 💪</h2>
             {incompleteExercises.length > 0 ? (
@@ -275,38 +275,38 @@ export default function PlaylistPage() {
             )}
           </div>
 
-          {/* Right Column - All Done Zone */}
+          {/* All Done Zone Section */}
           <div className="space-y-4">
             <h2 className="text-lg font-bold text-gray-800 mb-4">🏆 All Done Zone</h2>
             
             {/* Drop Zone Area */}
-            <div className="all-done-zone min-h-96 bg-gradient-to-br from-amber-50 to-yellow-100 border-4 border-dashed border-amber-300 rounded-3xl p-4 transition-all duration-300">
+            <div className="all-done-zone min-h-48 lg:min-h-96 bg-gradient-to-br from-amber-50 to-yellow-100 border-4 border-dashed border-amber-300 rounded-3xl p-4 transition-all duration-300">
               {completedExercises.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-center py-12">
-                  <div className="text-6xl mb-4">🏆</div>
-                  <h3 className="text-xl font-bold text-amber-700 mb-2">Swipe Here!</h3>
-                  <p className="text-amber-600">Completed exercises will appear here</p>
+                <div className="h-full flex flex-col items-center justify-center text-center py-8 lg:py-12">
+                  <div className="text-4xl lg:text-6xl mb-2 lg:mb-4">🏆</div>
+                  <h3 className="text-lg lg:text-xl font-bold text-amber-700 mb-2">Swipe Here!</h3>
+                  <p className="text-sm lg:text-base text-amber-600">Completed exercises will appear here</p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {completedExercises.map((exercise) => (
                     <div 
                       key={exercise.id}
-                      className="bg-gradient-to-br from-amber-100 to-yellow-200 border-2 border-amber-300 rounded-2xl p-4 h-24 flex items-center justify-between shadow-lg"
+                      className="bg-gradient-to-br from-amber-100 to-yellow-200 border-2 border-amber-300 rounded-2xl p-3 lg:p-4 h-20 lg:h-24 flex items-center justify-between shadow-lg"
                     >
                       {/* Exercise Thumbnail */}
-                      <div className="w-16 h-16 bg-gradient-to-br from-yellow-200 to-amber-200 rounded-xl flex items-center justify-center shadow-md border border-amber-300">
-                        <span className="text-2xl">🏆</span>
+                      <div className="w-12 h-12 lg:w-16 lg:h-16 bg-gradient-to-br from-yellow-200 to-amber-200 rounded-xl flex items-center justify-center shadow-md border border-amber-300">
+                        <span className="text-xl lg:text-2xl">🏆</span>
                       </div>
                       
                       {/* Exercise Info */}
-                      <div className="flex-1 ml-4">
-                        <h3 className="font-bold text-amber-800 text-lg leading-tight">{exercise.name}</h3>
-                        <p className="text-sm text-amber-700 mt-1">Completed! ✨</p>
+                      <div className="flex-1 ml-3 lg:ml-4">
+                        <h3 className="font-bold text-amber-800 text-base lg:text-lg leading-tight">{exercise.name}</h3>
+                        <p className="text-xs lg:text-sm text-amber-700 mt-1">Completed! ✨</p>
                       </div>
                       
                       {/* Celebration Icon */}
-                      <div className="text-2xl">⭐</div>
+                      <div className="text-xl lg:text-2xl">⭐</div>
                     </div>
                   ))}
                 </div>
