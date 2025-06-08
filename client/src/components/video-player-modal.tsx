@@ -30,15 +30,20 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
       return url;
     }
     
-    // Extract video ID from various Vimeo URL formats
+    // Extract video ID and privacy hash from various Vimeo URL formats
     let videoId = '';
+    let privacyHash = '';
     
     // Format: https://vimeo.com/1091427008/0f41596b5f
     if (url.includes('vimeo.com/') && url.includes('/')) {
       const parts = url.split('/');
-      const videoIdPart = parts[parts.length - 2]; // Get the part before the last slash
-      if (videoIdPart && /^\d+$/.test(videoIdPart)) {
-        videoId = videoIdPart;
+      if (parts.length >= 4) {
+        const videoIdPart = parts[parts.length - 2];
+        const hashPart = parts[parts.length - 1];
+        if (videoIdPart && /^\d+$/.test(videoIdPart)) {
+          videoId = videoIdPart;
+          privacyHash = hashPart;
+        }
       }
     }
     
@@ -52,7 +57,11 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
     
     // If we found a video ID, convert to player URL
     if (videoId) {
-      return `https://player.vimeo.com/video/${videoId}`;
+      let embedUrl = `https://player.vimeo.com/video/${videoId}`;
+      if (privacyHash) {
+        embedUrl += `?h=${privacyHash}`;
+      }
+      return embedUrl;
     }
     
     return url;
@@ -110,15 +119,14 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
             {exercise.videoUrl && exercise.videoUrl.trim() !== "" ? (
               exercise.videoUrl.includes('vimeo.com') || exercise.videoUrl.includes('player.vimeo.com') ? (
                 <iframe
-                  src={`${getEmbedUrl(exercise.videoUrl)}?autoplay=0&loop=0&muted=0&gesture=media&playsinline=1&byline=0&portrait=0&title=0`}
+                  src={`${getEmbedUrl(exercise.videoUrl)}${getEmbedUrl(exercise.videoUrl).includes('?') ? '&' : '?'}autoplay=0&loop=0&muted=0&gesture=media&playsinline=1&byline=0&portrait=0&title=0`}
                   className="w-full h-full rounded-xl"
                   frameBorder="0"
                   allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
                   allowFullScreen
                   title={exercise.name}
                   loading="lazy"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  sandbox="allow-scripts allow-same-origin allow-presentation"
+                  referrerPolicy="no-referrer-when-downgrade"
                 />
               ) : (
                 <video
