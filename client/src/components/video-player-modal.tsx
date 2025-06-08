@@ -70,11 +70,11 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
 
         <div className="p-6">
           <div className="bg-gray-900 rounded-2xl overflow-hidden mb-6 relative aspect-video">
-            {exercise.videoUrl ? (
-              exercise.videoUrl.includes('vimeo.com') ? (
+            {exercise.videoUrl && exercise.videoUrl.trim() !== "" ? (
+              exercise.videoUrl.includes('vimeo.com') || exercise.videoUrl.includes('player.vimeo.com') ? (
                 <iframe
                   src={exercise.videoUrl}
-                  className="w-full h-full"
+                  className="w-full h-full rounded-xl"
                   frameBorder="0"
                   allow="autoplay; fullscreen; picture-in-picture"
                   allowFullScreen
@@ -83,18 +83,26 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
               ) : (
                 <video
                   ref={videoRef}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-xl"
                   src={exercise.videoUrl}
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
-                  controls={false}
+                  controls={true}
                 />
               )
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center text-white">
-                <div className="text-center">
-                  <Play className="w-16 h-16 mb-4 opacity-75 mx-auto" />
-                  <p className="text-lg">Video not available</p>
+              <div className="absolute inset-0 flex items-center justify-center text-white bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl">
+                <div className="text-center p-8">
+                  <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <Play className="w-10 h-10 opacity-75" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">Ready to Add Your Video?</h3>
+                  <p className="text-gray-300 mb-4">Upload a demonstration video for this exercise</p>
+                  <div className="bg-blue-500 bg-opacity-20 border border-blue-400 rounded-lg p-3">
+                    <p className="text-blue-200 text-sm">
+                      Use the "Upload Video" button to add exercise demonstrations
+                    </p>
+                  </div>
                 </div>
               </div>
             )}

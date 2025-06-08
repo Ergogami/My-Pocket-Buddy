@@ -67,6 +67,7 @@ export class VimeoService {
       headers: {
         'Tus-Resumable': '1.0.0',
         'Upload-Offset': '0',
+        'Upload-Length': videoBuffer.length.toString(),
         'Content-Type': 'application/offset+octet-stream'
       },
       body: videoBuffer
@@ -74,8 +75,29 @@ export class VimeoService {
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`Vimeo video upload failed: ${error}`);
+      throw new Error(`Vimeo video upload failed: ${response.status} ${error}`);
     }
+  }
+
+  async waitForProcessing(videoUri: string, maxWaitTime: number = 60000): Promise<any> {
+    const startTime = Date.now();
+    
+    while (Date.now() - startTime < maxWaitTime) {
+      const videoDetails = await this.getVideoDetails(videoUri);
+      
+      if (videoDetails.status === 'available') {
+        return videoDetails;
+      }
+      
+      if (videoDetails.status === 'error') {
+        throw new Error('Video processing failed on Vimeo');
+      }
+      
+      // Wait 2 seconds before checking again
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+    
+    throw new Error('Video processing timeout - video may still be processing');
   }
 
   async getVideoDetails(videoUri: string): Promise<any> {
