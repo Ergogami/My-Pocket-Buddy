@@ -7,6 +7,7 @@ import { VideoUploadModal } from "@/components/video-upload-modal";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { CompletionModal } from "@/components/completion-modal";
 import { TextEditorModal } from "@/components/text-editor-modal";
+import { VimeoStatus } from "@/components/vimeo-status";
 import { useAppText } from "@/hooks/use-app-text";
 import { Exercise, Playlist } from "@shared/schema";
 import { Link } from "wouter";
@@ -107,18 +108,25 @@ export default function HomePage() {
               <p className="text-white/80 text-xs font-rounded font-bold">{texts.appSubtitle}</p>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <button 
-              onClick={() => setShowTextEditor(true)}
-              className="bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-lg hover:bg-white/30 transition-colors"
-            >
-              <Edit className="w-5 h-5 text-white" />
-            </button>
-            <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-lg">
-              <Menu className="w-5 h-5 text-white" />
+          <div className="flex items-center space-x-3">
+            {/* Vimeo Status */}
+            <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-lg">
+              <VimeoStatus />
             </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-lg">
-              <User className="w-5 h-5 text-white" />
+            
+            <div className="flex items-center space-x-2">
+              <button 
+                onClick={() => setShowTextEditor(true)}
+                className="bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-lg hover:bg-white/30 transition-colors"
+              >
+                <Edit className="w-5 h-5 text-white" />
+              </button>
+              <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-lg">
+                <Menu className="w-5 h-5 text-white" />
+              </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-lg">
+                <User className="w-5 h-5 text-white" />
+              </div>
             </div>
           </div>
         </div>

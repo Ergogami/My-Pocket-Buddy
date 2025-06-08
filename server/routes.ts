@@ -67,6 +67,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Test Vimeo connection
+  app.get("/api/vimeo/status", async (req, res) => {
+    try {
+      const { vimeoService } = await import("./vimeo-service");
+      
+      const response = await fetch('https://api.vimeo.com/me', {
+        headers: {
+          'Authorization': `Bearer ${process.env.VIMEO_ACCESS_TOKEN}`,
+          'Accept': 'application/vnd.vimeo.*+json;version=3.4'
+        }
+      });
+
+      if (!response.ok) {
+        return res.status(500).json({ 
+          connected: false, 
+          error: "Vimeo API connection failed" 
+        });
+      }
+
+      const userData = await response.json();
+      
+      // Get user's videos count
+      const videosResponse = await fetch('https://api.vimeo.com/me/videos', {
+        headers: {
+          'Authorization': `Bearer ${process.env.VIMEO_ACCESS_TOKEN}`,
+          'Accept': 'application/vnd.vimeo.*+json;version=3.4'
+        }
+      });
+
+      const videosData = await videosResponse.json();
+
+      res.json({
+        connected: true,
+        user: {
+          name: userData.name,
+          link: userData.link,
+          videoCount: videosData.total || 0
+        }
+      });
+
+    } catch (error) {
+      res.status(500).json({ 
+        connected: false, 
+        error: error instanceof Error ? error.message : "Unknown error" 
+      });
+    }
+  });
+
   app.get("/api/exercises/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
@@ -177,7 +225,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         exercise,
         vimeoUrl: uploadSession.link,
         embedUrl,
-        videoId
+        videoId,
+        status: videoDetails?.status || 'processing'
       });
 
     } catch (error) {
