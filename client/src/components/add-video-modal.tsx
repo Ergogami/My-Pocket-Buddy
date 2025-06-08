@@ -73,11 +73,28 @@ export function AddVideoModal({ isOpen, onClose, exercise }: AddVideoModalProps)
   };
 
   const formatVimeoUrl = (url: string) => {
-    // Convert regular Vimeo URLs to embed format
-    if (url.includes('vimeo.com/') && !url.includes('player.vimeo.com')) {
-      const videoId = url.split('/').pop();
+    // Extract video ID from various Vimeo URL formats
+    let videoId = '';
+    
+    if (url.includes('vimeo.com/')) {
+      // Handle regular vimeo.com URLs
+      const match = url.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
+      if (match) {
+        videoId = match[1];
+      }
+    } else if (url.includes('player.vimeo.com')) {
+      // Handle player.vimeo.com URLs
+      const match = url.match(/player\.vimeo\.com\/video\/(\d+)/);
+      if (match) {
+        videoId = match[1];
+      }
+    }
+    
+    // Return properly formatted embed URL
+    if (videoId) {
       return `https://player.vimeo.com/video/${videoId}`;
     }
+    
     return url;
   };
 

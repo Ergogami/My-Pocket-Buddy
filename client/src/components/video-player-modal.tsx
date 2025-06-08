@@ -73,12 +73,15 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
             {exercise.videoUrl && exercise.videoUrl.trim() !== "" ? (
               exercise.videoUrl.includes('vimeo.com') || exercise.videoUrl.includes('player.vimeo.com') ? (
                 <iframe
-                  src={exercise.videoUrl}
+                  src={`${exercise.videoUrl}?autoplay=0&loop=0&muted=0&gesture=media&playsinline=1&byline=0&portrait=0&title=0`}
                   className="w-full h-full rounded-xl"
                   frameBorder="0"
-                  allow="autoplay; fullscreen; picture-in-picture"
+                  allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
                   allowFullScreen
                   title={exercise.name}
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  sandbox="allow-scripts allow-same-origin allow-presentation"
                 />
               ) : (
                 <video
