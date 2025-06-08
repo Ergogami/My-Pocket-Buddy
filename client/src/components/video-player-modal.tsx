@@ -119,7 +119,7 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
             {exercise.videoUrl && exercise.videoUrl.trim() !== "" ? (
               exercise.videoUrl.includes('vimeo.com') || exercise.videoUrl.includes('player.vimeo.com') ? (
                 <iframe
-                  src={`${getEmbedUrl(exercise.videoUrl)}${getEmbedUrl(exercise.videoUrl).includes('?') ? '&' : '?'}autoplay=0&loop=0&muted=0&gesture=media&playsinline=1&byline=0&portrait=0&title=0`}
+                  src={`${getEmbedUrl(exercise.videoUrl)}${getEmbedUrl(exercise.videoUrl).includes('?') ? '&' : '?'}autoplay=1&loop=0&muted=0&gesture=media&playsinline=1&byline=0&portrait=0&title=0`}
                   className="w-full h-full rounded-xl"
                   frameBorder="0"
                   allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
@@ -136,6 +136,8 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
                   controls={true}
+                  autoPlay={true}
+                  playsInline={true}
                 />
               )
             ) : (
