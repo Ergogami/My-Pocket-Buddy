@@ -50,44 +50,190 @@ export class MemStorage implements IStorage {
 
   private initializeSampleData() {
     const sampleExercises: InsertExercise[] = [
+      // Balance Category
+      {
+        name: "Flamingo Stand",
+        description: "Stand on one foot like a flamingo and improve your balance!",
+        duration: "30 seconds per leg",
+        ageGroups: ["3-5", "6-8"],
+        category: "balance",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Tightrope Walk",
+        description: "Walk in a straight line like you're on a tightrope!",
+        duration: "1 minute",
+        ageGroups: ["3-5", "6-8", "9-12"],
+        category: "balance",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Tree Pose",
+        description: "Stand tall and steady like a tree in the wind!",
+        duration: "45 seconds",
+        ageGroups: ["6-8", "9-12"],
+        category: "balance",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+
+      // Strength Category
+      {
+        name: "Bear Crawls",
+        description: "Crawl like a strong bear and build upper body strength!",
+        duration: "1 minute",
+        ageGroups: ["3-5", "6-8"],
+        category: "strength",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Superhero Push-ups",
+        description: "Do modified push-ups like your favorite superhero!",
+        duration: "30 seconds",
+        ageGroups: ["6-8", "9-12"],
+        category: "strength",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Crab Walk",
+        description: "Walk sideways like a crab to strengthen your arms!",
+        duration: "45 seconds",
+        ageGroups: ["3-5", "6-8"],
+        category: "strength",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+
+      // Flexibility Category
+      {
+        name: "Animal Stretches",
+        description: "Stretch like different animals - cats, dogs, and snakes!",
+        duration: "3 minutes",
+        ageGroups: ["3-5", "6-8", "9-12"],
+        category: "flexibility",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Butterfly Stretch",
+        description: "Sit and flap your legs like butterfly wings!",
+        duration: "1 minute",
+        ageGroups: ["3-5", "6-8"],
+        category: "flexibility",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Reach for the Stars",
+        description: "Stretch up high and reach for the stars!",
+        duration: "30 seconds",
+        ageGroups: ["3-5", "6-8", "9-12"],
+        category: "flexibility",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+
+      // Ball Skills Category
+      {
+        name: "Ball Toss Challenge",
+        description: "Toss and catch a ball to improve hand-eye coordination!",
+        duration: "2 minutes",
+        ageGroups: ["3-5", "6-8"],
+        category: "ball-skills",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Dribbling Fun",
+        description: "Practice dribbling a ball with your hands!",
+        duration: "1 minute",
+        ageGroups: ["6-8", "9-12"],
+        category: "ball-skills",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Rolling Ball Game",
+        description: "Roll a ball back and forth with a partner!",
+        duration: "2 minutes",
+        ageGroups: ["3-5", "6-8"],
+        category: "ball-skills",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+
+      // Coordination Category
+      {
+        name: "Marching Band",
+        description: "March in place while moving your arms like a conductor!",
+        duration: "1 minute",
+        ageGroups: ["3-5", "6-8"],
+        category: "coordination",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Cross Crawls",
+        description: "Touch your opposite hand to knee in a fun pattern!",
+        duration: "45 seconds",
+        ageGroups: ["6-8", "9-12"],
+        category: "coordination",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Simon Says Dance",
+        description: "Follow dance moves that help with coordination!",
+        duration: "2 minutes",
+        ageGroups: ["3-5", "6-8", "9-12"],
+        category: "coordination",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+
+      // Cardio Category
       {
         name: "Jumping Jacks",
         description: "Get your heart pumping with fun jumping jacks!",
-        duration: "2 minutes",
-        ageGroups: ["4-8"],
-        category: "Cardio Fun",
-        videoUrl: "/sample-video.mp4",
-        thumbnailUrl: "/sample-thumb.jpg"
-      },
-      {
-        name: "Bear Crawls",
-        description: "Crawl like a bear and build strength!",
         duration: "1 minute",
-        ageGroups: ["4-8"],
-        category: "Strength Games",
-        videoUrl: "/sample-video.mp4",
-        thumbnailUrl: "/sample-thumb.jpg"
+        ageGroups: ["6-8", "9-12"],
+        category: "cardio",
+        videoUrl: "",
+        thumbnailUrl: ""
       },
       {
-        name: "Animal Yoga",
-        description: "Stretch like different animals!",
+        name: "Dance Party",
+        description: "Dance to your favorite music and get moving!",
         duration: "3 minutes",
-        ageGroups: ["4-8"],
-        category: "Flexibility",
-        videoUrl: "/sample-video.mp4",
-        thumbnailUrl: "/sample-thumb.jpg"
+        ageGroups: ["3-5", "6-8", "9-12"],
+        category: "cardio",
+        videoUrl: "",
+        thumbnailUrl: ""
+      },
+      {
+        name: "Animal Hops",
+        description: "Hop like different animals - bunnies, frogs, and kangaroos!",
+        duration: "1 minute",
+        ageGroups: ["3-5", "6-8"],
+        category: "cardio",
+        videoUrl: "",
+        thumbnailUrl: ""
       }
     ];
 
     sampleExercises.forEach(exercise => {
       const id = this.currentExerciseId++;
-      this.exercises.set(id, { ...exercise, id, isCompleted: false });
+      this.exercises.set(id, { ...exercise, id, isCompleted: false, isPinned: false });
     });
 
-    // Create default playlist
+    // Create default playlist with exercises from different categories
     const defaultPlaylist: InsertPlaylist = {
       name: "Today's Workout",
-      exerciseIds: [1, 2, 3]
+      exerciseIds: [1, 4, 7, 10, 13, 16] // Mix of different categories
     };
     const playlistId = this.currentPlaylistId++;
     this.playlists.set(playlistId, { ...defaultPlaylist, id: playlistId, isActive: true });

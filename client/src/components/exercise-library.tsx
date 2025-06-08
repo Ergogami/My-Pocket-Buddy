@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Exercise } from "@shared/schema";
-import { EXERCISE_CATEGORIES } from "@/lib/constants";
+import { EXERCISE_CATEGORIES, CATEGORY_DISPLAY_NAMES } from "@/lib/constants";
 
 export function ExerciseLibrary() {
   const [selectedCategory, setSelectedCategory] = useState("All Exercises");
@@ -36,7 +36,7 @@ export function ExerciseLibrary() {
             }`}
             variant={selectedCategory === category ? "default" : "outline"}
           >
-            {category}
+            {CATEGORY_DISPLAY_NAMES[category as keyof typeof CATEGORY_DISPLAY_NAMES]}
           </Button>
         ))}
       </div>

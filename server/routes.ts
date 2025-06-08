@@ -48,6 +48,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get exercises grouped by category
+  app.get("/api/exercises/by-category", async (req, res) => {
+    try {
+      const allExercises = await storage.getAllExercises();
+      const exercisesByCategory = allExercises.reduce((acc, exercise) => {
+        const category = exercise.category;
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push(exercise);
+        return acc;
+      }, {} as Record<string, typeof allExercises>);
+      
+      res.json(exercisesByCategory);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch exercises by category" });
+    }
+  });
+
   app.get("/api/exercises/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
