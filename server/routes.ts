@@ -141,6 +141,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         videoBuffer
       );
 
+      // Wait for video processing (with timeout)
+      let videoDetails;
+      try {
+        videoDetails = await vimeoService.waitForProcessing(uploadSession.uri, 30000);
+      } catch (processingError) {
+        console.log("Video uploaded but still processing:", processingError.message);
+        // Continue with upload session data even if processing isn't complete
+        videoDetails = uploadSession;
+      }
+
       // Get video ID and create embed URL
       const videoId = vimeoService.extractVideoId(uploadSession.uri);
       const embedUrl = vimeoService.getEmbedUrl(videoId);
