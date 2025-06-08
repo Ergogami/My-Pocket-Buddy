@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Play, ChevronLeft, MoreHorizontal, Video } from "lucide-react";
+import { Play, ChevronLeft, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { CompletionModal } from "@/components/completion-modal";
-import { AddVideoModal } from "@/components/add-video-modal";
 import { Exercise, Playlist } from "@shared/schema";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
@@ -19,7 +18,6 @@ import {
 export default function PlaylistPage() {
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
-  const [showAddVideoModal, setShowAddVideoModal] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
@@ -62,6 +60,25 @@ export default function PlaylistPage() {
     },
   });
 
+  const updatePlaylistMutation = useMutation({
+    mutationFn: async ({ playlistId, exerciseIds }: { playlistId: number, exerciseIds: number[] }) => {
+      const res = await fetch(`/api/playlists/${playlistId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ exerciseIds }),
+      });
+      if (!res.ok) throw new Error('Failed to update playlist');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/playlists'] });
+      toast({
+        title: "Exercise Removed",
+        description: "Exercise has been removed from the playlist",
+      });
+    },
+  });
+
   const playlistExercises = activePlaylist 
     ? allExercises.filter(ex => activePlaylist.exerciseIds.includes(ex.id))
     : [];
@@ -76,6 +93,17 @@ export default function PlaylistPage() {
     createProgressMutation.mutate(exercise.id);
     setSelectedExercise(exercise);
     setShowCompletionModal(true);
+  };
+
+  const handleRemoveFromPlaylist = (exercise: Exercise) => {
+    if (!activePlaylist) return;
+    
+    const updatedExerciseIds = activePlaylist.exerciseIds.filter(id => id !== exercise.id);
+    
+    updatePlaylistMutation.mutate({
+      playlistId: activePlaylist.id,
+      exerciseIds: updatedExerciseIds,
+    });
   };
 
   const handleNextVideo = () => {
@@ -175,12 +203,8 @@ export default function PlaylistPage() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => {
-                    setSelectedExercise(exercise);
-                    setShowAddVideoModal(true);
-                  }}>
-                    <Video className="w-4 h-4 mr-2" />
-                    Add Video
+                  <DropdownMenuItem onClick={() => handleRemoveFromPlaylist(exercise)}>
+                    Remove from Playlist
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleCompleteExercise(exercise)}>
                     Mark Complete
@@ -343,12 +367,6 @@ export default function PlaylistPage() {
         exercise={selectedExercise}
       />
 
-      {/* Add Video Modal */}
-      <AddVideoModal
-        isOpen={showAddVideoModal}
-        onClose={() => setShowAddVideoModal(false)}
-        exercise={selectedExercise}
-      />
     </div>
   );
 }
