@@ -133,7 +133,7 @@ export default function HomePage() {
       </div>
 
       {/* Content */}
-      <div className="px-4 py-6 max-w-md mx-auto space-y-6">
+      <div className="px-4 py-6 max-w-md mx-auto space-y-6 pb-40">
         {/* Hero Section with MY POCKET BUDDY */}
         <div className="relative overflow-hidden rounded-3xl shadow-2xl">
           <div className="bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 p-8 text-center relative">
