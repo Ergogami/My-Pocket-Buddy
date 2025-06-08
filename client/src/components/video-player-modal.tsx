@@ -71,14 +71,25 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
         <div className="p-6">
           <div className="bg-gray-900 rounded-2xl overflow-hidden mb-6 relative aspect-video">
             {exercise.videoUrl ? (
-              <video
-                ref={videoRef}
-                className="w-full h-full object-cover"
-                src={exercise.videoUrl}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                controls={false}
-              />
+              exercise.videoUrl.includes('vimeo.com') ? (
+                <iframe
+                  src={exercise.videoUrl}
+                  className="w-full h-full"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  title={exercise.name}
+                />
+              ) : (
+                <video
+                  ref={videoRef}
+                  className="w-full h-full object-cover"
+                  src={exercise.videoUrl}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  controls={false}
+                />
+              )
             ) : (
               <div className="absolute inset-0 flex items-center justify-center text-white">
                 <div className="text-center">

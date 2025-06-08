@@ -81,6 +81,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Upload video to Vimeo endpoint
+  app.post("/api/upload-to-vimeo", upload.single("video"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No video file provided" });
+      }
+
+      const { name, description, category } = req.body;
+      
+      if (!name || !description) {
+        return res.status(400).json({ error: "Name and description are required" });
+      }
+
+      // Import Vimeo service
+      const { vimeoService } = await import("./vimeo-service");
+
+      // Read file buffer
+      const videoBuffer = fs.readFileSync(req.file.path);
+
+      // Prepare video metadata
+      const videoData = {
+        name,
+        description,
+        privacy: {
+          view: "unlisted",
+          embed: "public"
+        }
+      };
+
+      // Create upload session
+      const uploadSession = await vimeoService.createUploadSession(
+        videoData, 
+        req.file.size
+      );
+
+      // Upload the video file
+      await vimeoService.uploadVideo(
+        uploadSession.upload.upload_link,
+        videoBuffer
+      );
+
+      // Get video ID and create embed URL
+      const videoId = vimeoService.extractVideoId(uploadSession.uri);
+      const embedUrl = vimeoService.getEmbedUrl(videoId);
+
+      // Create exercise with Vimeo video
+      const exerciseData = {
+        name,
+        description,
+        category: category || 'general',
+        videoUrl: embedUrl,
+        duration: parseInt(req.body.duration) || 60,
+        ageGroups: JSON.parse(req.body.ageGroups || '[]'),
+        thumbnailUrl: req.body.thumbnailUrl || '',
+      };
+
+      const validatedData = insertExerciseSchema.parse(exerciseData);
+      const exercise = await storage.createExercise(validatedData);
+
+      // Clean up local file
+      fs.unlinkSync(req.file.path);
+
+      res.json({ 
+        success: true, 
+        exercise,
+        vimeoUrl: uploadSession.link,
+        embedUrl,
+        videoId
+      });
+
+    } catch (error) {
+      console.error("Vimeo upload error:", error);
+      
+      // Clean up file if it exists
+      if (req.file?.path && fs.existsSync(req.file.path)) {
+        try {
+          fs.unlinkSync(req.file.path);
+        } catch (cleanupError) {
+          console.error("File cleanup error:", cleanupError);
+        }
+      }
+
+      res.status(500).json({ 
+        error: "Failed to upload video to Vimeo",
+        details: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
   app.patch("/api/exercises/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);

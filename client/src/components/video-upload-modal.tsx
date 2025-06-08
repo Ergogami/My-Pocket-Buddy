@@ -31,27 +31,28 @@ export function VideoUploadModal({ isOpen, onClose }: VideoUploadModalProps) {
 
   const uploadMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      const response = await fetch("/api/exercises", {
+      const response = await fetch("/api/upload-to-vimeo", {
         method: "POST",
         body: data,
       });
       if (!response.ok) {
-        throw new Error("Upload failed");
+        const errorData = await response.json();
+        throw new Error(errorData.details || errorData.error || "Upload failed");
       }
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/exercises"] });
       toast({
         title: "Success!",
-        description: "Your exercise video has been uploaded.",
+        description: `Video uploaded to Vimeo and exercise created: ${data.exercise.name}`,
       });
       handleClose();
     },
-    onError: () => {
+    onError: (error) => {
       toast({
         title: "Upload Failed",
-        description: "Please check your file and try again.",
+        description: error.message,
         variant: "destructive",
       });
     },
