@@ -342,6 +342,13 @@ export default function PlaylistPage() {
         onClose={() => setShowCompletionModal(false)}
         exercise={selectedExercise}
       />
+
+      {/* Add Video Modal */}
+      <AddVideoModal
+        isOpen={showAddVideoModal}
+        onClose={() => setShowAddVideoModal(false)}
+        exercise={selectedExercise}
+      />
     </div>
   );
 }

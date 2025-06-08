@@ -23,11 +23,19 @@ export function AddVideoModal({ isOpen, onClose, exercise }: AddVideoModalProps)
   const updateVideoMutation = useMutation({
     mutationFn: async (data: { vimeoUrl: string }) => {
       if (!exercise) throw new Error("No exercise selected");
-      return apiRequest(`/api/exercises/${exercise.id}/video`, {
+      
+      const response = await fetch(`/api/exercises/${exercise.id}/video`, {
         method: "PATCH",
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" }
       });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update video");
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/exercises"] });
