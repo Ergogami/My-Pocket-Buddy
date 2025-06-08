@@ -261,6 +261,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Add Vimeo video URL to existing exercise
+  app.patch("/api/exercises/:id/video", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { vimeoUrl } = req.body;
+      
+      if (!vimeoUrl) {
+        return res.status(400).json({ message: "Vimeo URL is required" });
+      }
+
+      // Validate Vimeo URL format
+      if (!vimeoUrl.includes('vimeo.com') && !vimeoUrl.includes('player.vimeo.com')) {
+        return res.status(400).json({ message: "Invalid Vimeo URL format" });
+      }
+
+      const exercise = await storage.updateExercise(id, { videoUrl: vimeoUrl });
+      if (!exercise) {
+        return res.status(404).json({ message: "Exercise not found" });
+      }
+      
+      res.json(exercise);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update exercise video" });
+    }
+  });
+
   app.delete("/api/exercises/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);

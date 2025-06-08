@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Play, ChevronLeft, MoreHorizontal } from "lucide-react";
+import { Play, ChevronLeft, MoreHorizontal, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { VideoPlayerModal } from "@/components/video-player-modal";
 import { CompletionModal } from "@/components/completion-modal";
+import { AddVideoModal } from "@/components/add-video-modal";
 import { Exercise, Playlist } from "@shared/schema";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
@@ -18,6 +19,7 @@ import {
 export default function PlaylistPage() {
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [showAddVideoModal, setShowAddVideoModal] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
@@ -173,6 +175,13 @@ export default function PlaylistPage() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => {
+                    setSelectedExercise(exercise);
+                    setShowAddVideoModal(true);
+                  }}>
+                    <Video className="w-4 h-4 mr-2" />
+                    Add Video
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleCompleteExercise(exercise)}>
                     Mark Complete
                   </DropdownMenuItem>
