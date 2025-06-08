@@ -21,6 +21,43 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
   const [timerActive, setTimerActive] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Convert Vimeo URL to embeddable format
+  const getEmbedUrl = (url: string): string => {
+    if (!url) return url;
+    
+    // If it's already a player URL, return as is
+    if (url.includes('player.vimeo.com')) {
+      return url;
+    }
+    
+    // Extract video ID from various Vimeo URL formats
+    let videoId = '';
+    
+    // Format: https://vimeo.com/1091427008/0f41596b5f
+    if (url.includes('vimeo.com/') && url.includes('/')) {
+      const parts = url.split('/');
+      const videoIdPart = parts[parts.length - 2]; // Get the part before the last slash
+      if (videoIdPart && /^\d+$/.test(videoIdPart)) {
+        videoId = videoIdPart;
+      }
+    }
+    
+    // Format: https://vimeo.com/1091427008
+    if (!videoId && url.includes('vimeo.com/')) {
+      const match = url.match(/vimeo\.com\/(\d+)/);
+      if (match) {
+        videoId = match[1];
+      }
+    }
+    
+    // If we found a video ID, convert to player URL
+    if (videoId) {
+      return `https://player.vimeo.com/video/${videoId}`;
+    }
+    
+    return url;
+  };
+
   // Parse duration from exercise (e.g., "5 minutes" -> 300 seconds)
   const parseDuration = (durationStr: string): number => {
     const match = durationStr.match(/(\d+)/);
@@ -73,7 +110,7 @@ export function VideoPlayerModal({ isOpen, onClose, exercise, onNext, onPrevious
             {exercise.videoUrl && exercise.videoUrl.trim() !== "" ? (
               exercise.videoUrl.includes('vimeo.com') || exercise.videoUrl.includes('player.vimeo.com') ? (
                 <iframe
-                  src={`${exercise.videoUrl}?autoplay=0&loop=0&muted=0&gesture=media&playsinline=1&byline=0&portrait=0&title=0`}
+                  src={`${getEmbedUrl(exercise.videoUrl)}?autoplay=0&loop=0&muted=0&gesture=media&playsinline=1&byline=0&portrait=0&title=0`}
                   className="w-full h-full rounded-xl"
                   frameBorder="0"
                   allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
