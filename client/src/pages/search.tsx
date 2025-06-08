@@ -116,7 +116,7 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-200 via-purple-100 via-pink-100 to-orange-200">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-200 via-purple-100 via-pink-100 to-orange-200 pb-20">
       {/* Adventure Header */}
       <div className="bg-gradient-to-r from-green-400 via-cyan-500 to-blue-600 px-4 py-6 relative overflow-hidden shadow-xl">
         <div className="absolute inset-0 bg-white/10"></div>

@@ -190,7 +190,7 @@ export default function CategoryPage({ category }: CategoryPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-4 flex items-center">
         <Button 
