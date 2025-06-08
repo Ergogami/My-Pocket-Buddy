@@ -35,7 +35,7 @@ export default function PlaylistPage() {
   });
 
   // Fetch today's progress
-  const { data: todayProgress = [], isLoading: progressLoading } = useQuery({
+  const { data: todayProgress = [], isLoading: progressLoading } = useQuery<any[]>({
     queryKey: ['/api/progress/today'],
   });
 
@@ -72,6 +72,7 @@ export default function PlaylistPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/playlists'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/playlists/active'] });
       toast({
         title: "Exercise Removed",
         description: "Exercise has been removed from the playlist",
