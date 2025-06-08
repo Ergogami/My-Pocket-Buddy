@@ -94,7 +94,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-cloud-pink pb-20">
+    <div className="min-h-screen bg-cloud-pink pb-32">
       {/* Header */}
       <div className="bg-dreamy-lavender px-4 py-6 relative overflow-hidden shadow-xl">
         <div className="absolute inset-0 bg-white/10"></div>

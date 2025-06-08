@@ -66,7 +66,7 @@ export default function ProgramsPage() {
     const isLast = currentExerciseIndex === activeProgram.exercises.length - 1;
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 p-4 pb-20">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 p-4 pb-32">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <Button onClick={exitProgram} variant="ghost" className="p-2">
@@ -202,7 +202,7 @@ export default function ProgramsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 p-4 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 p-4 pb-32">
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Done for you programs Header */}
