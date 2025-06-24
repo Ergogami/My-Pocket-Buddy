@@ -90,7 +90,8 @@ The website-version directory contains a standalone React application optimized 
 - Accessibility compliance with ARIA labels and keyboard navigation
 
 ## Changelog
-- June 24, 2025. Initial setup
+- June 24, 2025: Initial setup
+- December 29, 2024: Added drag and drop playlist functionality to website version with "All Done Zone"
 
 ## User Preferences
 

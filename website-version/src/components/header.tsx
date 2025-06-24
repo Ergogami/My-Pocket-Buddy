@@ -13,6 +13,7 @@ export default function Header() {
     { name: 'Home', href: '/' },
     { name: 'Exercises', href: '/exercises' },
     { name: 'Programs', href: '/programs' },
+    { name: 'Playlist', href: '/playlist' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ]

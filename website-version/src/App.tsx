@@ -7,6 +7,7 @@ import Footer from '@/components/footer'
 import HomePage from '@/pages/home'
 import ExercisesPage from '@/pages/exercises'
 import ProgramsPage from '@/pages/programs'
+import PlaylistPage from '@/pages/playlist'
 import AboutPage from '@/pages/about'
 import ContactPage from '@/pages/contact'
 import NotFoundPage from '@/pages/not-found'
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/exercises" component={ExercisesPage} />
                 <Route path="/exercises/:category" component={ExercisesPage} />
                 <Route path="/programs" component={ProgramsPage} />
+                <Route path="/playlist" component={PlaylistPage} />
                 <Route path="/about" component={AboutPage} />
                 <Route path="/contact" component={ContactPage} />
                 <Route component={NotFoundPage} />
