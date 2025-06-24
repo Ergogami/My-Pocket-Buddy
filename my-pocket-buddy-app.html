@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY POCKET BUDDY - Children's Exercise App</title>
+    <meta name="description" content="MY POCKET BUDDY is a fun, accessible children's exercise app designed to help families stay active together. Discover engaging workouts with your personalized exercises and videos.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mypocketbuddy.com/">
+    <meta property="og:title" content="MY POCKET BUDDY - Children's Exercise App">
+    <meta property="og:description" content="Your personalized children's exercise app with custom workouts and video content.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mypocketbuddy.com/">
+    <meta property="twitter:title" content="MY POCKET BUDDY - Children's Exercise App">
+    <meta property="twitter:description" content="Your personalized children's exercise app with custom workouts.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --dreamy-lavender: hsl(280, 70%, 80%);
+            --dreamy-mint: hsl(160, 50%, 85%);
+            --dreamy-peach: hsl(20, 70%, 88%);
+            --dreamy-blue: hsl(200, 60%, 85%);
+            --dreamy-pink: hsl(330, 60%, 85%);
+            --dreamy-yellow: hsl(50, 80%, 88%);
+            --dreamy-coral: hsl(10, 60%, 85%);
+            --dreamy-lilac: hsl(260, 50%, 85%);
+            --cloud-pink: hsl(320, 60%, 97%);
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: hsl(240, 15%, 25%);
+            background: linear-gradient(135deg, hsl(320, 60%, 97%) 0%, hsl(280, 30%, 94%) 50%, hsl(315, 50%, 96%) 100%);
+            min-height: 100vh;
+        }
+        
+        .font-fredoka { font-family: 'Fredoka One', cursive; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header with dreamy gradient */
+        .header {
+            background: linear-gradient(135deg, var(--dreamy-lavender), var(--dreamy-lilac));
+            padding: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .nav-menu a:hover {
+            transform: translateY(-2px);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        }
+        
+        /* Progress section */
+        .progress-section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .progress-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: hsl(240, 15%, 25%);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--dreamy-mint), var(--dreamy-blue));
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Categories section */
+        .categories-section {
+            margin: 3rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: hsl(240, 15%, 25%);
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .category-header {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .category-balance { background: linear-gradient(135deg, var(--dreamy-lavender), var(--dreamy-lilac)); }
+        .category-strength { background: linear-gradient(135deg, var(--dreamy-coral), var(--dreamy-pink)); }
+        .category-flexibility { background: linear-gradient(135deg, var(--dreamy-blue), var(--dreamy-mint)); }
+        .category-ball-skills { background: linear-gradient(135deg, var(--dreamy-yellow), var(--dreamy-peach)); }
+        .category-coordination { background: linear-gradient(135deg, var(--dreamy-mint), var(--dreamy-blue)); }
+        .category-cardio { background: linear-gradient(135deg, var(--dreamy-coral), var(--dreamy-pink)); }
+        
+        .category-content {
+            padding: 1.5rem;
+        }
+        
+        .category-count {
+            color: hsl(240, 20%, 50%);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-description {
+            color: hsl(240, 15%, 35%);
+            line-height: 1.5;
+        }
+        
+        /* Playlist section */
+        .playlist-section {
+            background: white;
+            margin: 3rem 0;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .playlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .exercise-card {
+            background: linear-gradient(135deg, hsl(315, 50%, 96%), hsl(280, 30%, 94%));
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid hsl(300, 25%, 88%);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .exercise-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            border-color: var(--dreamy-lavender);
+        }
+        
+        .exercise-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: hsl(240, 15%, 25%);
+        }
+        
+        .exercise-description {
+            color: hsl(240, 20%, 50%);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .exercise-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .exercise-badge {
+            background: var(--dreamy-lavender);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .exercise-duration {
+            color: hsl(240, 20%, 50%);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .exercise-ages {
+            color: hsl(240, 20%, 50%);
+            font-size: 0.85rem;
+        }
+        
+        .play-button {
+            background: linear-gradient(135deg, var(--dreamy-lavender), var(--dreamy-lilac));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 8px solid white;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+        
+        /* Video modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: hsl(240, 20%, 50%);
+        }
+        
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: hsl(240, 20%, 50%);
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .header-content { justify-content: center; }
+            .logo { font-size: 1.5rem; }
+            .section-title h2 { font-size: 2rem; }
+            .categories-grid { grid-template-columns: 1fr; }
+            .exercise-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="logo font-fredoka">MY POCKET BUDDY</h1>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="#playlist">My Playlist</a></li>
+                        <li><a href="#progress">Progress</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Progress Section -->
+        <section class="progress-section" id="progress">
+            <h2 class="progress-title font-fredoka">Today's Progress</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="completed-today">0</div>
+                    <div class="stat-label">Completed Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="streak-days">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-exercises">0</div>
+                    <div class="stat-label">Total Exercises</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="playlist-count">7</div>
+                    <div class="stat-label">In Playlist</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories-section" id="categories">
+            <div class="section-title">
+                <h2 class="font-fredoka">Exercise Categories</h2>
+                <p>Choose from different types of fun activities designed for children</p>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card" onclick="showCategory('balance')">
+                    <div class="category-header category-balance">
+                        BALANCE
+                    </div>
+                    <div class="category-content">
+                        <div class="category-count" id="balance-count">0 exercises</div>
+                        <div class="category-description">Improve stability and body awareness with fun balance activities</div>
+                    </div>
+                </div>
+                
+                <div class="category-card" onclick="showCategory('strength')">
+                    <div class="category-header category-strength">
+                        STRENGTH
+                    </div>
+                    <div class="category-content">
+                        <div class="category-count" id="strength-count">0 exercises</div>
+                        <div class="category-description">Build muscle strength through playful movement exercises</div>
+                    </div>
+                </div>
+                
+                <div class="category-card" onclick="showCategory('flexibility')">
+                    <div class="category-header category-flexibility">
+                        FLEXIBILITY
+                    </div>
+                    <div class="category-content">
+                        <div class="category-count" id="flexibility-count">0 exercises</div>
+                        <div class="category-description">Stretch and improve flexibility with gentle movements</div>
+                    </div>
+                </div>
+                
+                <div class="category-card" onclick="showCategory('ball-skills')">
+                    <div class="category-header category-ball-skills">
+                        BALL SKILLS
+                    </div>
+                    <div class="category-content">
+                        <div class="category-count" id="ball-skills-count">0 exercises</div>
+                        <div class="category-description">Develop coordination and motor skills with ball activities</div>
+                    </div>
+                </div>
+                
+                <div class="category-card" onclick="showCategory('coordination')">
+                    <div class="category-header category-coordination">
+                        COORDINATION
+                    </div>
+                    <div class="category-content">
+                        <div class="category-count" id="coordination-count">0 exercises</div>
+                        <div class="category-description">Enhance body coordination through rhythmic movements</div>
+                    </div>
+                </div>
+                
+                <div class="category-card" onclick="showCategory('cardio')">
+                    <div class="category-header category-cardio">
+                        CARDIO
+                    </div>
+                    <div class="category-content">
+                        <div class="category-count" id="cardio-count">0 exercises</div>
+                        <div class="category-description">Get the heart pumping with energetic activities</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Active Playlist Section -->
+        <section class="playlist-section" id="playlist">
+            <div class="playlist-header">
+                <h2 class="font-fredoka">Today's Workout</h2>
+                <div style="color: hsl(240, 20%, 50%); font-size: 0.9rem;">
+                    Your personalized exercise playlist
+                </div>
+            </div>
+            <div class="exercise-grid" id="playlist-exercises">
+                <!-- Exercises will be loaded here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="modal" id="video-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeVideoModal()">&times;</button>
+            <div id="modal-exercise-name" class="font-fredoka" style="font-size: 1.5rem; margin-bottom: 1rem;"></div>
+            <div class="video-container" id="video-container">
+                <div>Video will play here</div>
+            </div>
+            <div id="modal-exercise-description" style="margin-top: 1rem; color: hsl(240, 20%, 50%);"></div>
+            <div id="modal-exercise-meta" style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Your actual exercise data from the app
+        let exercisesData = [];
+        let activePlaylistData = null;
+        
+        // Initialize the app
+        async function initApp() {
+            try {
+                // This would normally fetch from your API
+                // For now, we'll use sample data that matches your app structure
+                exercisesData = [
+                    {
+                        "id": 21,
+                        "name": "Bridging",
+                        "description": "Challenge yourself to make a bridge with your body. Keep your hips up high!",
+                        "duration": "30 seconds",
+                        "ageGroups": ["6-8", "9-12"],
+                        "category": "strength",
+                        "videoUrl": "",
+                        "thumbnailUrl": "",
+                        "isCompleted": false,
+                        "isPinned": false
+                    },
+                    {
+                        "id": 111,
+                        "name": "Tree Pose Challenge",
+                        "description": "Stand on one foot like a mighty tree! See how long you can balance.",
+                        "duration": "45 seconds",
+                        "ageGroups": ["6-8", "9-12"],
+                        "category": "balance",
+                        "videoUrl": "https://player.vimeo.com/video/1045086127?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+                        "thumbnailUrl": "",
+                        "isCompleted": false,
+                        "isPinned": true
+                    },
+                    {
+                        "id": 103,
+                        "name": "Superhero Landing",
+                        "description": "Jump and land like your favorite superhero! Soft knees, strong core.",
+                        "duration": "1 minute",
+                        "ageGroups": ["6-8", "9-12"],
+                        "category": "strength",
+                        "videoUrl": "https://player.vimeo.com/video/1045078940?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+                        "thumbnailUrl": "",
+                        "isCompleted": false,
+                        "isPinned": false
+                    }
+                    // Add more exercises as needed
+                ];
+                
+                activePlaylistData = {
+                    "id": 1,
+                    "name": "Today's Workout",
+                    "exerciseIds": [111, 103, 21],
+                    "isActive": true
+                };
+                
+                updateUI();
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+        
+        function updateUI() {
+            updateCategoryCounts();
+            updateProgressStats();
+            loadPlaylistExercises();
+        }
+        
+        function updateCategoryCounts() {
+            const categories = ['balance', 'strength', 'flexibility', 'ball-skills', 'coordination', 'cardio'];
+            categories.forEach(category => {
+                const count = exercisesData.filter(ex => ex.category === category.replace('-', '-')).length;
+                const element = document.getElementById(`${category}-count`);
+                if (element) {
+                    element.textContent = `${count} exercises`;
+                }
+            });
+        }
+        
+        function updateProgressStats() {
+            document.getElementById('total-exercises').textContent = exercisesData.length;
+            document.getElementById('completed-today').textContent = '0'; // Would be from progress API
+            document.getElementById('streak-days').textContent = '0'; // Would be from streak API
+        }
+        
+        function loadPlaylistExercises() {
+            const container = document.getElementById('playlist-exercises');
+            if (!activePlaylistData) return;
+            
+            const playlistExercises = exercisesData.filter(ex => 
+                activePlaylistData.exerciseIds.includes(ex.id)
+            );
+            
+            container.innerHTML = playlistExercises.map(exercise => `
+                <div class="exercise-card">
+                    <div class="exercise-name">${exercise.name}</div>
+                    <div class="exercise-description">${exercise.description}</div>
+                    <div class="exercise-meta">
+                        <span class="exercise-badge">${exercise.category.replace('-', ' ').toUpperCase()}</span>
+                        <span class="exercise-duration">${exercise.duration}</span>
+                        <span class="exercise-ages">Ages ${exercise.ageGroups.join(', ')}</span>
+                    </div>
+                    <button class="play-button" onclick="playVideo(${exercise.id})">
+                        <div class="play-icon"></div>
+                        Play Exercise
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        function showCategory(category) {
+            const categoryExercises = exercisesData.filter(ex => ex.category === category);
+            const container = document.getElementById('playlist-exercises');
+            
+            container.innerHTML = categoryExercises.map(exercise => `
+                <div class="exercise-card">
+                    <div class="exercise-name">${exercise.name}</div>
+                    <div class="exercise-description">${exercise.description}</div>
+                    <div class="exercise-meta">
+                        <span class="exercise-badge">${exercise.category.replace('-', ' ').toUpperCase()}</span>
+                        <span class="exercise-duration">${exercise.duration}</span>
+                        <span class="exercise-ages">Ages ${exercise.ageGroups.join(', ')}</span>
+                    </div>
+                    <button class="play-button" onclick="playVideo(${exercise.id})">
+                        <div class="play-icon"></div>
+                        Play Exercise
+                    </button>
+                </div>
+            `).join('');
+            
+            // Scroll to playlist section
+            document.getElementById('playlist').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function playVideo(exerciseId) {
+            const exercise = exercisesData.find(ex => ex.id === exerciseId);
+            if (!exercise) return;
+            
+            document.getElementById('modal-exercise-name').textContent = exercise.name;
+            document.getElementById('modal-exercise-description').textContent = exercise.description;
+            document.getElementById('modal-exercise-meta').innerHTML = `
+                <span class="exercise-badge">${exercise.category.replace('-', ' ').toUpperCase()}</span>
+                <span class="exercise-duration">${exercise.duration}</span>
+                <span class="exercise-ages">Ages ${exercise.ageGroups.join(', ')}</span>
+            `;
+            
+            const videoContainer = document.getElementById('video-container');
+            if (exercise.videoUrl && exercise.videoUrl.includes('vimeo.com')) {
+                videoContainer.innerHTML = `<iframe src="${exercise.videoUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+            } else {
+                videoContainer.innerHTML = `
+                    <div style="text-align: center; color: hsl(240, 20%, 50%);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎥</div>
+                        <div>Video content will be displayed here</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem;">Your Vimeo videos will play in this space</div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('video-modal').classList.add('active');
+        }
+        
+        function closeVideoModal() {
+            document.getElementById('video-modal').classList.remove('active');
+            document.getElementById('video-container').innerHTML = '<div>Video will play here</div>';
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('video-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // Initialize the app when page loads
+        initApp();
+    </script>
+</body>
+</html>

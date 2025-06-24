@@ -92,6 +92,7 @@ The website-version directory contains a standalone React application optimized 
 ## Changelog
 - June 24, 2025: Initial setup
 - December 29, 2024: Added drag and drop playlist functionality to website version with "All Done Zone"
+- June 24, 2025: Created app-styled website version matching original design with user's exercise data and Vimeo integration
 
 ## User Preferences
 
