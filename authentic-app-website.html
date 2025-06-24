@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY POCKET BUDDY - Children's Exercise App</title>
+    <meta name="description" content="MY POCKET BUDDY is your personalized children's exercise app with custom workouts, Vimeo videos, and progress tracking designed for families.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mypocketbuddy.com/">
+    <meta property="og:title" content="MY POCKET BUDDY - Children's Exercise App">
+    <meta property="og:description" content="Your personalized children's exercise app with custom workouts and video content.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --background: hsl(320, 60%, 97%);
+            --foreground: hsl(240, 15%, 25%);
+            --muted: hsl(280, 30%, 94%);
+            --muted-foreground: hsl(240, 20%, 50%);
+            --card: hsl(315, 50%, 96%);
+            --border: hsl(300, 25%, 88%);
+            --primary: hsl(280, 70%, 80%);
+            --secondary: hsl(190, 60%, 85%);
+            --accent: hsl(50, 80%, 88%);
+            --dreamy-lavender: hsl(280, 70%, 80%);
+            --dreamy-mint: hsl(160, 50%, 85%);
+            --dreamy-peach: hsl(20, 70%, 88%);
+            --dreamy-blue: hsl(200, 60%, 85%);
+            --dreamy-pink: hsl(330, 60%, 85%);
+            --dreamy-coral: hsl(10, 60%, 85%);
+            --dreamy-lilac: hsl(260, 50%, 85%);
+            --cloud-pink: hsl(320, 60%, 97%);
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--foreground);
+            background: var(--cloud-pink);
+            min-height: 100vh;
+        }
+        
+        .font-fredoka { font-family: 'Fredoka One', cursive; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header with dreamy gradient */
+        .bg-dreamy-lavender {
+            background: linear-gradient(135deg, var(--dreamy-lavender), var(--dreamy-lilac));
+            padding: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .bg-dreamy-lavender::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .text-white {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .my-8 { margin: 2rem 0; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .px-4 { padding: 0 1rem; }
+        .py-2 { padding: 0.5rem 0; }
+        .py-6 { padding: 1.5rem 0; }
+        
+        .bg-white { background: white; }
+        .rounded-2xl { border-radius: 1rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+        
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        
+        .text-center { text-align: center; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .top-2 { top: 0.5rem; }
+        .right-2 { right: 0.5rem; }
+        
+        .cursor-pointer { cursor: pointer; }
+        .transition-all { transition: all 0.3s ease; }
+        .hover\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .hover\:-translate-y-1:hover { transform: translateY(-0.25rem); }
+        
+        .text-muted-foreground { color: var(--muted-foreground); }
+        
+        /* Custom styles */
+        .exercise-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .exercise-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            border-color: var(--primary);
+        }
+        
+        .category-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .play-button {
+            background: linear-gradient(135deg, var(--primary), var(--dreamy-lilac));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .pinned-star {
+            color: #fbbf24;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 1.25rem;
+        }
+        
+        /* Progress cards */
+        .progress-card {
+            background: linear-gradient(135deg, var(--dreamy-mint), var(--dreamy-blue));
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        /* Category filters */
+        .category-filter {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        
+        .category-filter.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .category-filter:hover {
+            border-color: var(--primary);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--muted-foreground);
+        }
+        
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .grid-cols-2 { grid-template-columns: 1fr; }
+            .grid-cols-3 { grid-template-columns: 1fr; }
+            .grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+            .text-3xl { font-size: 1.5rem; }
+            .text-2xl { font-size: 1.25rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .grid-cols-4 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-dreamy-lavender">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="text-3xl font-fredoka text-white">MY POCKET BUDDY</h1>
+                <nav class="flex gap-6">
+                    <a href="#progress" class="text-white font-semibold hover-effect" onclick="scrollToSection('progress')">Progress</a>
+                    <a href="#playlist" class="text-white font-semibold hover-effect" onclick="scrollToSection('playlist')">Playlist</a>
+                    <a href="#exercises" class="text-white font-semibold hover-effect" onclick="scrollToSection('exercises')">All Exercises</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Progress Section -->
+        <section class="my-8" id="progress">
+            <div class="bg-white rounded-2xl p-6 shadow-xl">
+                <h2 class="text-2xl font-fredoka mb-6">Today's Progress</h2>
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="progress-card rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold" id="total-exercises">0</div>
+                        <div class="text-sm">Total Exercises</div>
+                    </div>
+                    <div class="progress-card rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold" id="pinned-count">0</div>
+                        <div class="text-sm">Pinned Favorites</div>
+                    </div>
+                    <div class="progress-card rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold" id="playlist-count">0</div>
+                        <div class="text-sm">In Today's Playlist</div>
+                    </div>
+                    <div class="progress-card rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold" id="video-count">0</div>
+                        <div class="text-sm">With Videos</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Today's Workout Playlist -->
+        <section class="my-8" id="playlist">
+            <div class="bg-white rounded-2xl p-6 shadow-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-fredoka">Today's Workout</h2>
+                    <div class="text-muted-foreground text-sm">Your active playlist</div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="playlist-exercises">
+                    <!-- Playlist exercises will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Filters -->
+        <section class="my-8" id="exercises">
+            <div class="bg-white rounded-2xl p-6 shadow-xl">
+                <h2 class="text-2xl font-fredoka mb-6 text-center">All Exercises</h2>
+                
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap justify-center gap-2 mb-6" id="category-filters">
+                    <button class="category-filter active" onclick="filterByCategory('all')">All</button>
+                    <button class="category-filter" onclick="filterByCategory('Strength')">Strength</button>
+                    <button class="category-filter" onclick="filterByCategory('Balance')">Balance</button>
+                    <button class="category-filter" onclick="filterByCategory('Ball Skills')">Ball Skills</button>
+                    <button class="category-filter" onclick="filterByCategory('Flexibility')">Flexibility</button>
+                    <button class="category-filter" onclick="filterByCategory('Coordination')">Coordination</button>
+                </div>
+                
+                <!-- Exercise Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="all-exercises">
+                    <!-- All exercises will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="modal" id="video-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeVideoModal()">&times;</button>
+            <div id="modal-exercise-name" class="text-2xl font-fredoka mb-4"></div>
+            <div class="video-container" id="video-container">
+                <div class="flex items-center justify-center h-full text-muted-foreground">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🎥</div>
+                        <div>Video will load here</div>
+                    </div>
+                </div>
+            </div>
+            <div id="modal-exercise-description" class="mt-4 text-muted-foreground"></div>
+            <div id="modal-exercise-meta" class="mt-4 flex flex-wrap gap-2"></div>
+        </div>
+    </div>
+
+    <script>
+        // Your actual exercise data
+        const exercisesData = [{"id":21,"name":"Bridging","description":"Child lies on back, lifts bottom up until thighs are in line with body, holds for 5 seconds then slowly lowers. Strengthens hip and back extensors.","duration":"3-5 minutes","ageGroups":["6-12","13-17"],"category":"Strength","videoUrl":"https://vimeo.com/1091427008/0f41596b5f","thumbnailUrl":null,"isCompleted":false,"isPinned":true},{"id":40,"name":"Bridging - Left side","description":"Child lies on back, bends left leg, lifts bottom up until left thigh is in line with body while keeping right leg straight. Strengthens left hip and back extensors.","duration":"3-5 minutes","ageGroups":["6-12","13-17"],"category":"Strength","videoUrl":"https://vimeo.com/1091426939/76bd3c0b3d","thumbnailUrl":null,"isCompleted":false,"isPinned":true},{"id":1,"name":"Double Leg Jump","description":"Get your child to jump over a hoop and lend in a squat position","duration":"5 min","ageGroups":["6-8","9-12"],"category":"Strength","videoUrl":"https://vimeo.com/1091426974/c5ba971d60","thumbnailUrl":"@assets/2.png","isCompleted":false,"isPinned":true},{"id":103,"name":"Half-Kneeling Ball Game","description":"Child gets into half-kneeling position and plays ball game with helper. Improves balance and eye-hand coordination in transitional positions.","duration":"5-8 min","ageGroups":["5-7","7-9"],"category":"Balance","videoUrl":"https://vimeo.com/1091425726/9fc5af9ddf","thumbnailUrl":"","isCompleted":false,"isPinned":true},{"id":8,"name":"Kneeling Ball Games","description":"Child kneels on mat and plays ball games by throwing and catching. Improves pelvic control, static balance, and hand-eye coordination.","duration":"6-10 min","ageGroups":["5-7","7-9"],"category":"Balance","videoUrl":"https://vimeo.com/1091425774/37cc5c1674","thumbnailUrl":null,"isCompleted":false,"isPinned":true},{"id":54,"name":"Standing Bounce and Catch Tennis Ball","description":"Stand on a fixed spot and bounce a tennis ball on the ground, catching it as it bounces back without stepping off the spot. Start with two hands, then progress to one hand.","duration":"2-3 minutes","ageGroups":["6-8 years","9-12 years"],"category":"Ball Skills","videoUrl":"https://vimeo.com/1091577534/9a1b6b0aa3","thumbnailUrl":null,"isCompleted":false,"isPinned":true},{"id":57,"name":"Standing Tennis Ball Dribble (One Hand)","description":"Stand on a fixed spot and dribble a tennis ball on the ground as many times as possible using your dominant hand without moving away from that spot.","duration":"2-3 minutes","ageGroups":["6-8 years","9-12 years"],"category":"Ball Skills","videoUrl":"https://vimeo.com/1091577518/021446fdf6","thumbnailUrl":null,"isCompleted":false,"isPinned":true}];
+        
+        const activePlaylist = {"id":1,"name":"Today's Workout","exerciseIds":[111,103,8,1,40,54,57],"isActive":true};
+        
+        let currentFilter = 'all';
+        
+        function initApp() {
+            updateProgressStats();
+            loadPlaylistExercises();
+            loadAllExercises();
+        }
+        
+        function updateProgressStats() {
+            document.getElementById('total-exercises').textContent = exercisesData.length;
+            document.getElementById('pinned-count').textContent = exercisesData.filter(ex => ex.isPinned).length;
+            document.getElementById('playlist-count').textContent = activePlaylist.exerciseIds.length;
+            document.getElementById('video-count').textContent = exercisesData.filter(ex => ex.videoUrl && ex.videoUrl.includes('vimeo.com')).length;
+        }
+        
+        function loadPlaylistExercises() {
+            const container = document.getElementById('playlist-exercises');
+            const playlistExercises = exercisesData.filter(ex => activePlaylist.exerciseIds.includes(ex.id));
+            
+            container.innerHTML = playlistExercises.map(exercise => createExerciseCard(exercise)).join('');
+        }
+        
+        function loadAllExercises() {
+            const container = document.getElementById('all-exercises');
+            const filteredExercises = currentFilter === 'all' 
+                ? exercisesData 
+                : exercisesData.filter(ex => ex.category === currentFilter);
+            
+            container.innerHTML = filteredExercises.map(exercise => createExerciseCard(exercise)).join('');
+        }
+        
+        function createExerciseCard(exercise) {
+            const hasVideo = exercise.videoUrl && exercise.videoUrl.includes('vimeo.com');
+            const isPinned = exercise.isPinned;
+            
+            return `
+                <div class="exercise-card rounded-xl p-4 relative cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1">
+                    ${isPinned ? '<div class="pinned-star">⭐</div>' : ''}
+                    <div class="text-lg font-semibold mb-2">${exercise.name}</div>
+                    <div class="text-sm text-muted-foreground mb-4 line-clamp-2">${exercise.description}</div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="category-badge">${exercise.category}</span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">${exercise.duration}</span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded">Ages ${exercise.ageGroups.join(', ')}</span>
+                    </div>
+                    <button class="play-button w-full justify-center" onclick="playVideo(${exercise.id})">
+                        <span>${hasVideo ? '▶️ Play Video' : '📝 View Exercise'}</span>
+                    </button>
+                </div>
+            `;
+        }
+        
+        function filterByCategory(category) {
+            currentFilter = category;
+            
+            // Update filter buttons
+            document.querySelectorAll('.category-filter').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            loadAllExercises();
+        }
+        
+        function playVideo(exerciseId) {
+            const exercise = exercisesData.find(ex => ex.id === exerciseId);
+            if (!exercise) return;
+            
+            document.getElementById('modal-exercise-name').textContent = exercise.name;
+            document.getElementById('modal-exercise-description').textContent = exercise.description;
+            document.getElementById('modal-exercise-meta').innerHTML = `
+                <span class="category-badge">${exercise.category}</span>
+                <span class="text-xs bg-gray-100 px-2 py-1 rounded">${exercise.duration}</span>
+                <span class="text-xs bg-gray-100 px-2 py-1 rounded">Ages ${exercise.ageGroups.join(', ')}</span>
+            `;
+            
+            const videoContainer = document.getElementById('video-container');
+            if (exercise.videoUrl && exercise.videoUrl.includes('vimeo.com')) {
+                // Convert Vimeo URL to embeddable format
+                const vimeoId = exercise.videoUrl.split('/').pop().split('?')[0];
+                const embedUrl = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&title=0&byline=0&portrait=0`;
+                videoContainer.innerHTML = `<iframe src="${embedUrl}" allowfullscreen></iframe>`;
+            } else {
+                videoContainer.innerHTML = `
+                    <div class="flex items-center justify-center h-full text-muted-foreground">
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">📋</div>
+                            <div class="font-semibold">${exercise.name}</div>
+                            <div class="text-sm mt-2">Follow the description above to perform this exercise</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('video-modal').classList.add('active');
+        }
+        
+        function closeVideoModal() {
+            document.getElementById('video-modal').classList.remove('active');
+            document.getElementById('video-container').innerHTML = `
+                <div class="flex items-center justify-center h-full text-muted-foreground">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🎥</div>
+                        <div>Video will load here</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('video-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
+        
+        // Initialize the app
+        initApp();
+    </script>
+</body>
+</html>
