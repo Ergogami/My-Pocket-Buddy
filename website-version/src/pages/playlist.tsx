@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
-import { Clock, Users, Target, CheckCircle, Circle, Trash2, GripVertical } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Clock, CheckCircle, Circle, Trash2, GripVertical } from 'lucide-react'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 
 import { exercises } from '@/data/exercises'
 import { CATEGORY_DISPLAY_NAMES, type ExerciseCategory } from '@/lib/types'
@@ -21,7 +20,6 @@ const initialPlaylist = [
 export default function PlaylistPage() {
   const [playlistExercises, setPlaylistExercises] = useState(initialPlaylist)
   const [completedExercises, setCompletedExercises] = useState<Set<number>>(new Set())
-  const [showCompleted, setShowCompleted] = useState(true)
   const [draggedOverZone, setDraggedOverZone] = useState<'playlist' | 'completed' | null>(null)
 
   const toggleExerciseCompletion = (exerciseId: number) => {
