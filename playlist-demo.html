@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag & Drop Playlist Demo - MY POCKET BUDDY</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .playlist-section, .completed-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #1f2937;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+        
+        .completed-section .section-title {
+            border-bottom-color: #10b981;
+            color: #059669;
+        }
+        
+        .exercise-item {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            cursor: grab;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .exercise-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: #3b82f6;
+        }
+        
+        .exercise-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg) scale(1.05);
+            z-index: 1000;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        
+        .exercise-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .exercise-details {
+            color: #6b7280;
+            font-size: 0.9rem;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .exercise-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .completed-exercise {
+            background: #f0fdf4;
+            border-color: #10b981;
+        }
+        
+        .completed-exercise .exercise-name {
+            color: #059669;
+            text-decoration: line-through;
+        }
+        
+        .drop-zone {
+            min-height: 200px;
+            border: 3px dashed #d1d5db;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+        
+        .drop-zone.drag-over {
+            border-color: #10b981;
+            background: #f0fdf4;
+            transform: scale(1.02);
+        }
+        
+        .drop-message {
+            text-align: center;
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+        
+        .progress-stats {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .drag-instructions {
+            background: #fffbeb;
+            border: 2px solid #fbbf24;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: #92400e;
+        }
+        
+        .grab-handle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #9ca3af;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Drag & Drop Playlist Demo</h1>
+            <p>Experience the interactive playlist functionality!</p>
+        </div>
+
+        <div class="drag-instructions">
+            <h3>📝 How to Use:</h3>
+            <ul style="margin: 10px 0 0 20px;">
+                <li>Grab any exercise by clicking and holding</li>
+                <li>Drag it to the "All Done Zone" when completed</li>
+                <li>Watch the visual feedback as you drag</li>
+                <li>Drop to mark as completed</li>
+            </ul>
+        </div>
+
+        <div class="progress-stats">
+            <h3>Progress: <span id="completed-count">0</span> of <span id="total-count">5</span> exercises completed</h3>
+        </div>
+
+        <div class="main-content">
+            <div class="playlist-section">
+                <h2 class="section-title">🏃‍♂️ Active Exercises</h2>
+                <div id="active-exercises">
+                    <div class="exercise-item" draggable="true" data-id="1">
+                        <div class="grab-handle">⋮⋮</div>
+                        <div class="exercise-name">Tree Pose</div>
+                        <div class="exercise-details">
+                            <span>⏱️ 30s</span>
+                            <span class="exercise-badge">Balance</span>
+                            <span>👶 3-12 years</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise-item" draggable="true" data-id="2">
+                        <div class="grab-handle">⋮⋮</div>
+                        <div class="exercise-name">Jumping Jacks</div>
+                        <div class="exercise-details">
+                            <span>⏱️ 30s</span>
+                            <span class="exercise-badge">Coordination</span>
+                            <span>👶 4-12 years</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise-item" draggable="true" data-id="3">
+                        <div class="grab-handle">⋮⋮</div>
+                        <div class="exercise-name">Bear Crawl</div>
+                        <div class="exercise-details">
+                            <span>⏱️ 45s</span>
+                            <span class="exercise-badge">Strength</span>
+                            <span>👶 4-12 years</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise-item" draggable="true" data-id="4">
+                        <div class="grab-handle">⋮⋮</div>
+                        <div class="exercise-name">Ball Toss</div>
+                        <div class="exercise-details">
+                            <span>⏱️ 60s</span>
+                            <span class="exercise-badge">Ball Skills</span>
+                            <span>👶 5-12 years</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise-item" draggable="true" data-id="5">
+                        <div class="grab-handle">⋮⋮</div>
+                        <div class="exercise-name">Cat Stretch</div>
+                        <div class="exercise-details">
+                            <span>⏱️ 30s</span>
+                            <span class="exercise-badge">Stretching</span>
+                            <span>👶 3-12 years</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="completed-section">
+                <h2 class="section-title">🎉 All Done Zone</h2>
+                <div id="completed-exercises" class="drop-zone">
+                    <div class="drop-message">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">🎯</div>
+                        <div>Drop completed exercises here!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let draggedElement = null;
+        let completedCount = 0;
+        const totalCount = 5;
+
+        // Update progress display
+        function updateProgress() {
+            document.getElementById('completed-count').textContent = completedCount;
+            document.getElementById('total-count').textContent = totalCount;
+        }
+
+        // Handle drag start
+        document.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('exercise-item')) {
+                draggedElement = e.target;
+                e.target.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+            }
+        });
+
+        // Handle drag end
+        document.addEventListener('dragend', (e) => {
+            if (e.target.classList.contains('exercise-item')) {
+                e.target.classList.remove('dragging');
+                draggedElement = null;
+            }
+        });
+
+        // Handle drag over
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const dropZone = e.target.closest('#completed-exercises');
+            if (dropZone) {
+                dropZone.classList.add('drag-over');
+            }
+        });
+
+        // Handle drag leave
+        document.addEventListener('dragleave', (e) => {
+            const dropZone = document.getElementById('completed-exercises');
+            const rect = dropZone.getBoundingClientRect();
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+                dropZone.classList.remove('drag-over');
+            }
+        });
+
+        // Handle drop
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const dropZone = e.target.closest('#completed-exercises');
+            
+            if (dropZone && draggedElement) {
+                // Move exercise to completed zone
+                draggedElement.classList.add('completed-exercise');
+                draggedElement.draggable = false;
+                
+                // Clear drop zone message if it's the first completion
+                if (completedCount === 0) {
+                    dropZone.innerHTML = '';
+                    dropZone.classList.remove('drop-zone');
+                }
+                
+                dropZone.appendChild(draggedElement);
+                dropZone.classList.remove('drag-over');
+                
+                completedCount++;
+                updateProgress();
+                
+                // Show celebration for completion
+                if (completedCount === totalCount) {
+                    setTimeout(() => {
+                        alert('🎉 Congratulations! You completed all exercises! Great job staying active!');
+                    }, 500);
+                }
+            }
+        });
+
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>
