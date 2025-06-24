@@ -1,8 +1,8 @@
 import { Link } from 'wouter'
-import { ArrowRight, Play, Star, Users, Heart, Shield } from 'lucide-react'
+import { ArrowRight, Play, Users, Heart, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+
 import { CATEGORY_DISPLAY_NAMES } from '@/lib/types'
 
 export default function HomePage() {

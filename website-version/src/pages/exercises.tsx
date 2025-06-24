@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react'
 import { useRoute } from 'wouter'
-import { Search, Filter, Clock, Target, Users } from 'lucide-react'
+import { Search, Clock, Target, Users } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
 import { exercises } from '@/data/exercises'
 import { CATEGORY_DISPLAY_NAMES, type ExerciseCategory } from '@/lib/types'
 import { formatDuration, getDifficultyColor, getCategoryColor } from '@/lib/utils'

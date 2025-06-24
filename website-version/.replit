@@ -1,0 +1,18 @@
+[deployment]
+run = ["sh", "-c", "cd website-version && npm run dev"]
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[nix]
+channel = "stable-24_05"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
+
+[[languages.javascript]]
+pattern = "**/{*.js,*.jsx,*.ts,*.tsx}"
+
+[languages.javascript.languageServer]
+start = "typescript-language-server --stdio"

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Clock, Users, Target, Play, ArrowRight } from 'lucide-react'
+import { Clock, Users, Target, Play } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -63,7 +63,7 @@ export default function ProgramsPage() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <Target className="h-4 w-4 text-muted-foreground" />
-                      <Badge className={getDifficultyColor(program.difficulty)} size="sm">
+                      <Badge className={getDifficultyColor(program.difficulty)}>
                         {program.difficulty}
                       </Badge>
                     </div>
